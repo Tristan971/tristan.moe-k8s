@@ -1,2 +1,9 @@
 ingress:
   enabled: false
+
+# do not use persistent storage for data (at least not yet)
+parent:
+  database:
+    persistence: false
+  alarms:
+    persistence: false
