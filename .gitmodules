@@ -4,3 +4,4 @@
 [submodule "rook/rook-src"]
 	path = rook/rook-src
 	url = git@github.com:rook/rook.git
+	branch = release-1.3
