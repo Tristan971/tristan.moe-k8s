@@ -4,7 +4,7 @@ metadata:
   name: netdata-ingress
 spec:
   rules:
-    - host: netdata.85dca0fb-f4a0-4713-b1d6-a4c419b620c2.nodes.k8s.fr-par.scw.cloud
+    - host: netdata.77fc5869-21c8-439a-9da9-b1365ac23186.nodes.k8s.fr-par.scw.cloud
       http:
         paths:
           - backend:
