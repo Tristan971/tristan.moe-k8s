@@ -1,0 +1,12 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: netdata-ingress
+spec:
+  rules:
+    - host: netdata.85dca0fb-f4a0-4713-b1d6-a4c419b620c2.nodes.k8s.fr-par.scw.cloud
+      http:
+        paths:
+          - backend:
+              serviceName: netdata
+              servicePort: 19999
