@@ -1,3 +1,6 @@
 [submodule "default/netdata/netdata-helmchart"]
 	path = default/netdata/netdata-helmchart
 	url = git@github.com:netdata/helmchart.git
+[submodule "rook/rook-src"]
+	path = rook/rook-src
+	url = git@github.com:rook/rook.git
