@@ -10,3 +10,9 @@ spec:
           - backend:
               serviceName: netdata
               servicePort: 19999
+    - host: netdata.k8s.tristan.moe
+      http:
+        paths:
+          - backend:
+              serviceName: netdata
+              servicePort: 19999
