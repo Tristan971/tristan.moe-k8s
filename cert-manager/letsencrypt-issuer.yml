@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: letsencrypt-tristan.moe-issue
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-tristan.moe-key
+    solvers:
+      - http01:
+          ingress:
+            class: nginx
