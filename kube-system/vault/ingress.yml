@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: vault-ingress
+  namespace: kube-system
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
+spec:
+  rules:
+    - host: vault.k8s.tristan.moe
+      http:
+        paths:
+          - backend:
+              serviceName: vault
+              servicePort: 8200
+  tls:
+    - hosts:
+        - vault.k8s.tristan.moe
+      secretName: letsencrypt-cert-vault.k8s.tristan.moe
