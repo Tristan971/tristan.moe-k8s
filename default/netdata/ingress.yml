@@ -2,17 +2,17 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: netdata-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
 spec:
   rules:
-    - host: netdata.77fc5869-21c8-439a-9da9-b1365ac23186.nodes.k8s.fr-par.scw.cloud
-      http:
-        paths:
-          - backend:
-              serviceName: netdata
-              servicePort: 19999
     - host: netdata.k8s.tristan.moe
       http:
         paths:
           - backend:
               serviceName: netdata
               servicePort: 19999
+  tls:
+    - hosts:
+        - netdata.k8s.tristan.moe
+      secretName: letsencrypt-cert-netdata.k8s.tristan.moe
