@@ -60,28 +60,30 @@ spec:
               mountPath: /buffer
             - name: s3-data
               mountPath: /s3-data:shared
-        #- name: nfs-server
-        #  image: tristandeloche/nfs-server:awaiting-for-exports-readiness
-        #  securityContext:
-        #    privileged: true
-        #    capabilities:
-        #      add:
-        #        - SYS_ADMIN
-        #        - SYS_MODULE
-        #  ports:
-        #    - containerPort: 2049
-        #  volumeMounts:
-        #    # volumes:
-        #    #      - /path/to/share:/nfs
-        #    #      - /path/to/exports.txt:/etc/exports:ro
-        #    #      - /lib/modules:/lib/modules:ro
-        #    - mountPath: /nfs:shared
-        #      name: s3-data
-        #      subPath: /data
-        #    - mountPath: /etc/exports:shared
-        #      name: s3-data
-        #      subPath: /exports.txt
-        #      readOnly: true
+        - name: nfs-server
+          image: tristandeloche/nfs-server:awaiting-for-exports-readiness
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - SYS_ADMIN
+                - SYS_MODULE
+          ports:
+            - containerPort: 2049
+          volumeMounts:
+            # /path/to/share:/nfs
+            - mountPath: /nfs:shared
+              name: s3-data
+              subPath: /data
+            # /path/to/exports.txt:/etc/exports:ro
+            - mountPath: /etc/exports:shared
+              name: s3-data
+              subPath: /exports.txt
+              readOnly: true
+            # /lib/modules:/lib/modules:ro
+            - mountPath: /lib/modules
+              name: lib-modules
+              readOnly: true
       volumes:
         # fuse device to use for mounting the s3ql filesystem
         - name: devfuse
