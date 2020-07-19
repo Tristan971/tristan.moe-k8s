@@ -22,8 +22,8 @@ spec:
         vault.hashicorp.com/agent-inject-template-scaleway-credentials: |
           {{- with secret "kv/scaleway/credentials" -}}
           [s3c]
-          username: {{ .Data.SCW_ACCESS_KEY_ID }}
-          password: {{ .Data.SCW_SECRET_ACCESS_KEY }}
+          username: {{ .Data.data.SCW_ACCESS_KEY_ID }}
+          password: {{ .Data.data.SCW_SECRET_ACCESS_KEY }}
           {{- end }}
     spec:
       serviceAccountName: s3ql-master
