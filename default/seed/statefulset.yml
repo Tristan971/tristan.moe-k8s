@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: seed
+  labels:
+    app: seed
+spec:
+  selector:
+    matchLabels:
+      app: nginx-seed
+  serviceName: seed
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: nginx-seed
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: seed
+          image: romancin/rutorrent-flood:0.9.8
+          ports:
+            - containerPort: 3000
+              name: flood
+          volumeMounts:
+            - name: seed-config
+              mountPath: /config
+            - name: seed-downloads
+              mountPath: /downloads
+  volumeClaimTemplates:
+    - metadata:
+        name: seed-config
+      spec:
+        accessModes: [ ReadWriteOnce ]
+        resources:
+          requests:
+            storage: 1Gi
+    - metadata:
+        name: seed-downloads
+      spec:
+        accessModes: [ ReadWriteOnce ]
+        resources:
+          requests:
+            storage: 1Gi

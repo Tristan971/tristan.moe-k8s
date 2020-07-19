@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: seed-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
+spec:
+  rules:
+    - host: seed.k8s.tristan.moe
+      http:
+        paths:
+          - backend:
+              serviceName: nginx-seed
+              servicePort: 3000
+  tls:
+    - hosts:
+        - seed.k8s.tristan.moe
+      secretName: letsencrypt-cert-seed.k8s.tristan.moe
