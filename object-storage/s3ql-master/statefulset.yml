@@ -41,18 +41,25 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command:
-                  - s3qlw_import_authfile /vault/secrets/scaleway-credentials
-                  - mkdir -v /s3-data/data
-                  - s3qlw_mount s3c://s3.fr-par.scw.cloud/s3ql-seed /s3-data/data
-                  - touch /s3-data/data/.exports-ready
+                command: [
+                  'bash',
+                  '-c',
+                  's3qlw_init -a /vault/secrets/scaleway-credentials -d /s3-data/data -l .exports-ready'
+                ]
+            preStop:
+              exec:
+                command: [
+                  'bash',
+                  '-c',
+                  's3qlw_terminate -d /s3-data/data -l .exports-ready'
+                ]
           volumeMounts:
             - name: devfuse
               mountPath: /dev/fuse
             - name: s3ql-master-cache
               mountPath: /buffer
             - name: s3-data
-              mountPath: /s3-data
+              mountPath: /s3-data:shared
         #- name: nfs-server
         #  image: tristandeloche/nfs-server:awaiting-for-exports-readiness
         #  securityContext:
@@ -68,10 +75,10 @@ spec:
         #    #      - /path/to/share:/nfs
         #    #      - /path/to/exports.txt:/etc/exports:ro
         #    #      - /lib/modules:/lib/modules:ro
-        #    - mountPath: /nfs
+        #    - mountPath: /nfs:shared
         #      name: s3-data
         #      subPath: /data
-        #    - mountPath: /etc/exports
+        #    - mountPath: /etc/exports:shared
         #      name: s3-data
         #      subPath: /exports.txt
         #      readOnly: true
@@ -83,7 +90,7 @@ spec:
         # shared volume to which the NFS server writes (due to other nodes using the NFS server)
         - name: s3-data
           hostPath:
-            path: /mnt/s3-data:shared
+            path: /mnt/s3-data
         # kernel modules for automatic modprobe by nfs server on need
         - name: lib-modules
           hostPath:
