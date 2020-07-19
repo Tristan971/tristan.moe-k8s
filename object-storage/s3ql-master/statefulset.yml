@@ -44,9 +44,14 @@ spec:
             - name: s3ql-master-cache
               mountPath: /buffer
       volumes:
+        # fuse device to use for mounting the s3ql filesystem
         - name: devfuse
           hostPath:
             path: /dev/fuse
+        # shared volume to which the NFS server writes (due to other nodes using the NFS server)
+        - name: s3-data
+          hostPath:
+            path: /mnt/s3-data:shared
   volumeClaimTemplates:
     - metadata:
         name: s3ql-master-cache
