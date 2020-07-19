@@ -74,16 +74,14 @@ spec:
             # /path/to/share:/nfs
             - mountPath: /nfs:shared
               name: s3-data
-              subPath: /data
-            # /path/to/exports.txt:/etc/exports:ro
-            - mountPath: /etc/exports:shared
-              name: s3-data
-              subPath: /exports.txt
-              readOnly: true
+              subPath: data
             # /lib/modules:/lib/modules:ro
             - mountPath: /lib/modules
               name: lib-modules
               readOnly: true
+          env:
+            - name: 'NFS_EXPORT_0'
+              value: '/nfs *(rw,fsid=0,sync)'
       volumes:
         # fuse device to use for mounting the s3ql filesystem
         - name: devfuse
