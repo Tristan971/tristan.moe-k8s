@@ -33,9 +33,19 @@ spec:
         - name: s3ql-master
           imagePullPolicy: Always
           image: tristandeloche/s3ql-docker:master
+          securityContext:
+            capabilities:
+              add:
+                - SYS_ADMIN
           volumeMounts:
+            - name: devfuse
+              mountPath: /dev/fuse
             - name: s3ql-master-cache
               mountPath: /buffer
+      volumes:
+        - name: devfuse
+          hostPath:
+            path: /dev/fuse
   volumeClaimTemplates:
     - metadata:
         name: s3ql-master-cache
