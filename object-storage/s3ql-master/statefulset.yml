@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: s3ql-master-statefulset
+  namespace: object-storage
+spec:
+  selector:
+    matchLabels:
+      app: s3ql-master
+  serviceName: s3ql-master
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: s3ql-master
+      annotations:
+        vault.hashicorp.com/role: 's3ql-master'
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-inject-secret-scaleway-credentials: 'kv/scaleway/credentials'
+        vault.hashicorp.com/agent-inject-template-scaleway-credentials: |
+          {{- with secret "kv/scaleway/credentials" -}}
+          [s3c]
+          username: {{ .Data.SCW_ACCESS_KEY_ID }}
+          password: {{ .Data.SCW_SECRET_ACCESS_KEY }}
+          {{- end }}
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: s3ql-master
+          imagePullPolicy: Always
+          image: tristandeloche/s3ql-docker:master
+          volumeMounts:
+            - name: s3ql-master-cache
+              mountPath: /buffer
+  volumeClaimTemplates:
+    - metadata:
+        name: s3ql-master-cache
+      spec:
+        accessModes: [ ReadWriteOnce ]
+        resources:
+          requests:
+            storage: 30Gi
