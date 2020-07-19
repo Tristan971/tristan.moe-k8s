@@ -38,11 +38,43 @@ spec:
             capabilities:
               add:
                 - SYS_ADMIN
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - s3qlw_import_authfile /vault/secrets/scaleway-credentials
+                  - mkdir -v /s3-data/data
+                  - s3qlw_mount s3c://s3.fr-par.scw.cloud/s3ql-seed /s3-data/data
+                  - touch /s3-data/data/.exports-ready
           volumeMounts:
             - name: devfuse
               mountPath: /dev/fuse
             - name: s3ql-master-cache
               mountPath: /buffer
+            - name: s3-data
+              mountPath: /s3-data
+        #- name: nfs-server
+        #  image: tristandeloche/nfs-server:awaiting-for-exports-readiness
+        #  securityContext:
+        #    privileged: true
+        #    capabilities:
+        #      add:
+        #        - SYS_ADMIN
+        #        - SYS_MODULE
+        #  ports:
+        #    - containerPort: 2049
+        #  volumeMounts:
+        #    # volumes:
+        #    #      - /path/to/share:/nfs
+        #    #      - /path/to/exports.txt:/etc/exports:ro
+        #    #      - /lib/modules:/lib/modules:ro
+        #    - mountPath: /nfs
+        #      name: s3-data
+        #      subPath: /data
+        #    - mountPath: /etc/exports
+        #      name: s3-data
+        #      subPath: /exports.txt
+        #      readOnly: true
       volumes:
         # fuse device to use for mounting the s3ql filesystem
         - name: devfuse
@@ -52,6 +84,10 @@ spec:
         - name: s3-data
           hostPath:
             path: /mnt/s3-data:shared
+        # kernel modules for automatic modprobe by nfs server on need
+        - name: lib-modules
+          hostPath:
+            path: /lib/modules
   volumeClaimTemplates:
     - metadata:
         name: s3ql-master-cache
