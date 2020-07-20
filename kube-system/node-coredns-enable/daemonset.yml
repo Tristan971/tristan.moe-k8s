@@ -40,18 +40,28 @@ spec:
         name: node-coredns-enable-ds
     spec:
       initContainers:
-        - name: node-coredns-enable
+        - name: node-coredns-enable-init
           image: busybox
           command: [
-            'cat', '/host-resolv.conf'
+            'sh',
+            '-c',
+            'printf "\n%s\n%s\n" "# $(date +%s) - CoreDNS nameserver appended by $HOSTNAME" "$(cat /etc/resolv.conf)" | tee -a /host-etc/resolv.conf.override'
           ]
           volumeMounts:
-            - name: host-resolv
-              mountPath: /host-resolv.conf
+            - name: host-etc
+              mountPath: /host-etc
       containers:
         - name: pause
-          image: gcr.io/google_containers/pause
+          image: busybox
+          command: [
+            'sh',
+            '-c',
+            'printf "Init done! Result of append:\n---\n\n%s\n\n---\n\nPausing forever." "$(cat /host-etc/resolv.conf.override)" && tail -f /dev/null'
+          ]
+          volumeMounts:
+            - name: host-etc
+              mountPath: /host-etc
       volumes:
-        - name: host-resolv
+        - name: host-etc
           hostPath:
-            path: /etc/resolv.conf
+            path: /etc
