@@ -1,0 +1,57 @@
+###
+# Enable CoreDNS on any provisionned Node
+#
+# As it turns out, CoreDNS isn't added as a DNS resolver
+# to nodes due to some old providers using distributions
+# and resolve packages that are outdated
+#
+# But we do want CoreDNS, to be able to reference
+# services by DNS name at the Node level, specifically
+# to do NFS mount-binding ; which happens at the
+# Node-level, and is merely shared as a docker volume
+# afterwards to the Pod itself (which does have
+# access to CoreDNS set)
+#
+# To make this happen, we use a DaemonSet to run a
+# container on every node. To run it once, we run
+# the actual command as an initContainer, and then
+# use the pause container to stall the daemonset
+# forever
+#
+# We take advantage of this, and of docker-in-docker
+# shenanigans to run the actual appending order to
+# systemd-resolv.
+#
+# Implementation taken from: http://blog.itaysk.com/2017/12/26/the-single-use-daemonset-pattern-and-prepulling-images-in-kubernetes
+###
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  namespace: kube-system
+  name: node-coredns-enable
+spec:
+  selector:
+    matchLabels:
+      name: node-coredns-enable-ds
+  template:
+    metadata:
+      labels:
+        name: node-coredns-enable-ds
+    spec:
+      initContainers:
+        - name: node-coredns-enable
+          image: busybox
+          command: [
+            'cat', '/host-resolv.conf'
+          ]
+          volumeMounts:
+            - name: host-resolv
+              mountPath: /host-resolv.conf
+      containers:
+        - name: pause
+          image: gcr.io/google_containers/pause
+      volumes:
+        - name: host-resolv
+          hostPath:
+            path: /etc/resolv.conf
