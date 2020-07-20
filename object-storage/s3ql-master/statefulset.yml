@@ -57,28 +57,19 @@ spec:
               mountPath: /s3-data:shared
         - name: nfs-server
           imagePullPolicy: Always
-          image: tristandeloche/nfs-server:awaiting-for-exports-readiness
+          image: tristandeloche/nfs-ganesha:master
           securityContext:
             privileged: true
             capabilities:
               add:
                 - SYS_ADMIN
-                - SYS_MODULE
+                - DAC_READ_SEARCH
           ports:
             - containerPort: 2049
           volumeMounts:
             # /path/to/share:/nfs
-            - mountPath: /nfs:shared
+            - mountPath: /nfs/data:shared
               name: s3-data
-            # /lib/modules:/lib/modules:ro
-            - mountPath: /lib/modules
-              name: lib-modules
-              readOnly: true
-          env:
-            - name: 'NFS_EXPORT_0'
-              value: '/nfs *(rw,fsid=0,sync)'
-            - name: 'READINESS_MARKER_LOCATION'
-              value: '/nfs/data/lockfile'
       volumes:
         # fuse device to use for mounting the s3ql filesystem
         - name: devfuse
@@ -88,10 +79,6 @@ spec:
         - name: s3-data
           hostPath:
             path: /mnt/s3-data
-        # kernel modules for automatic modprobe by nfs server on need
-        - name: lib-modules
-          hostPath:
-            path: /lib/modules
   volumeClaimTemplates:
     - metadata:
         name: s3ql-master-cache
