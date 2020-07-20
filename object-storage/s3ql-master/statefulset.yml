@@ -41,13 +41,18 @@ spec:
           command: [
             'bash',
             '-c',
-            's3qlw_init -a /vault/secrets/scaleway-credentials -d /s3-data/data -l lockfile -s s3c://s3.fr-par.scw.cloud/s3ql-seed'
+            's3qlw_init
+              -a /vault/secrets/scaleway-credentials
+              -d /s3-data/data
+              -c /s3-cache:26214400
+              -l lockfile
+              -s s3c://s3.fr-par.scw.cloud/s3ql-seed'
           ]
           volumeMounts:
             - name: devfuse
               mountPath: /dev/fuse
             - name: s3ql-master-cache
-              mountPath: /buffer
+              mountPath: /s3-cache
             - name: s3-data
               mountPath: /s3-data:shared
         - name: nfs-server
