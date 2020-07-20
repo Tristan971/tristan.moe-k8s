@@ -58,6 +58,9 @@ spec:
         - name: nfs-server
           imagePullPolicy: Always
           image: tristandeloche/nfs-ganesha:master
+          env:
+            - name: 'EXPORT_PATH'
+              value: '/nfs/data'
           securityContext:
             privileged: true
             capabilities:
@@ -68,7 +71,7 @@ spec:
             - containerPort: 2049
           volumeMounts:
             # /path/to/share:/nfs
-            - mountPath: /nfs/data:shared
+            - mountPath: /nfs:shared
               name: s3-data
       volumes:
         # fuse device to use for mounting the s3ql filesystem
