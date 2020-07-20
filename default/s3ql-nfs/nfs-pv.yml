@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-client-pv
+  name: nfs-pv
   namespace: default
 spec:
   capacity:
@@ -9,5 +9,5 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: nfs.tcp.s3ql-master-nfs.object-storage.svc.cluster.local
+    server: nfs.tcp.s3ql-master-nfs.default.svc.cluster.local
     path: "/"
