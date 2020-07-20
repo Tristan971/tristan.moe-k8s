@@ -38,21 +38,11 @@ spec:
             capabilities:
               add:
                 - SYS_ADMIN
-          lifecycle:
-            postStart:
-              exec:
-                command: [
-                  'bash',
-                  '-c',
-                  's3qlw_init -a /vault/secrets/scaleway-credentials -d /s3-data/data -l .exports-ready'
-                ]
-            preStop:
-              exec:
-                command: [
-                  'bash',
-                  '-c',
-                  's3qlw_terminate -d /s3-data/data -l .exports-ready'
-                ]
+          command: [
+            'bash',
+            '-c',
+            's3qlw_init -a /vault/secrets/scaleway-credentials -d /s3-data/data -l .exports-ready'
+          ]
           volumeMounts:
             - name: devfuse
               mountPath: /dev/fuse
