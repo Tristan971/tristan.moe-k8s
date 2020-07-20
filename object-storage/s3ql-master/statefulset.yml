@@ -61,6 +61,7 @@ spec:
             - name: s3-data
               mountPath: /s3-data:shared
         - name: nfs-server
+          imagePullPolicy: Always
           image: tristandeloche/nfs-server:awaiting-for-exports-readiness
           securityContext:
             privileged: true
@@ -82,6 +83,8 @@ spec:
           env:
             - name: 'NFS_EXPORT_0'
               value: '/nfs *(rw,fsid=0,sync)'
+            - name: 'READINESS_MARKER_LOCATION'
+              value: '/nfs/data/.exports-ready'
       volumes:
         # fuse device to use for mounting the s3ql filesystem
         - name: devfuse
