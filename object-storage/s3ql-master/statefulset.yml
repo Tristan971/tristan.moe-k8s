@@ -41,7 +41,7 @@ spec:
           command: [
             'bash',
             '-c',
-            's3qlw_init -a /vault/secrets/scaleway-credentials -d /s3-data/data -l .exports-ready'
+            's3qlw_init -a /vault/secrets/scaleway-credentials -d /s3-data/data -l lockfile -s s3c://s3.fr-par.scw.cloud/s3ql-seed'
           ]
           volumeMounts:
             - name: devfuse
@@ -65,7 +65,6 @@ spec:
             # /path/to/share:/nfs
             - mountPath: /nfs:shared
               name: s3-data
-              subPath: data
             # /lib/modules:/lib/modules:ro
             - mountPath: /lib/modules
               name: lib-modules
@@ -74,7 +73,7 @@ spec:
             - name: 'NFS_EXPORT_0'
               value: '/nfs *(rw,fsid=0,sync)'
             - name: 'READINESS_MARKER_LOCATION'
-              value: '/nfs/data/.exports-ready'
+              value: '/nfs/data/lockfile'
       volumes:
         # fuse device to use for mounting the s3ql filesystem
         - name: devfuse
