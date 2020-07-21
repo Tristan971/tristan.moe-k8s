@@ -27,10 +27,10 @@ spec:
           volumeMounts:
             - name: seed-config
               mountPath: /config
-            - name: nfs
+            - name: nfs-seed-downloads
               mountPath: /downloads
       volumes:
-        - name: nfs
+        - name: nfs-seed-downloads
           persistentVolumeClaim:
             claimName: nfs-pvc
   volumeClaimTemplates:
