@@ -10,8 +10,8 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: nginx-seed
-              servicePort: 3000
+              serviceName: seed
+              servicePort: webui
   tls:
     - hosts:
         - seed.k8s.tristan.moe

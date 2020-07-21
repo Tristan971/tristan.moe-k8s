@@ -1,13 +1,21 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-seed
-  labels:
-    app: nginx-seed
+  name: seed
 spec:
   ports:
-    - port: 3000
-      name: seed
+    - name: webui
+      targetPort: webui
+      port: 3000
+      protocol: TCP
+    - name: bittorrent
+      targetPort: bittorrent
+      port: 51415
+      protocol: UDP
+    - name: dht
+      targetPort: dht
+      port: 6881
+      protocol: UDP
   clusterIP: None
   selector:
-    app: nginx-seed
+    app: rutorrent-flood

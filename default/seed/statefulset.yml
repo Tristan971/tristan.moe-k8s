@@ -7,7 +7,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: nginx-seed
+      app: rutorrent-flood
   serviceName: seed
   replicas: 1
   updateStrategy:
@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       labels:
-        app: nginx-seed
+        app: rutorrent-flood
     spec:
       terminationGracePeriodSeconds: 60
       containers:
@@ -23,7 +23,11 @@ spec:
           image: romancin/rutorrent-flood:0.9.8
           ports:
             - containerPort: 3000
-              name: flood
+              name: webui
+            - containerPort: 51415
+              name: bittorrent
+            - containerPort: 6881
+              name: dht
           volumeMounts:
             - name: seed-config
               mountPath: /config
