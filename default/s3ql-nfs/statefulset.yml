@@ -37,15 +37,23 @@ spec:
             capabilities:
               add:
                 - SYS_ADMIN
+          resources:
+            limits:
+              cpu: '1500m'
           command: [
             'bash',
             '-c',
-            's3qlw_init
+            '
+            s3qlw_init
               -a /vault/secrets/scaleway-credentials
               -d /s3-data/data
-              -c /s3-cache:26214400
+              -s s3c://s3.fr-par.scw.cloud/s3ql-seed
               -l lockfile
-              -s s3c://s3.fr-par.scw.cloud/s3ql-seed'
+              -x none
+              -c /s3-cache:26214400
+              -t 2
+              -n
+            '
           ]
           volumeMounts:
             - name: devfuse
@@ -66,6 +74,9 @@ spec:
               add:
                 - SYS_ADMIN
                 - DAC_READ_SEARCH
+          resources:
+            limits:
+              cpu: '500m'
           ports:
             - containerPort: 2049
           volumeMounts:
