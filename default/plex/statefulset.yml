@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: plex
+  labels:
+    app: plex
+spec:
+  selector:
+    matchLabels:
+      app: plex
+  serviceName: plex
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: plex
+          image: plexinc/pms-docker:latest
+          ports:
+            - containerPort: 32400
+              name: webui
+          volumeMounts:
+            - name: plex-config
+              mountPath: /config
+            - name: nfs-plex-data
+              mountPath: /data
+      volumes:
+        - name: nfs-plex-data
+          persistentVolumeClaim:
+            claimName: nfs-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: plex-config
+      spec:
+        accessModes: [ ReadWriteOnce ]
+        resources:
+          requests:
+            storage: 10Gi
