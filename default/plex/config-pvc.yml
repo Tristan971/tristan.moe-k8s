@@ -1,0 +1,14 @@
+# the NFS PVC is a resource used by containers from multiple namespaces
+# therefore it must lie within the default namespace
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-config-pvc
+  namespace: default
+spec:
+  volumeName: plex-config
+  resources:
+    requests:
+      storage: 10Gi
+  accessModes: [ ReadWriteOnce ]
