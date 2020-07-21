@@ -1,6 +1,3 @@
-# the NFS PVC is a resource used by containers from multiple namespaces
-# therefore it must lie within the default namespace
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
