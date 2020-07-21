@@ -27,18 +27,15 @@ spec:
           volumeMounts:
             - name: seed-config
               mountPath: /config
-            - name: seed-downloads
+            - name: nfs
               mountPath: /downloads
+      volumes:
+        - name: nfs
+          persistentVolumeClaim:
+            claimName: nfs-pvc
   volumeClaimTemplates:
     - metadata:
         name: seed-config
-      spec:
-        accessModes: [ ReadWriteOnce ]
-        resources:
-          requests:
-            storage: 1Gi
-    - metadata:
-        name: seed-downloads
       spec:
         accessModes: [ ReadWriteOnce ]
         resources:
