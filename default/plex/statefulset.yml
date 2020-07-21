@@ -33,6 +33,11 @@ spec:
         - name: nfs-plex-data
           persistentVolumeClaim:
             claimName: nfs-pvc
-        - name: plex-config
-          persistentVolumeClaim:
-            claimName: plex-config-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: plex-config
+      spec:
+        accessModes: [ ReadWriteOnce ]
+        resources:
+          requests:
+            storage: 15Gi
