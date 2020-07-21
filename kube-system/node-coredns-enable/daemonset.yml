@@ -43,6 +43,9 @@ spec:
       containers:
         - name: enable-coredns-on-node
           imagePullPolicy: Always
-          image: tristandeloche/kube-enable-coredns-on-node
+          image: tristandeloche/kube-enable-coredns-on-node:0.1.0
+          env:
+            - name: 'DRY_RUN'
+              value: 'false'
           securityContext:
             privileged: true

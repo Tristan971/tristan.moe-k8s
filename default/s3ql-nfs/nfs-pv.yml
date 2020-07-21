@@ -9,5 +9,5 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: nfs.tcp.s3ql-master-nfs.default.svc.cluster.local
+    server: s3ql-master-nfs.default.svc.cluster.local
     path: "/"
