@@ -24,7 +24,7 @@
 #
 # Implementation taken from: http://blog.itaysk.com/2017/12/26/the-single-use-daemonset-pattern-and-prepulling-images-in-kubernetes
 ###
-
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -39,29 +39,10 @@ spec:
       labels:
         name: node-coredns-enable-ds
     spec:
-      initContainers:
-        - name: node-coredns-enable-init
-          image: busybox
-          command: [
-            'sh',
-            '-c',
-            'printf "\n%s\n%s\n" "# $(date +%s) - CoreDNS nameserver appended by $HOSTNAME" "$(cat /etc/resolv.conf)" | tee -a /host-etc/resolv.conf.override'
-          ]
-          volumeMounts:
-            - name: host-etc
-              mountPath: /host-etc
+      hostPID: true
       containers:
-        - name: pause
-          image: busybox
-          command: [
-            'sh',
-            '-c',
-            'printf "Init done! Result of append:\n---\n\n%s\n\n---\n\nPausing forever." "$(cat /host-etc/resolv.conf.override)" && tail -f /dev/null'
-          ]
-          volumeMounts:
-            - name: host-etc
-              mountPath: /host-etc
-      volumes:
-        - name: host-etc
-          hostPath:
-            path: /etc
+        - name: enable-coredns-on-node
+          imagePullPolicy: Always
+          image: tristandeloche/kube-enable-coredns-on-node
+          securityContext:
+            privileged: true
