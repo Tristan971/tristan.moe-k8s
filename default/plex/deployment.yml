@@ -14,7 +14,6 @@ spec:
       labels:
         app: plex
     spec:
-      terminationGracePeriodSeconds: 60
       containers:
         - name: plex
           image: plexinc/pms-docker:latest
@@ -27,14 +26,52 @@ spec:
             # be updated within its config files from
             # another container
             - name: 'PLEX_UID'
-              value: '1000'
+              value: '0'
             - name: 'PLEX_GID'
-              value: '1000'
+              value: '0'
           volumeMounts:
             - name: plex-config
               mountPath: /config:shared
             - name: nfs-plex-data
               mountPath: /data
+        - name: git-sync-hama-bundle
+          image: k8s.gcr.io/git-sync:v3.1.6
+          securityContext:
+            runAsGroup: 0
+            runAsUser: 0
+          env:
+            - name: 'GIT_SYNC_REPO'
+              value: 'https://github.com/ZeroQI/Hama.bundle.git'
+            - name: 'GIT_SYNC_ROOT'
+              value: '/tmp/plex-config/git-sync/hama-bundle/workdir'
+            - name: 'GIT_SYNC_DEST'
+              value: 'latest'
+            - name: 'GIT_SYNC_WAIT'
+              value: '86400' # 24h
+            - name: 'GIT_SYNC_PERMISSIONS'
+              value: '0755'
+          volumeMounts:
+            - name: plex-config
+              mountPath: /tmp/plex-config:shared
+        - name: git-sync-ass
+          image: k8s.gcr.io/git-sync:v3.1.6
+          securityContext:
+            runAsGroup: 0
+            runAsUser: 0
+          env:
+            - name: 'GIT_SYNC_REPO'
+              value: 'https://github.com/ZeroQI/Absolute-Series-Scanner.git'
+            - name: 'GIT_SYNC_ROOT'
+              value: '/tmp/plex-config/git-sync/ass/workdir'
+            - name: 'GIT_SYNC_DEST'
+              value: 'latest'
+            - name: 'GIT_SYNC_WAIT'
+              value: '86400' # 24h
+            - name: 'GIT_SYNC_PERMISSIONS'
+              value: '0755'
+          volumeMounts:
+            - name: plex-config
+              mountPath: /tmp/plex-config:shared
       volumes:
         - name: nfs-plex-data
           persistentVolumeClaim:
