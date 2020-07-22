@@ -8,6 +8,5 @@ spec:
       targetPort: webui
       port: 32400
       protocol: TCP
-  clusterIP: None
   selector:
     app: plex

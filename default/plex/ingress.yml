@@ -6,7 +6,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
 spec:
   rules:
-    - host: plex.k8s.tristan.moe
+    - host: plex.tristan.moe
       http:
         paths:
           - backend:
@@ -14,5 +14,5 @@ spec:
               servicePort: webui
   tls:
     - hosts:
-        - plex.k8s.tristan.moe
-      secretName: letsencrypt-cert-plex.k8s.tristan.moe
+        - plex.tristan.moe
+      secretName: letsencrypt-cert-plex.tristan.moe
