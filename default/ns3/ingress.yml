@@ -6,7 +6,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
 spec:
   rules:
-    - host: ns3.k8s.tristan.moe
+    - host: ns3.tristan.moe
       http:
         paths:
           - backend:
@@ -14,5 +14,5 @@ spec:
               servicePort: 80
   tls:
     - hosts:
-        - ns3.k8s.tristan.moe
-      secretName: letsencrypt-cert-ns3.k8s.tristan.moe
+        - ns3.tristan.moe
+      secretName: letsencrypt-cert-ns3.tristan.moe
