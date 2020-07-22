@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: seed
   labels:
@@ -8,10 +8,7 @@ spec:
   selector:
     matchLabels:
       app: rutorrent-flood
-  serviceName: seed
   replicas: 1
-  updateStrategy:
-    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -37,11 +34,6 @@ spec:
         - name: nfs-seed-downloads
           persistentVolumeClaim:
             claimName: nfs-pvc
-  volumeClaimTemplates:
-    - metadata:
-        name: seed-config
-      spec:
-        accessModes: [ ReadWriteOnce ]
-        resources:
-          requests:
-            storage: 1Gi
+        - name: seed-config
+          persistentVolumeClaim:
+            claimName: seed-config

@@ -16,6 +16,5 @@ spec:
       targetPort: dht
       port: 6881
       protocol: UDP
-  clusterIP: None
   selector:
     app: rutorrent-flood
