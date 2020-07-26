@@ -1,0 +1,4 @@
+worker:
+  kind: Deployment
+  replicas: 1
+  minAvailable: 0
