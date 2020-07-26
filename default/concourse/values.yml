@@ -2,3 +2,22 @@ worker:
   kind: Deployment
   replicas: 1
   minAvailable: 0
+  baggageclaim:
+    driver: btrfs
+  autoscaling:
+    maxReplicas: 2
+    minReplicas: 1
+    builtInMetrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 80
+
+rbac:
+  webServiceAccountName: concourse
+  workerServiceAccountName: concourse
+
+secrets:
+  localUsers: "local:password"
