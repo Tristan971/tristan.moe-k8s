@@ -33,7 +33,8 @@ concourse:
       github:
         enabled: true
       mainTeam:
-        localUser: []
-        github:
-          user:
-            - Tristan971
+        config: |
+          roles:
+            - name: owner
+              github:
+                users: ["Tristan971"]
