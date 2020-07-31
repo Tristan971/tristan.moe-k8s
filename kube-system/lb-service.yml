@@ -16,6 +16,9 @@ spec:
     - port: 443
       name: https
       targetPort: 443
+    - port: 32400
+      name: plex
+      targetPort: 32400
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
