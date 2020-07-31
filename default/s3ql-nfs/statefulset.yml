@@ -92,11 +92,7 @@ spec:
         - name: s3-data
           hostPath:
             path: /mnt/s3-data
-  volumeClaimTemplates:
-    - metadata:
-        name: s3ql-master-cache
-      spec:
-        accessModes: [ ReadWriteOnce ]
-        resources:
-          requests:
-            storage: 30Gi
+        # persistent s3-data cache, useful to make it persistent for s3ql distaster recovery
+        - name: s3ql-master-cache
+          persistentVolumeClaim:
+            claimName: s3ql-cache-pvc

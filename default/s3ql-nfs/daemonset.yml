@@ -1,0 +1,44 @@
+###
+# Debug-oriented daemonset for recuperation tasks with s3ql
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: s3ql-master-debug-ds
+  annotations:
+    vault.hashicorp.com/role: 's3ql-master'
+    vault.hashicorp.com/agent-inject: 'true'
+    vault.hashicorp.com/agent-inject-secret-scaleway-credentials: 'kv/scaleway/s3ql-master/authinfo'
+    vault.hashicorp.com/agent-inject-template-scaleway-credentials: |
+      {{- with secret "kv/scaleway/s3ql-master/authinfo" -}}
+      [s3c]
+      storage-url: {{ .Data.data.SCW_STORAGE_URL }}
+      backend-login: {{ .Data.data.SCW_ACCESS_KEY_ID }}
+      backend-password: {{ .Data.data.SCW_SECRET_ACCESS_KEY }}
+      {{- end }}
+spec:
+  selector:
+    matchLabels:
+      name: s3ql-master-debug-ds
+  template:
+    metadata:
+      labels:
+        name: s3ql-master-debug-ds
+    spec:
+      hostPID: true
+      containers:
+        - name: s3ql-master
+          imagePullPolicy: Always
+          image: tristandeloche/s3ql-docker:master
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - SYS_ADMIN
+          volumeMounts:
+            - name: devfuse
+              mountPath: /dev/fuse
+      volumes:
+        - name: devfuse
+          hostPath:
+            path: /dev/fuse
