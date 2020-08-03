@@ -8,13 +8,5 @@ spec:
       targetPort: webui
       port: 3000
       protocol: TCP
-    - name: bittorrent
-      targetPort: bittorrent
-      port: 51415
-      protocol: UDP
-    - name: dht
-      targetPort: dht
-      port: 6881
-      protocol: UDP
   selector:
     app: rutorrent-flood

@@ -19,6 +19,12 @@ spec:
     - port: 32400
       name: plex
       targetPort: 32400
+    - port: 51415
+      name: seed-bittorrent
+      nodePort: 30001
+    - port: 6881
+      name: seed-dht
+      nodePort: 30002
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
