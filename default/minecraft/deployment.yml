@@ -21,7 +21,7 @@ spec:
           name: minecraft
           env:
             - name: TYPE
-              value: "FORGE"
+              value: "PAPER"
             - name: EULA
               value: "true"
             - name: RCON_PORT
@@ -35,7 +35,7 @@ spec:
             - name: MOTD
               value: "Walecraft"
             - name: LEVEL_TYPE
-              value: "AMPLIFIED"
+              value: "DEFAULT"
             - name: UID
               value: "0"
             - name: GID
