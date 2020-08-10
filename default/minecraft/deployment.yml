@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: minecraft
+  name: minecraft
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: minecraft
+    spec:
+      containers:
+        - image: felixklauke/paperspigot:1.16.1
+          env:
+            - name: JAVA_HEAP_SIZE
+              value: "1G"
+          name: minecraft
+          securityContext:
+            # run as root within container because no reason not to
+            # and it sorts silly volume permission issues
+            runAsUser: 0
+            runAsGroup: 0
+          ports:
+            - containerPort: 25565
+          volumeMounts:
+            - name: minecraft-data
+              mountPath: /opt/minecraft/config
+              subPath: config
+            - name: minecraft-data
+              mountPath: /opt/minecraft/worlds
+              subPath: worlds
+            - name: minecraft-data
+              mountPath: /opt/minecraft/plugins
+              subPath: plugins
+            - name: minecraft-data
+              mountPath: /opt/minecraft/data
+              subPath: data
+            - name: minecraft-data
+              mountPath: /opt/minecraft/logs
+              subPath: logs
+      volumes:
+        - name: minecraft-data
+          persistentVolumeClaim:
+            claimName: minecraft-data
