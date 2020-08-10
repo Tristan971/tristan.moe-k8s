@@ -29,6 +29,7 @@ spec:
             runAsGroup: 0
           ports:
             - containerPort: 25565
+            - containerPort: 25575
           volumeMounts:
             - name: minecraft-data
               mountPath: /opt/minecraft/config
