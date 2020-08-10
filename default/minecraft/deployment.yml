@@ -17,35 +17,37 @@ spec:
         app: minecraft
     spec:
       containers:
-        - image: felixklauke/paperspigot:1.16.1
-          env:
-            - name: JAVA_HEAP_SIZE
-              value: "1G"
+        - image: itzg/minecraft-server:adopt13
           name: minecraft
-          securityContext:
-            # run as root within container because no reason not to
-            # and it sorts silly volume permission issues
-            runAsUser: 0
-            runAsGroup: 0
+          env:
+            - name: TYPE
+              value: "FORGE"
+            - name: EULA
+              value: "true"
+            - name: RCON_PORT
+              value: "25575"
+            - name: RCON_PASSWORD
+              value: "rcon"
+            - name: WHITELIST
+              value: "tristan971,whixR"
+            - name: OPS
+              value: "tristan971,whixR"
+            - name: MOTD
+              value: "Walecraft"
+            - name: LEVEL_TYPE
+              value: "AMPLIFIED"
+            - name: UID
+              value: "0"
+            - name: GID
+              value: "0"
+            - name: MEMORY
+              value: "768M"
           ports:
             - containerPort: 25565
             - containerPort: 25575
           volumeMounts:
             - name: minecraft-data
-              mountPath: /opt/minecraft/config
-              subPath: config
-            - name: minecraft-data
-              mountPath: /opt/minecraft/worlds
-              subPath: worlds
-            - name: minecraft-data
-              mountPath: /opt/minecraft/plugins
-              subPath: plugins
-            - name: minecraft-data
-              mountPath: /opt/minecraft/data
-              subPath: data
-            - name: minecraft-data
-              mountPath: /opt/minecraft/logs
-              subPath: logs
+              mountPath: /data
       volumes:
         - name: minecraft-data
           persistentVolumeClaim:
