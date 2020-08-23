@@ -53,6 +53,8 @@ spec:
               subPath: mangahome/cache
           command: [
               "java",
+              "-Dfile-level=trace",
+              "-Dstdout-level=info",
               "-jar",
               "mangadex_at_home.jar",
               "--settings",
@@ -60,7 +62,7 @@ spec:
           ]
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xms128M -Xmx512M -XX:+UseG1GC -verbose:gc -Dfile-level=warn -Dstdout-level=debug"
+              value: "-Xms128M -Xmx512M -XX:+UseG1GC -verbose:gc"
           resources:
             requests:
               memory: 512Mi
