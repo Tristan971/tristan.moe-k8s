@@ -54,7 +54,7 @@ spec:
           command: [
               "java",
               "-Dfile-level=trace",
-              "-Dstdout-level=info",
+              "-Dstdout-level=trace",
               "-jar",
               "mangadex_at_home.jar",
               "--settings",

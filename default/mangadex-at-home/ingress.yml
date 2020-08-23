@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: mangadex-at-home-mah
+spec:
+  rules:
+    - host: s5vnsgjkx834r.rmhkd98sb0x3y.mangadex.network
+      http:
+        paths:
+          - backend:
+              serviceName: mangadex-at-home-mah
+              servicePort: mah
+  tls:
+    - hosts:
+        - s5vnsgjkx834r.rmhkd98sb0x3y.mangadex.network
