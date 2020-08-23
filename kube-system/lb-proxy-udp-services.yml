@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kube-system
+  name: ingress-nginx-udp-services
+data:
+  6881: "default/seed-dht-pex:30002"
+  51415: "default/seed-dht-pex:30001"

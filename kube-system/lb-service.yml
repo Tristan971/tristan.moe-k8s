@@ -16,18 +16,14 @@ spec:
     - port: 443
       name: https
       targetPort: 443
-    - port: 32400
-      name: plex
+    - name: proxied-tcp-32400
+      port: 32400
       targetPort: 32400
-    - port: 51415
-      name: seed-bittorrent
-      targetPort: 30001
-    - port: 6881
-      name: seed-dht
-      targetPort: 30002
-    - port: 32750
-      name: mah
+      protocol: TCP
+    - name: proxied-tcp-32750
+      port: 32750
       targetPort: 32750
+      protocol: TCP
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx

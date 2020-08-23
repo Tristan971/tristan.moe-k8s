@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kube-system
+  name: ingress-nginx-tcp-services
+data:
+  32400: "default/plex:32400"
+  32750: "default/mangadex-at-home-mah:32750"
