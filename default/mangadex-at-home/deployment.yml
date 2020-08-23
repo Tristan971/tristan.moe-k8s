@@ -18,7 +18,7 @@ spec:
         vault.hashicorp.com/role: 'mangadex-at-home'
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-inject-mangadex-at-home: 'kv/mangadex/mangadex-at-home'
-        vault.hashicorp.com/agent-inject-template-mangadex-at-home.json: |
+        vault.hashicorp.com/agent-inject-template-mangadex-at-home: |
           {{- with secret "kv/mangadex/mangadex-at-home" -}}
           {
             "client_secret": "{{ .Data.data.client_secret }}",
@@ -52,15 +52,14 @@ spec:
               subPath: mangahome/cache
           command: [
               "java",
-              "-Xms128M",
-              "-Xmx512M",
-              "-verbose:gc",
-              "-Dfile-level=off",
-              "--settings",
-              "/vault/secrets/mangadex-at-home.json",
               "-jar",
-              "mangadex_at_home.jar"
+              "mangadex_at_home.jar",
+              "--settings",
+              "/vault/secrets/mangadex-at-home"
           ]
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Xms128M -Xmx512M -XX:+UseG1GC -verbose:gc -Dfile-level=off"
           resources:
             requests:
               memory: 512Mi
