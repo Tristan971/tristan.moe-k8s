@@ -6,7 +6,7 @@ spec:
   type: NodePort
   ports:
     - name: mah
-      port: 40002
+      port: 32750
       targetPort: mah
   selector:
     app: mangadex-at-home

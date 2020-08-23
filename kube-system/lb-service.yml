@@ -25,6 +25,9 @@ spec:
     - port: 6881
       name: seed-dht
       nodePort: 30002
+    - port: 32750
+      name: mangadex-at-home-mah
+      nodePort: 32750
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
