@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: mangadex-at-home
+  name: mangadex-at-home-webui
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
 spec:
@@ -10,7 +10,7 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: mangadex-at-home
+              serviceName: mangadex-at-home-webui
               servicePort: webui
   tls:
     - hosts:
