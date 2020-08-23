@@ -25,7 +25,7 @@ spec:
             "client_secret": "{{ .Data.data.client_secret }}",
             "client_hostname": "0.0.0.0",
             "client_port": 443,
-            "client_external_port": 0,
+            "client_external_port": 32750,
             "threads": 4,
             "graceful_shutdown_wait_seconds": 15,
             "max_cache_size_in_mebibytes": 80000,
