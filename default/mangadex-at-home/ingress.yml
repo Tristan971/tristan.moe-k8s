@@ -4,7 +4,7 @@ metadata:
   name: mangadex-at-home-mah
 spec:
   rules:
-    - host: s5vnsgjkx834r.rmhkd98sb0x3y.mangadex.network
+    - host: rgktzhjd0hq52.rmhkd98sb0x3y.mangadex.network
       http:
         paths:
           - backend:
@@ -12,4 +12,4 @@ spec:
               servicePort: mah
   tls:
     - hosts:
-        - s5vnsgjkx834r.rmhkd98sb0x3y.mangadex.network
+        - rgktzhjd0hq52.rmhkd98sb0x3y.mangadex.network
