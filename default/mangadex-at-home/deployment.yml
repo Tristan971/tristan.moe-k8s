@@ -60,7 +60,7 @@ spec:
           ]
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xms128M -Xmx512M -XX:+UseG1GC -verbose:gc -Dfile-level=off"
+              value: "-Xms128M -Xmx512M -XX:+UseG1GC -verbose:gc -Dfile-level=warn -Dstdout-level=debug"
           resources:
             requests:
               memory: 512Mi
