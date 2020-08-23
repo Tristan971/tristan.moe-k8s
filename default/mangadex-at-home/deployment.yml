@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mangadex-at-home
+  name: mangadex-at-home
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mangadex-at-home
+  strategy: { }
+  template:
+    metadata:
+      labels:
+        app: mangadex-at-home
+      annotations:
+        vault.hashicorp.com/role: 'mangadex-at-home'
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-inject-mangadex-at-home: 'kv/mangadex/mangadex-at-home'
+        vault.hashicorp.com/agent-inject-template-mangadex-at-home.json: |
+          {{- with secret "kv/mangadex/mangadex-at-home" -}}
+          {
+            "client_secret": "{{ .Data.data.client_secret }}",
+            "client_hostname": "0.0.0.0",
+            "client_port": 443,
+            "client_external_port": 0,
+            "threads": 4,
+            "graceful_shutdown_wait_seconds": 15,
+            "max_cache_size_in_mebibytes": 80000,
+            "max_kilobits_per_second": 0,
+            "max_mebibytes_per_hour": 0,
+            "web_settings": {
+              "ui_hostname": "0.0.0.0",
+              "ui_port": 8080
+            }
+          }
+          {{- end }}
+    spec:
+      serviceAccountName: mangadex-at-home
+      containers:
+        - image: registry.gitlab.com/mangadex-pub/mangadex_at_home:latest
+          name: mangadex-at-home
+          ports:
+            - name: webui
+              containerPort: 8080
+            - name: mah
+              containerPort: 443
+          volumeMounts:
+            - name: nfs
+              mountPath: /mangahome/cache
+              subPath: mangahome/cache
+          command: [
+              "java",
+              "-Xms128M",
+              "-Xmx512M",
+              "-verbose:gc",
+              "-Dfile-level=off",
+              "--settings",
+              "/vault/secrets/mangadex-at-home.json",
+              "-jar",
+              "mangadex_at_home.jar"
+          ]
+          resources:
+            requests:
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 768Mi
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: nfs
+          persistentVolumeClaim:
+            claimName: nfs-pvc
