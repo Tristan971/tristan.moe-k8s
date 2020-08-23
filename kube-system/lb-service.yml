@@ -21,13 +21,13 @@ spec:
       targetPort: 32400
     - port: 51415
       name: seed-bittorrent
-      nodePort: 30001
+      targetPort: 30001
     - port: 6881
       name: seed-dht
-      nodePort: 30002
+      targetPort: 30002
     - port: 32750
       name: mangadex-at-home-mah
-      nodePort: 32750
+      targetPort: 32750
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
