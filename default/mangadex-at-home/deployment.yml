@@ -51,6 +51,8 @@ spec:
             - name: nfs
               mountPath: /mangahome/cache
               subPath: mangahome/cache
+            - name: config
+              mountPath: /mangahome/config
           command: [
               "java",
               "-Dfile-level=trace",
@@ -58,7 +60,9 @@ spec:
               "-jar",
               "mangadex_at_home.jar",
               "--settings",
-              "/vault/secrets/mangadex-at-home"
+              "/vault/secrets/mangadex-at-home",
+              "--database",
+              "/mangahome/config/data.db"
           ]
           env:
             - name: JAVA_TOOL_OPTIONS
@@ -67,10 +71,13 @@ spec:
             requests:
               memory: 512Mi
             limits:
-              cpu: 1000m
+              cpu: 768m
               memory: 768Mi
       terminationGracePeriodSeconds: 30
       volumes:
         - name: nfs
           persistentVolumeClaim:
             claimName: nfs-pvc
+        - name: config
+          persistentVolumeClaim:
+            claimName: mangadex-at-home-config
