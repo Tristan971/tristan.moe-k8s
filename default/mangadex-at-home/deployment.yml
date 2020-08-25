@@ -55,8 +55,8 @@ spec:
               mountPath: /mangahome/config
           command: [
               "java",
-              "-Dfile-level=trace",
-              "-Dstdout-level=trace",
+              "-Dfile-level=off",
+              "-Dstdout-level=info",
               "-jar",
               "mangadex_at_home.jar",
               "--settings",
