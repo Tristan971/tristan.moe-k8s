@@ -37,6 +37,14 @@ spec:
             }
           }
           {{- end }}
+        vault.hashicorp.com/agent-inject-secret-scw-mdah-eu-par-1: 'kv/mangadex/scw-mdah-eu-par-1'
+        vault.hashicorp.com/agent-inject-template-scw-mdah-eu-par-1: |
+          {{- with secret "kv/mangadex/scw-mdah-eu-par-1" -}}
+          [s3c]
+          storage-url: {{ .Data.data.SCW_STORAGE_URL }}
+          backend-login: {{ .Data.data.SCW_ACCESS_KEY_ID }}
+          backend-password: {{ .Data.data.SCW_SECRET_ACCESS_KEY }}
+          {{- end }}
     spec:
       serviceAccountName: mangadex-at-home
       containers:
@@ -48,11 +56,11 @@ spec:
             - name: mah
               containerPort: 32750
           volumeMounts:
-            - name: nfs
-              mountPath: /mangahome/cache
-              subPath: mangahome/cache
-            - name: config
+            - name: mdah-config
               mountPath: /mangahome/config
+            - name: mdah-cache
+              mountPath: /mangahome/cache:shared
+              subPath: data
           command: [
               "java",
               "-Dfile-level=off",
@@ -71,13 +79,58 @@ spec:
             requests:
               memory: 512Mi
             limits:
-              cpu: 768m
+              cpu: 512m
               memory: 768Mi
+        - name: s3ql-mdah
+          imagePullPolicy: Always
+          image: tristandeloche/s3ql-docker:master
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - SYS_ADMIN
+          resources:
+            limits:
+              cpu: '1000m'
+              memory: 768Mi
+            requests:
+              memory: 512Mi
+          command: [
+            'bash',
+            '-c',
+            '
+            s3qlw_init
+              -a /vault/secrets/scw-mdah-eu-par-1
+              -d /s3-data/data
+              -s s3c://s3.fr-par.scw.cloud/mdah-eu-par-1
+              -l lockfile
+              -x none
+              -c /s3-cache:26214400
+              -t 4
+            '
+          ]
+          volumeMounts:
+            - name: devfuse
+              mountPath: /dev/fuse
+            - name: mdah-cache
+              mountPath: /s3-data:shared
+            - name: mdah-cache-cache
+              mountPath: /s3-cache
       terminationGracePeriodSeconds: 30
       volumes:
-        - name: nfs
+        # shared volume between s3ql and MDAH
+        - name: mdah-cache
+          hostPath:
+            path: /mnt/s3-data
+        # persistent and fast config dir for MDAH (notable the cache db)
+        - name: mdah-config
           persistentVolumeClaim:
-            claimName: nfs-pvc
-        - name: config
+            claimName: mdah-config
+        # persistent and fast S3QL cache for MDAH's cache (which is backed by S3QL)
+        - name: mdah-cache-cache
           persistentVolumeClaim:
-            claimName: mangadex-at-home-config
+            claimName: mdah-cache-cache
+        # fuse device to use for mounting the s3ql filesystem on the s3ql sidecar
+        - name: devfuse
+          hostPath:
+            path: /dev/fuse

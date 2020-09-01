@@ -1,5 +1,5 @@
 # Read-only permit
-path "kv/data/mangadex/mangadex-at-home" {
+path "kv/data/mangadex/*" {
   capabilities = [
     "read",
     "list"

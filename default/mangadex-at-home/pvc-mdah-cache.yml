@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mangadex-at-home-config
+  name: mdah-cache-cache
 spec:
   accessModes: [ ReadWriteOnce ]
   resources:
     requests:
-      storage: 10Gi
+      storage: 20Gi
