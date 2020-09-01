@@ -103,7 +103,7 @@ spec:
               -a /vault/secrets/scw-mdah-eu-par-1
               -d /s3-data/data
               -s s3c://s3.fr-par.scw.cloud/mdah-eu-par-1
-              -l lockfile
+              -l lockfile2
               -x none
               -c /s3-cache:26214400
               -t 4
