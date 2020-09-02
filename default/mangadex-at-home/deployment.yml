@@ -37,9 +37,9 @@ spec:
             }
           }
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-scw-mdah-eu-par-1: 'kv/mangadex/scw-mdah-eu-par-1'
-        vault.hashicorp.com/agent-inject-template-scw-mdah-eu-par-1: |
-          {{- with secret "kv/mangadex/scw-mdah-eu-par-1" -}}
+        vault.hashicorp.com/agent-inject-secret-scw-mdah-eu-par-2: 'kv/mangadex/scw-mdah-eu-par-2'
+        vault.hashicorp.com/agent-inject-template-scw-mdah-eu-par-2: |
+          {{- with secret "kv/mangadex/scw-mdah-eu-par-2" -}}
           [s3c]
           storage-url: {{ .Data.data.SCW_STORAGE_URL }}
           backend-login: {{ .Data.data.SCW_ACCESS_KEY_ID }}
@@ -74,12 +74,13 @@ spec:
           ]
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xms128M -Xmx512M -XX:+UseG1GC -verbose:gc"
+              value: "-Xms128M -Xmx512M -XX:+UseZGC -verbose:gc"
           resources:
             requests:
+              cpu: 500m
               memory: 512Mi
             limits:
-              cpu: 512m
+              cpu: 1000m
               memory: 768Mi
         - name: s3ql-mdah
           imagePullPolicy: Always
@@ -94,19 +95,20 @@ spec:
               cpu: 1500m
               memory: 1Gi
             requests:
+              cpu: 500m
               memory: 512Mi
           command: [
             'bash',
             '-c',
             '
             s3qlw_init
-              -a /vault/secrets/scw-mdah-eu-par-1
+              -a /vault/secrets/scw-mdah-eu-par-2
               -d /s3-data/data
-              -s s3c://s3.fr-par.scw.cloud/mdah-eu-par-1
-              -l lockfile2
+              -s s3c://s3.fr-par.scw.cloud/mdah-eu-par-2
+              -l lockfile
               -x none
               -c /s3-cache:26214400
-              -t 4
+              -t 2
             '
           ]
           volumeMounts:
