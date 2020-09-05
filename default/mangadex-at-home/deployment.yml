@@ -28,7 +28,7 @@ spec:
             "client_external_port": 32750,
             "threads": 4,
             "graceful_shutdown_wait_seconds": 15,
-            "max_cache_size_in_mebibytes": 150000,
+            "max_cache_size_in_mebibytes": 250000,
             "max_kilobits_per_second": 0,
             "max_mebibytes_per_hour": 0,
             "web_settings": {
