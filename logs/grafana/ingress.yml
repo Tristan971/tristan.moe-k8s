@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: logs
+  name: grafana-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
+spec:
+  rules:
+    - host: grafana.tristan.moe
+      http:
+        paths:
+          - backend:
+              serviceName: grafana
+              servicePort: 80
+  tls:
+    - hosts:
+        - grafana.tristan.moe
+      secretName: letsencrypt-cert-grafana.tristan.moe
