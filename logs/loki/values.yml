@@ -1,0 +1,4 @@
+loki:
+  persistence:
+    enabled: true
+    existingClaim: loki-data
