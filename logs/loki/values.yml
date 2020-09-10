@@ -8,20 +8,23 @@ promtail:
     - job_name: mdah-timings
       pipeline_stages:
         - match:
-            selector: '{app="mangadex-at-home"} |= "TTFB"'
+            selector: '{app="mangadex-at-home"}'
             stages:
               - regex:
-                  expression: (?P<timestamp>) INFO.*completed \(TTFB\) in (?P<exec_ms>[\d]+)ms
-              - timestamp:
-                  format: yyyy-mm-dd hh:mm:ss
-                  source: timestamp
+                  expression: '.*completed \(TTFB\) in (?P<execms>\d+)ms.*'
               - metrics:
-                  ttfb_ms:
+                  ttfb_response_time_sum:
                     config:
                       action: add
-                    description: "TTFB of served images"
-                    source: exec_ms
-                    type: Gauge
+                    description: "sum of TTFBs of served images"
+                    source: execms
+                    type: Counter
+                  ttfb_response_time_count:
+                    config:
+                      action: inc
+                    description: "count of TTFBs of served images"
+                    source: execms
+                    type: Counter
       kubernetes_sd_configs:
         - role: pod
       relabel_configs:
