@@ -75,14 +75,14 @@ spec:
           ]
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xms128M -Xmx512M -XX:+UseG1GC -verbose:gc"
+              value: "-Xms128M -Xmx768M -XX:+UseG1GC -verbose:gc"
           resources:
             requests:
               cpu: 500m
-              memory: 512Mi
+              memory: 1Gi
             limits:
-              cpu: 1000m
-              memory: 768Mi
+              cpu: 1250m
+              memory: 1536Mi
         - name: s3ql-mdah
           imagePullPolicy: Always
           image: tristandeloche/s3ql-docker:master
@@ -93,7 +93,7 @@ spec:
                 - SYS_ADMIN
           resources:
             limits:
-              cpu: 1500m
+              cpu: 1250m
               memory: 1Gi
             requests:
               cpu: 500m
