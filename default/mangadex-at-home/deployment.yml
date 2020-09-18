@@ -22,23 +22,21 @@ spec:
         vault.hashicorp.com/agent-inject-template-mangadex-at-home: |
           {{- with secret "kv/mangadex/mangadex-at-home" -}}
           {
+            "cache_directory": "/mangahome/cache",
             "client_secret": "{{ .Data.data.client_secret }}",
-            "client_hostname": "0.0.0.0",
             "client_port": 32750,
-            "client_external_port": 32750,
-            "threads": 4,
-            "graceful_shutdown_wait_seconds": 15,
-            "max_cache_size_in_mebibytes": 250000,
             "max_kilobits_per_second": 0,
-            "max_mebibytes_per_hour": 0,
-            "web_settings": {
-              "ui_hostname": "0.0.0.0",
-              "ui_port": 8080
-            }
+            "max_cache_size_in_mebibytes": 200000,
+            "max_reported_size_in_mebibytes": 200000,
+            "graceful_shutdown_in_seconds": 0,
+            "cache_scan_interval_in_seconds": 300,
+            "max_cache_scan_time_in_seconds": 120,
+            "cache_refresh_age_in_seconds": 86400,
+            "reject_invalid_tokens": false
           }
           {{- end }}
         vault.hashicorp.com/agent-inject-secret-mdgo-eu-par: 'kv/mangadex/mdgo-eu-par'
-        vault.hashicorp.com/agent-inject-template-mdgo-eu-par2: |
+        vault.hashicorp.com/agent-inject-template-mdgo-eu-par: |
           {{- with secret "kv/mangadex/mdgo-eu-par" -}}
           [s3c]
           storage-url: {{ .Data.data.SCW_STORAGE_URL }}
@@ -48,7 +46,7 @@ spec:
     spec:
       serviceAccountName: mangadex-at-home
       containers:
-        - image: registry.gitlab.com/mangadex-pub/mangadex_at_home:latest
+        - image: library/fedora:33
           name: mangadex-at-home
           ports:
             - name: webui
@@ -65,7 +63,11 @@ spec:
               'sh',
               '-c',
               '
-              tail -f /dev/null
+              cd /mangahome;
+              curl -L -o mdah https://github.com/lflare/mdathome-golang/releases/download/v1.5.2/mdathome-1.5.2-linux_amd64;
+              chmod +x mdah;
+              cp -v /vault/secrets/mangadex-at-home ./settings.json;
+              ./mdah
               '
           ]
           env:
