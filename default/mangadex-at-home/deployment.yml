@@ -25,7 +25,7 @@ spec:
             "cache_directory": "/mangahome/cache",
             "client_secret": "{{ .Data.data.client_secret }}",
             "client_port": 32750,
-            "max_kilobits_per_second": 0,
+            "max_kilobits_per_second": 102400,
             "max_cache_size_in_mebibytes": 200000,
             "max_reported_size_in_mebibytes": 200000,
             "graceful_shutdown_in_seconds": 0,
