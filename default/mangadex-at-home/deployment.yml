@@ -37,9 +37,9 @@ spec:
             }
           }
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-scw-mdah-eu-par-2: 'kv/mangadex/scw-mdah-eu-par-2'
-        vault.hashicorp.com/agent-inject-template-scw-mdah-eu-par-2: |
-          {{- with secret "kv/mangadex/scw-mdah-eu-par-2" -}}
+        vault.hashicorp.com/agent-inject-secret-mdgo-eu-par: 'kv/mangadex/mdgo-eu-par'
+        vault.hashicorp.com/agent-inject-template-mdgo-eu-par2: |
+          {{- with secret "kv/mangadex/mdgo-eu-par" -}}
           [s3c]
           storage-url: {{ .Data.data.SCW_STORAGE_URL }}
           backend-login: {{ .Data.data.SCW_ACCESS_KEY_ID }}
@@ -65,12 +65,7 @@ spec:
               'sh',
               '-c',
               '
-              java
-                -Dfile-level=off
-                -Dstdout-level=info
-                -jar mangadex_at_home.jar
-                --settings /vault/secrets/mangadex-at-home
-                --database /mangahome/config/data.db
+              tail -f /dev/null
               '
           ]
           env:
@@ -99,13 +94,13 @@ spec:
               cpu: 500m
               memory: 512Mi
           command: [
-            'bash',
-            '-c',
-            '
+              'bash',
+              '-c',
+              '
             s3qlw_init
-              -a /vault/secrets/scw-mdah-eu-par-2
+              -a /vault/secrets/mdgo-eu-par
               -d /s3-data/data
-              -s s3c://s3.fr-par.scw.cloud/mdah-eu-par-2
+              -s s3c://s3.fr-par.scw.cloud/mdgo-eu-par
               -l lockfile
               -x none
               -c /s3-cache:26214400
