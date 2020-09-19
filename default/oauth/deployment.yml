@@ -43,6 +43,7 @@ spec:
           ## Cookie Settings
           ## Secret   - the seed string for secure cookies; should be 16, 24, or 32 bytes
           cookie_secret = "{{ .Data.data.COOKIE_SECRET }}"
+          cookie_domains = ".tristan.moe"
           {{- end }}
     spec:
       serviceAccountName: oauth
