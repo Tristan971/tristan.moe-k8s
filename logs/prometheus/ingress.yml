@@ -5,7 +5,7 @@ metadata:
   name: prometheus-ingress
   annotations:
     nginx.ingress.kubernetes.io/auth-url: "https://auth.tristan.moe/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "https://auth.tristan.moe/oauth2/start?rd=$escaped_request_uri"
+    nginx.ingress.kubernetes.io/auth-signin: "https://auth.tristan.moe/oauth2/start?rd=https%3A%2F%2Fprom.tristan.moe$escaped_request_uri"
     cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
 spec:
   rules:

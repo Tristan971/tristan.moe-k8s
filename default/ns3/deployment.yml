@@ -9,7 +9,6 @@ spec:
   selector:
     matchLabels:
       app: ns3
-  strategy: {}
   template:
     metadata:
       labels:
@@ -18,6 +17,9 @@ spec:
       containers:
         - image: nginx:stable
           name: ns3
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
           ports:
             - containerPort: 80
           volumeMounts:
