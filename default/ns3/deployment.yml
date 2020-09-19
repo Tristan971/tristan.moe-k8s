@@ -15,17 +15,17 @@ spec:
         app: ns3
     spec:
       containers:
-        - image: nginx:stable
+        - image: fraoustin/fancyindex
           name: ns3
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
+          env:
+            - name: DISABLE_AUTH
+              value: "true"
           ports:
             - containerPort: 80
           volumeMounts:
             # name must match the volume name below
             - name: nfs
-              mountPath: "/usr/share/nginx/html"
+              mountPath: "/share"
       volumes:
         - name: nfs
           persistentVolumeClaim:
