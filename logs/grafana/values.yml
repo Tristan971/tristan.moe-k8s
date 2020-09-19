@@ -1,3 +1,7 @@
 persistence:
   enabled: true
   existingClaim: grafana-data
+
+plugins:
+  - grafana-piechart-panel
+  - grafana-worldmap-panel
