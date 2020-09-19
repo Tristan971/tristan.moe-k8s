@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: oauth
+  name: oauth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauth
+  template:
+    metadata:
+      labels:
+        app: oauth
+      annotations:
+        vault.hashicorp.com/role: "oauth"
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-secret-oauth-config: 'kv/oauth/secrets'
+        vault.hashicorp.com/agent-inject-template-oauth-config: |
+          {{- with secret "kv/oauth/secrets" -}}
+          ## <addr>:<port> to listen on for HTTP/HTTPS clients
+          http_address = "0.0.0.0:4180"
+
+          ## Are we running behind a reverse proxy? Will not accept headers like X-Real-Ip unless this is set.
+          reverse_proxy = true
+
+          ## OAuth provider setup
+          provider = "github"
+          client_id = "{{ .Data.data.GH_APP_CLIENT_ID }}"
+          client_secret = "{{ .Data.data.GH_APP_CLIENT_SECRET }}"
+          github_users = [
+            "Tristan971"
+          ]
+
+          email_domains = [
+            "*"
+          ]
+
+          ## Pass OAuth Access token to upstream via "X-Forwarded-Access-Token"
+          pass_access_token = false
+
+          ## Cookie Settings
+          ## Secret   - the seed string for secure cookies; should be 16, 24, or 32 bytes
+          cookie_secret = "{{ .Data.data.COOKIE_SECRET }}"
+          {{- end }}
+    spec:
+      serviceAccountName: oauth
+      containers:
+        - image: quay.io/oauth2-proxy/oauth2-proxy:latest-amd64
+          name: oauth2-proxy
+          command: [
+              '/bin/oauth2-proxy',
+              '--config=/vault/secrets/oauth-config'
+          ]
+          ports:
+            - containerPort: 4180
+              name: web

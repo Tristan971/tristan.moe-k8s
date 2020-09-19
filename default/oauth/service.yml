@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth
+spec:
+  ports:
+    - port: 4180
+      targetPort: web
+      name: web
+  selector:
+    app: oauth
