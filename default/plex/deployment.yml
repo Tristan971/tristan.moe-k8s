@@ -62,10 +62,10 @@ spec:
               mountPath: /tmp/plex-config:shared
           resources:
             requests:
-              cpu: 250m
+              cpu: 100m
               memory: 64Mi
             limits:
-              cpu: 1000m
+              cpu: 200m
               memory: 128Mi
         - name: git-sync-ass
           image: k8s.gcr.io/git-sync:v3.1.6

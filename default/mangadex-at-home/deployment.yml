@@ -96,15 +96,15 @@ spec:
               'bash',
               '-c',
               '
-            s3qlw_init
-              -a /vault/secrets/mdgo-eu-par
-              -d /s3-data/data
-              -s s3c://s3.fr-par.scw.cloud/mdgo-eu-par
-              -l lockfile2
-              -x none
-              -c /s3-cache:26214400
-              -t 4
-            '
+              s3qlw_init
+                -a /vault/secrets/mdgo-eu-par
+                -d /s3-data/data
+                -s s3c://s3.fr-par.scw.cloud/mdgo-eu-par
+                -l lockfile2
+                -x none
+                -c /s3-cache:26214400
+                -t 2
+              '
           ]
           volumeMounts:
             - name: devfuse

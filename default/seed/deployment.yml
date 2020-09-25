@@ -32,11 +32,11 @@ spec:
               mountPath: /downloads
           resources:
             requests:
-              cpu: 256m
-              memory: 128Mi
+              cpu: 500m
+              memory: 512Mi
             limits:
-              cpu: 768m
-              memory: 768Mi
+              cpu: 1000m
+              memory: 1024Mi
       volumes:
         - name: nfs-seed-downloads
           persistentVolumeClaim:
