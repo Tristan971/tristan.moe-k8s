@@ -70,16 +70,13 @@ spec:
               ./mdah
               '
           ]
-          env:
-            - name: JAVA_TOOL_OPTIONS
-              value: "-Xms128M -Xmx768M -XX:+UseG1GC -verbose:gc"
           resources:
             requests:
-              cpu: 500m
-              memory: 1Gi
+              cpu: 750m
+              memory: 768Mi
             limits:
               cpu: 1250m
-              memory: 1536Mi
+              memory: 1250Mi
         - name: s3ql-mdah
           imagePullPolicy: Always
           image: tristandeloche/s3ql-docker:master
@@ -89,12 +86,12 @@ spec:
               add:
                 - SYS_ADMIN
           resources:
+            requests:
+              cpu: 750m
+              memory: 768Mi
             limits:
               cpu: 1250m
-              memory: 1Gi
-            requests:
-              cpu: 500m
-              memory: 512Mi
+              memory: 1250Mi
           command: [
               'bash',
               '-c',
@@ -103,7 +100,7 @@ spec:
               -a /vault/secrets/mdgo-eu-par
               -d /s3-data/data
               -s s3c://s3.fr-par.scw.cloud/mdgo-eu-par
-              -l lockfile
+              -l lockfile2
               -x none
               -c /s3-cache:26214400
               -t 4
@@ -116,7 +113,7 @@ spec:
               mountPath: /s3-data:shared
             - name: mdah-cache-cache
               mountPath: /s3-cache
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 600
       volumes:
         # shared volume between s3ql and MDAH
         - name: mdah-cache
