@@ -14,7 +14,7 @@ spec:
       labels:
         app: rutorrent-flood
     spec:
-      terminationGracePeriodSeconds: 60
+      terminationGracePeriodSeconds: 600
       containers:
         - name: seed
           image: romancin/rutorrent-flood:0.9.8
@@ -30,6 +30,13 @@ spec:
               mountPath: /config
             - name: nfs-seed-downloads
               mountPath: /downloads
+          resources:
+            requests:
+              cpu: 256m
+              memory: 128Mi
+            limits:
+              cpu: 768m
+              memory: 768Mi
       volumes:
         - name: nfs-seed-downloads
           persistentVolumeClaim:

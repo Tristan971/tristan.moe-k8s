@@ -26,6 +26,13 @@ spec:
             # name must match the volume name below
             - name: nfs
               mountPath: "/share"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
       volumes:
         - name: nfs
           persistentVolumeClaim:

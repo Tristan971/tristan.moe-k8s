@@ -27,7 +27,7 @@ spec:
           {{- end }}
     spec:
       serviceAccountName: s3ql-master
-      terminationGracePeriodSeconds: 60
+      terminationGracePeriodSeconds: 600
       containers:
         - name: s3ql-master
           imagePullPolicy: Always
@@ -38,22 +38,26 @@ spec:
               add:
                 - SYS_ADMIN
           resources:
+            requests:
+              cpu: 750m
+              memory: 768Mi
             limits:
-              cpu: '1500m'
+              cpu: 1750m
+              memory: 1795Mi
           command: [
-            'bash',
-            '-c',
-            '
-            s3qlw_init
-              -a /vault/secrets/scaleway-credentials
-              -d /s3-data/data
-              -s s3c://s3.fr-par.scw.cloud/s3ql-seed
-              -l lockfile
-              -x none
-              -c /s3-cache:26214400
-              -t 2
-              -n
-            '
+              'bash',
+              '-c',
+              '
+              s3qlw_init
+                -a /vault/secrets/scaleway-credentials
+                -d /s3-data/data
+                -s s3c://s3.fr-par.scw.cloud/s3ql-seed
+                -l lockfile
+                -x none
+                -c /s3-cache:26214400
+                -t 2
+                -n
+              '
           ]
           volumeMounts:
             - name: devfuse
@@ -75,8 +79,12 @@ spec:
                 - SYS_ADMIN
                 - DAC_READ_SEARCH
           resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
             limits:
-              cpu: '500m'
+              cpu: 1000m
+              memory: 1024Mi
           ports:
             - containerPort: 2049
           volumeMounts:

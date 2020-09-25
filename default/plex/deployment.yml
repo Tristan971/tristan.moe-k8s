@@ -34,6 +34,13 @@ spec:
               mountPath: /config:shared
             - name: nfs-plex-data
               mountPath: /data
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1536Mi
         - name: git-sync-hama-bundle
           image: k8s.gcr.io/git-sync:v3.1.6
           securityContext:
@@ -53,6 +60,13 @@ spec:
           volumeMounts:
             - name: plex-config
               mountPath: /tmp/plex-config:shared
+          resources:
+            requests:
+              cpu: 250m
+              memory: 64Mi
+            limits:
+              cpu: 1000m
+              memory: 128Mi
         - name: git-sync-ass
           image: k8s.gcr.io/git-sync:v3.1.6
           securityContext:
@@ -72,6 +86,13 @@ spec:
           volumeMounts:
             - name: plex-config
               mountPath: /tmp/plex-config:shared
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
       volumes:
         - name: nfs-plex-data
           persistentVolumeClaim:
