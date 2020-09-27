@@ -6,7 +6,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
     nginx.ingress.kubernetes.io/auth-url: "https://auth.tristan.moe/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "https://auth.tristan.moe/oauth2/start?rd=https%3A%2F%2Fprom.tristan.moe$escaped_request_uri"
+    nginx.ingress.kubernetes.io/auth-signin: "https://auth.tristan.moe/oauth2/start?rd=https%3A%2F%2Fvault.tristan.moe$escaped_request_uri"
 spec:
   rules:
     - host: vault.tristan.moe
