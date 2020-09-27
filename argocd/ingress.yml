@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: argocd-ingress
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  rules:
+    - host: argocd.tristan.moe
+      http:
+        paths:
+          - backend:
+              serviceName: argocd-server
+              servicePort: https
+            path: /
+  tls:
+    - hosts:
+        - argocd.tristan.moe
+      secretName: argocd-secret # do not change, this is provided by Argo CD
