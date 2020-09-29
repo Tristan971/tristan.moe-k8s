@@ -31,7 +31,7 @@ spec:
       containers:
         - name: s3ql-master
           imagePullPolicy: Always
-          image: tristandeloche/s3ql-docker:master
+          image: tristandeloche/s3ql-docker:191-container-friendliness
           securityContext:
             privileged: true
             capabilities:
@@ -44,21 +44,31 @@ spec:
             limits:
               cpu: 1750m
               memory: 1795Mi
-          command: [
-              'bash',
-              '-c',
-              '
-              s3qlw_init
-                -a /vault/secrets/scaleway-credentials
-                -d /s3-data/data
-                -s s3c://s3.fr-par.scw.cloud/s3ql-seed
-                -l lockfile
-                -x none
-                -c /s3-cache:26214400
-                -t 2
-                -n
-              '
-          ]
+          env:
+            - name: STORAGE_URL
+              value: s3c://s3.fr-par.scw.cloud/s3ql-seed
+            - name: MOUNT_POINT
+              value: /s3-data/data
+            - name: AUTH_FILE
+              value: /vault/secrets/scaleway-credentials
+            - name: LOG_FILE
+              value: /s3ql/logs/s3ql.log
+            - name: CACHE_DIR
+              value: /s3-cache
+            - name: CACHE_SIZE
+              value: "26214400"
+            - name: COMPRESS
+              value: none
+            - name: FS_NAME
+              value: s3ql-seed
+            - name: UPLOAD_THREADS
+              value: "2"
+            - name: KEEP_CACHE
+              value: "true"
+            - name: ALLOW_OTHER
+              value: "true"
+            - name: NFS
+              value: "true"
           volumeMounts:
             - name: devfuse
               mountPath: /dev/fuse
@@ -77,7 +87,6 @@ spec:
             capabilities:
               add:
                 - SYS_ADMIN
-                - DAC_READ_SEARCH
           resources:
             requests:
               cpu: 250m
