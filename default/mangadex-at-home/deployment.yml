@@ -49,8 +49,6 @@ spec:
         - image: library/fedora:33
           name: mangadex-at-home
           ports:
-            - name: webui
-              containerPort: 8080
             - name: mah
               containerPort: 32750
           volumeMounts:
@@ -60,13 +58,14 @@ spec:
               mountPath: /mangahome/cache:shared
               subPath: data
           command: [
-              'sh',
+              'bash',
               '-c',
               '
               cd /mangahome;
-              curl -L -o mdah https://github.com/lflare/mdathome-golang/releases/download/v1.5.2/mdathome-1.5.2-linux_amd64;
+              curl -L -o mdah https://github.com/lflare/mdathome-golang/releases/download/v1.5.3/mdathome-1.5.3-linux_amd64;
               chmod +x mdah;
               cp -v /vault/secrets/mangadex-at-home ./settings.json;
+              while ! [ -f /mangahome/cache/ready ]; do echo S3 mount is not ready yet, sleeping 5 seconds...; sleep 5; done;
               ./mdah
               '
           ]
@@ -79,12 +78,37 @@ spec:
               memory: 1250Mi
         - name: s3ql-mdah
           imagePullPolicy: Always
-          image: tristandeloche/s3ql-docker:master
+          image: tristandeloche/s3ql-docker:191-container-friendliness
           securityContext:
             privileged: true
             capabilities:
               add:
                 - SYS_ADMIN
+          env:
+            - name: STORAGE_URL
+              value: s3c://s3.fr-par.scw.cloud/mdgo-eu-par
+            - name: MOUNT_POINT
+              value: /s3-data/data
+            - name: AUTH_FILE
+              value: /vault/secrets/mdgo-eu-par
+            - name: LOG_FILE
+              value: /s3ql/logs/s3ql.log
+            - name: CACHE_DIR
+              value: /s3-cache
+            - name: CACHE_SIZE
+              value: "26214400"
+            - name: COMPRESS
+              value: none
+            - name: FS_NAME
+              value: s3ql-seed
+            - name: UPLOAD_THREADS
+              value: "2"
+            - name: KEEP_CACHE
+              value: "true"
+            - name: ALLOW_OTHER
+              value: "true"
+            - name: NFS
+              value: "true"
           resources:
             requests:
               cpu: 750m
@@ -92,20 +116,6 @@ spec:
             limits:
               cpu: 1250m
               memory: 1250Mi
-          command: [
-              'bash',
-              '-c',
-              '
-              s3qlw_init
-                -a /vault/secrets/mdgo-eu-par
-                -d /s3-data/data
-                -s s3c://s3.fr-par.scw.cloud/mdgo-eu-par
-                -l lockfile2
-                -x none
-                -c /s3-cache:26214400
-                -t 2
-              '
-          ]
           volumeMounts:
             - name: devfuse
               mountPath: /dev/fuse
