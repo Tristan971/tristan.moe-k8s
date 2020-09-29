@@ -86,7 +86,7 @@ spec:
                 - SYS_ADMIN
           env:
             - name: STORAGE_URL
-              value: s3c://s3.fr-par.scw.cloud/mdgo-eu-par
+              value: s3c://s3.fr-par.scw.cloud/mdgo-eu-par-2
             - name: MOUNT_POINT
               value: /s3-data/data
             - name: AUTH_FILE
@@ -106,8 +106,6 @@ spec:
             - name: KEEP_CACHE
               value: "true"
             - name: ALLOW_OTHER
-              value: "true"
-            - name: NFS
               value: "true"
           resources:
             requests:
