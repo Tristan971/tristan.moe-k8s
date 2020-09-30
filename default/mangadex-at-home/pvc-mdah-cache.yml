@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mdah-cache-cache
+  name: mdah-cache
 spec:
   accessModes: [ ReadWriteOnce ]
   resources:
     requests:
-      storage: 30Gi
+      storage: 150Gi

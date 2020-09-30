@@ -22,12 +22,12 @@ spec:
         vault.hashicorp.com/agent-inject-template-mangadex-at-home: |
           {{- with secret "kv/mangadex/mangadex-at-home" -}}
           {
-            "cache_directory": "/mangahome/cache",
+            "cache_directory": "/mangahome/fcache",
             "client_secret": "{{ .Data.data.client_secret }}",
             "client_port": 32750,
             "max_kilobits_per_second": 102400,
-            "max_cache_size_in_mebibytes": 200000,
-            "max_reported_size_in_mebibytes": 200000,
+            "max_cache_size_in_mebibytes": 140000,
+            "max_reported_size_in_mebibytes": 140000,
             "graceful_shutdown_in_seconds": 0,
             "cache_scan_interval_in_seconds": 300,
             "max_cache_scan_time_in_seconds": 120,
@@ -55,8 +55,7 @@ spec:
             - name: mdah-config
               mountPath: /mangahome/config
             - name: mdah-cache
-              mountPath: /mangahome/cache:shared
-              subPath: data
+              mountPath: /mangahome/fcache
           command: [
               'bash',
               '-c',
@@ -65,7 +64,6 @@ spec:
               curl -L -o mdah https://github.com/lflare/mdathome-golang/releases/download/v1.5.3/mdathome-1.5.3-linux_amd64;
               chmod +x mdah;
               cp -v /vault/secrets/mangadex-at-home ./settings.json;
-              while ! [ -f /mangahome/cache/ready ]; do echo S3 mount is not ready yet, sleeping 5 seconds...; sleep 5; done;
               ./mdah
               '
           ]
@@ -76,65 +74,16 @@ spec:
             limits:
               cpu: 1250m
               memory: 1250Mi
-        - name: s3ql-mdah
-          imagePullPolicy: Always
-          image: tristandeloche/s3ql-docker:191-container-friendliness
-          securityContext:
-            privileged: true
-            capabilities:
-              add:
-                - SYS_ADMIN
-          env:
-            - name: STORAGE_URL
-              value: s3c://s3.fr-par.scw.cloud/mdgo-eu-par-2
-            - name: MOUNT_POINT
-              value: /s3-data/data
-            - name: AUTH_FILE
-              value: /vault/secrets/mdgo-eu-par
-            - name: LOG_FILE
-              value: /s3ql/logs/s3ql.log
-            - name: CACHE_DIR
-              value: /s3-cache
-            - name: CACHE_SIZE
-              value: "26214400"
-            - name: COMPRESS
-              value: none
-            - name: FS_NAME
-              value: s3ql-seed
-            - name: UPLOAD_THREADS
-              value: "2"
-            - name: KEEP_CACHE
-              value: "true"
-            - name: ALLOW_OTHER
-              value: "true"
-          resources:
-            requests:
-              cpu: 750m
-              memory: 768Mi
-            limits:
-              cpu: 1250m
-              memory: 1250Mi
-          volumeMounts:
-            - name: devfuse
-              mountPath: /dev/fuse
-            - name: mdah-cache
-              mountPath: /s3-data:shared
-            - name: mdah-cache-cache
-              mountPath: /s3-cache
       terminationGracePeriodSeconds: 600
       volumes:
         # shared volume between s3ql and MDAH
         - name: mdah-cache
-          hostPath:
-            path: /mnt/s3-data
+          persistentVolumeClaim:
+            claimName: mdah-cache
         # persistent and fast config dir for MDAH (notable the cache db)
         - name: mdah-config
           persistentVolumeClaim:
             claimName: mdah-config
-        # persistent and fast S3QL cache for MDAH's cache (which is backed by S3QL)
-        - name: mdah-cache-cache
-          persistentVolumeClaim:
-            claimName: mdah-cache-cache
         # fuse device to use for mounting the s3ql filesystem on the s3ql sidecar
         - name: devfuse
           hostPath:
