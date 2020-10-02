@@ -6,3 +6,4 @@ metadata:
 data:
   6881: "default/seed-dht-pex:30002"
   51415: "default/seed-dht-pex:30001"
+  51820: "default/vpn-wg-access-server-wireguard:51820"

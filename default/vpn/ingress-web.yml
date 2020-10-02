@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: vpn-web-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: "https://auth.tristan.moe/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://auth.tristan.moe/oauth2/start?rd=https%3A%2F%2Fvpn.tristan.moe$escaped_request_uri"
+    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
+spec:
+  rules:
+    - host: vpn.tristan.moe
+      http:
+        paths:
+          - backend:
+              serviceName: vpn-wg-access-server-web
+              servicePort: http
+  tls:
+    - hosts:
+        - vpn.tristan.moe
+      secretName: letsencrypt-cert-vpn-web.tristan.moe

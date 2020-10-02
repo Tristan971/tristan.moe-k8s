@@ -24,6 +24,11 @@ spec:
       port: 32750
       targetPort: 32750
       protocol: TCP
+    # Waiting on Scaleway to have UDP load balancing
+    #- name: proxied-udp-51820
+    #  port: 51820
+    #  targetPort: 51820
+    #  protocol: UDP
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
