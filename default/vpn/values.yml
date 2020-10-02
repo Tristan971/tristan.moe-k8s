@@ -1,0 +1,19 @@
+wireguard:
+  config:
+    privateKey: "<redacted>"
+
+  # expose as NodeHost and hopefully update whenever Scaleway supports UDL load-balancing
+  service:
+    type: "NodePort"
+
+  persistence:
+    enabled: true
+    existingClaim: vpn-pvc
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
