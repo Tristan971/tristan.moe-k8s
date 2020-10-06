@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-service
+  labels:
+    app.kubernetes.io/part-of: unifi
+spec:
+  ports:
+    - port: 44001
+      name: server
+      targetPort: server
+    - port: 44002
+      name: server-no-tls
+      targetPort: server-no-tls
+    - port: 44003
+      name: speedtest
+      targetPort: speedtest
+    - port: 44013
+      name: stun
+      targetPort: stun
+      protocol: UDP
+    - port: 44014
+      name: discovery
+      targetPort: discovery
+      protocol: UDP
+  selector:
+    app: unifi-controller

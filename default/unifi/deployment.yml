@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi-controller
+  labels:
+    app.kubernetes.io/part-of: unifi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unifi-controller
+  template:
+    metadata:
+      labels:
+        app: unifi-controller
+    spec:
+      containers:
+        - image: linuxserver/unifi-controller
+          name: unifi-controller
+          env:
+            - name: MEM_LIMIT
+              value: "512M"
+          ports:
+            - containerPort: 8443
+              name: server
+            - containerPort: 8080
+              name: server-no-tls
+            - containerPort: 6789
+              name: speedtest
+            - containerPort: 3478
+              name: stun
+              protocol: UDP
+            - containerPort: 10001
+              name: discovery
+              protocol: UDP
+          volumeMounts:
+            - name: unifi-data
+              mountPath: /config
+          resources:
+            requests:
+              cpu: 800m
+              memory: 768Mi
+            limits:
+              cpu: 1500m
+              memory: 1024Mi
+      volumes:
+        - name: unifi-data
+          persistentVolumeClaim:
+            claimName: unifi-pvc
