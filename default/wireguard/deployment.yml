@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: wireguard
+    app.kubernetes.io/name: wireguard
+    app.kubernetes.io/part-of: vpn
+  name: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard
+  template:
+    metadata:
+      labels:
+        app: wireguard
+      annotations:
+        vault.hashicorp.com/role: 'wireguard'
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-inject-secret-wg-config: 'kv/vpn/wireguard'
+        vault.hashicorp.com/agent-inject-template-wg-config: |
+          {{- with secret "kv/vpn/wireguard" -}}
+          port: 8000
+          storage: "file:///data/wireguard"
+          wireguard:
+            privateKey: "{{ .Data.data.PRIVATE_KEY }}"
+            externalHost: "195.154.69.74" # unused until Scaleway supports UDP at LB level
+            port: 51820
+          {{- end }}
+    spec:
+      serviceAccountName: wireguard
+      containers:
+        - name: wireguard
+          image: place1/wg-access-server:0.2.5
+          env:
+            - name: CONFIG
+              value: "/vault/secrets/wg-config"
+            # this is irrelevant as the ingress itself is behind oauth
+            # however otherwise the app spouts warnings, and I don't
+            # like warnings. Once again, software bullies hooman!
+            - name: ADMIN_USERNAME
+              value: "admin"
+            - name: ADMIN_PASSWORD
+              value: "password"
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          ports:
+            - name: web
+              containerPort: 8000
+              protocol: TCP
+            - name: wg
+              containerPort: 51820
+              protocol: UDP
+          volumeMounts:
+            - name: tun
+              mountPath: /dev/net/tun
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: tun
+          hostPath:
+            path: /dev/net/tun
+            type: CharDevice
+        - name: data
+          persistentVolumeClaim:
+            claimName: wireguard-pvc
