@@ -35,14 +35,6 @@ spec:
             "reject_invalid_tokens": false
           }
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-mdgo-eu-par: 'kv/mangadex/mdgo-eu-par'
-        vault.hashicorp.com/agent-inject-template-mdgo-eu-par: |
-          {{- with secret "kv/mangadex/mdgo-eu-par" -}}
-          [s3c]
-          storage-url: {{ .Data.data.SCW_STORAGE_URL }}
-          backend-login: {{ .Data.data.SCW_ACCESS_KEY_ID }}
-          backend-password: {{ .Data.data.SCW_SECRET_ACCESS_KEY }}
-          {{- end }}
     spec:
       serviceAccountName: mangadex-at-home
       containers:
@@ -76,15 +68,9 @@ spec:
               memory: 1250Mi
       terminationGracePeriodSeconds: 600
       volumes:
-        # shared volume between s3ql and MDAH
         - name: mdah-cache
           persistentVolumeClaim:
             claimName: mdah-cache
-        # persistent and fast config dir for MDAH (notable the cache db)
         - name: mdah-config
           persistentVolumeClaim:
             claimName: mdah-config
-        # fuse device to use for mounting the s3ql filesystem on the s3ql sidecar
-        - name: devfuse
-          hostPath:
-            path: /dev/fuse
