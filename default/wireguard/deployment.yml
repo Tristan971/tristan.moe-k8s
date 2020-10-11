@@ -8,6 +8,8 @@ metadata:
   name: wireguard
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: wireguard
@@ -17,6 +19,20 @@ spec:
         app: wireguard
     spec:
       serviceAccountName: wireguard
+      initContainers:
+        - name: enable-sysctls
+          image: busybox
+          securityContext:
+            privileged: true
+          command: [
+              'sh',
+              '-c',
+              '
+                set -x;
+                sysctl -w net.ipv4.ip_forward=1;
+                sysctl -w net.ipv6.conf.all.forwarding=1
+              '
+          ]
       containers:
         - name: wireguard
           image: linuxserver/wireguard
@@ -29,8 +45,6 @@ spec:
               value: "30001"
             - name: PEERS
               value: "tde-pc,tde-phone,tde-misc"
-            - name: PEERDNS
-              value: "1.1.1.1"
           securityContext:
             capabilities:
               add:
@@ -41,17 +55,11 @@ spec:
               containerPort: 51820
               protocol: UDP
           volumeMounts:
-            - name: tun
-              mountPath: /dev/net/tun
             - name: modules
               mountPath: /lib/modules
             - name: data
               mountPath: /config
       volumes:
-        - name: tun
-          hostPath:
-            path: /dev/net/tun
-            type: CharDevice
         - name: modules
           hostPath:
             path: /lib/modules
