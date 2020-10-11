@@ -15,55 +15,46 @@ spec:
     metadata:
       labels:
         app: wireguard
-      annotations:
-        vault.hashicorp.com/role: 'wireguard'
-        vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/agent-inject-secret-wg-config: 'kv/vpn/wireguard'
-        vault.hashicorp.com/agent-inject-template-wg-config: |
-          {{- with secret "kv/vpn/wireguard" -}}
-          port: 8000
-          storage: "file:///data/wireguard"
-          wireguard:
-            privateKey: "{{ .Data.data.PRIVATE_KEY }}"
-            externalHost: "195.154.69.74" # unused until Scaleway supports UDP at LB level
-            port: 51820
-          {{- end }}
     spec:
       serviceAccountName: wireguard
       containers:
         - name: wireguard
-          image: place1/wg-access-server:0.2.5
+          image: linuxserver/wireguard
           env:
-            - name: CONFIG
-              value: "/vault/secrets/wg-config"
-            # this is irrelevant as the ingress itself is behind oauth
-            # however otherwise the app spouts warnings, and I don't
-            # like warnings. Once again, software bullies hooman!
-            - name: ADMIN_USERNAME
-              value: "admin"
-            - name: ADMIN_PASSWORD
-              value: "password"
+            - name: TZ
+              value: "Europe/London"
+            - name: SERVERURL
+              value: "195.154.69.74"
+            - name: SERVERPORT
+              value: "30001"
+            - name: PEERS
+              value: "tde-pc,tde-phone,tde-misc"
+            - name: PEERDNS
+              value: "1.1.1.1"
           securityContext:
             capabilities:
               add:
                 - NET_ADMIN
+                - SYS_MODULE
           ports:
-            - name: web
-              containerPort: 8000
-              protocol: TCP
             - name: wg
               containerPort: 51820
               protocol: UDP
           volumeMounts:
             - name: tun
               mountPath: /dev/net/tun
+            - name: modules
+              mountPath: /lib/modules
             - name: data
-              mountPath: /data
+              mountPath: /config
       volumes:
         - name: tun
           hostPath:
             path: /dev/net/tun
             type: CharDevice
+        - name: modules
+          hostPath:
+            path: /lib/modules
         - name: data
           persistentVolumeClaim:
             claimName: wireguard-pvc
