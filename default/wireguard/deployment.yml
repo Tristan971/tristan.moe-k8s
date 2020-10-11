@@ -18,7 +18,6 @@ spec:
       labels:
         app: wireguard
     spec:
-      serviceAccountName: wireguard
       initContainers:
         - name: enable-sysctls
           image: busybox
