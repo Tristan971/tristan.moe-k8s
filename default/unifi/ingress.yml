@@ -17,7 +17,7 @@ spec:
         paths:
           - backend:
               serviceName: unifi-service
-              servicePort: server
+              servicePort: web
   tls:
     - hosts:
         - unifi.tristan.moe

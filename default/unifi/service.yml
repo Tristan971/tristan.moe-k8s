@@ -5,23 +5,19 @@ metadata:
   labels:
     app.kubernetes.io/part-of: unifi
 spec:
+  type: NodePort
   ports:
-    - port: 44001
-      name: server
-      targetPort: server
-    - port: 44002
-      name: server-no-tls
-      targetPort: server-no-tls
-    - port: 44003
-      name: speedtest
-      targetPort: speedtest
-    - port: 44013
-      name: stun
+    - name: comms
+      targetPort: comms
+      port: 31501
+      nodePort: 31501
+    - name: web
+      targetPort: web
+      port: 31502
+      nodePort: 31502
+    - name: stun
       targetPort: stun
-      protocol: UDP
-    - port: 44014
-      name: discovery
-      targetPort: discovery
-      protocol: UDP
+      port: 31503
+      nodePort: 31503
   selector:
     app: unifi-controller
