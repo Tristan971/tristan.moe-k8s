@@ -11,13 +11,16 @@ spec:
       targetPort: comms
       port: 31501
       nodePort: 31501
+      protocol: TCP
     - name: web
       targetPort: web
       port: 31502
       nodePort: 31502
+      protocol: TCP
     - name: stun
       targetPort: stun
       port: 31503
       nodePort: 31503
+      protocol: UDP
   selector:
     app: unifi-controller
