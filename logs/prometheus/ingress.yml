@@ -1,21 +1,22 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
-  namespace: logs
   name: prometheus-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/auth-url: "https://auth.tristan.moe/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "https://auth.tristan.moe/oauth2/start?rd=https%3A%2F%2Fprom.tristan.moe$escaped_request_uri"
-    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
+  namespace: logs
+  labels:
+    app.kubernetes.io/name: prometheus-ingress
+    app.kubernetes.io/part-of: prometheus
 spec:
-  rules:
-    - host: prom.tristan.moe
-      http:
-        paths:
-          - backend:
-              serviceName: prometheus-server
-              servicePort: http
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`prom.tristan.moe`)
+      kind: Rule
+      services:
+        - name: prometheus-server
+          port: 80
+      middlewares:
+        - name: oauth-middleware
+          namespace: default
   tls:
-    - hosts:
-        - prom.tristan.moe
-      secretName: letsencrypt-cert-prom.tristan.moe
+    secretName: letsencrypt-cert-prometheus.tristan.moe
