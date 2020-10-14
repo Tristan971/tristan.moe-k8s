@@ -1,24 +1,22 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: unifi-ingress
   labels:
+    app.kubernetes.io/name: unifi-ingress
     app.kubernetes.io/part-of: unifi
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    nginx.ingress.kubernetes.io/auth-url: "https://auth.tristan.moe/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "https://auth.tristan.moe/oauth2/start?rd=https%3A%2F%2Funifi.tristan.moe$escaped_request_uri"
-    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
 spec:
-  rules:
-    - host: unifi.tristan.moe
-      http:
-        paths:
-          - backend:
-              serviceName: unifi-service
-              servicePort: web
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`unifi.tristan.moe`)
+      kind: Rule
+      services:
+        - name: unifi-service
+          port: 31502
+          scheme: https
+      middlewares:
+        - name: oauth-middleware
+          namespace: default
   tls:
-    - hosts:
-        - unifi.tristan.moe
-      secretName: letsencrypt-cert-unifi.tristan.moe
+    secretName: letsencrypt-cert-unifi.tristan.moe
