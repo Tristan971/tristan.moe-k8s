@@ -1,19 +1,19 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: vault-ingress
   namespace: kube-system
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
+  labels:
+    app.kubernetes.io/name: vault-ingress
+    app.kubernetes.io/part-of: vault
 spec:
-  rules:
-    - host: vault.tristan.moe
-      http:
-        paths:
-          - backend:
-              serviceName: vault
-              servicePort: 8200
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`vault.tristan.moe`)
+      kind: Rule
+      services:
+        - name: vault
+          port: 8200
   tls:
-    - hosts:
-        - vault.tristan.moe
-      secretName: letsencrypt-cert-vault.tristan.moe
+    secretName: letsencrypt-cert-vault.tristan.moe
