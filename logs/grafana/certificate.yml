@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: cert-grafana
+  namespace: logs
+  labels:
+    app.kubernetes.io/name: cert-grafana
+    app.kubernetes.io/part-of: grafana
+spec:
+  commonName: grafana.tristan.moe
+  secretName: letsencrypt-cert-grafana.tristan.moe
+  dnsNames:
+    - grafana.tristan.moe
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-tristan.moe-issue
