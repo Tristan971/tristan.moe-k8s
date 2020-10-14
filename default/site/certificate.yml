@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: cert-site
+  labels:
+    app.kubernetes.io/name: cert-site
+    app.kubernetes.io/part-of: site
+spec:
+  commonName: tristan.moe
+  secretName: letsencrypt-cert-site.tristan.moe
+  dnsNames:
+    - tristan.moe
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-tristan.moe-issue

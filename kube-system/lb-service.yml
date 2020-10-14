@@ -1,34 +1,32 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-ingress
+  name: lb-service
   namespace: kube-system
   labels:
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
+    k8s.scw.cloud/ingress: traefik2
 spec:
   type: LoadBalancer
   loadBalancerIP: 195.154.69.74
   ports:
     - port: 80
       name: http
-      targetPort: 80
+      targetPort: 8000
     - port: 443
       name: https
-      targetPort: 443
-    - name: proxied-tcp-32400
-      port: 32400
-      targetPort: 32400
-      protocol: TCP
-    - name: proxied-tcp-32750
-      port: 32750
-      targetPort: 32750
-      protocol: TCP
+      targetPort: 8443
+    #- name: proxied-tcp-32400
+    #  port: 32400
+    #  targetPort: 32400
+    #  protocol: TCP
+    #- name: proxied-tcp-32750
+    #  port: 32750
+    #  targetPort: 32750
+    #  protocol: TCP
     # Waiting on Scaleway to have UDP load balancing
     #- name: proxied-udp-51820
     #  port: 51820
     #  targetPort: 51820
     #  protocol: UDP
   selector:
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/name: traefik
