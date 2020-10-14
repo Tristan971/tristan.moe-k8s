@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: unifi-service
   labels:
+    app.kubernetes.io/name: unifi-service
     app.kubernetes.io/part-of: unifi
 spec:
   type: NodePort

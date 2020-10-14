@@ -1,18 +1,18 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: oauth-ingress
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
+  labels:
+    app.kubernetes.io/name: oauth-ingress
+    app.kubernetes.io/part-of: oauth
 spec:
-  rules:
-    - host: auth.tristan.moe
-      http:
-        paths:
-          - backend:
-              serviceName: oauth
-              servicePort: web
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`auth.tristan.moe`)
+      kind: Rule
+      services:
+        - name: oauth
+          port: 4180
   tls:
-    - hosts:
-        - auth.tristan.moe
-      secretName: letsencrypt-cert-oauth.tristan.moe
+    secretName: letsencrypt-cert-oauth.tristan.moe

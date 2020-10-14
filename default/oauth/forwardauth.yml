@@ -1,0 +1,12 @@
+# Forward authentication to example.com
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: oauth-middleware
+  labels:
+    app.kubernetes.io/name: oauth-middleware
+    app.kubernetes.io/part-of: oauth
+spec:
+  forwardAuth:
+    address: https://auth.tristan.moe/oauth2/auth
+

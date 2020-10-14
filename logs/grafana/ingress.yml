@@ -1,19 +1,19 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
-  namespace: logs
   name: grafana-ingress
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
+  namespace: logs
+  labels:
+    app.kubernetes.io/name: grafana-ingress
+    app.kubernetes.io/part-of: grafana
 spec:
-  rules:
-    - host: grafana.tristan.moe
-      http:
-        paths:
-          - backend:
-              serviceName: grafana
-              servicePort: 80
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`grafana.tristan.moe`)
+      kind: Rule
+      services:
+        - name: grafana
+          port: 80
   tls:
-    - hosts:
-        - grafana.tristan.moe
-      secretName: letsencrypt-cert-grafana.tristan.moe
+    secretName: letsencrypt-cert-grafana.tristan.moe

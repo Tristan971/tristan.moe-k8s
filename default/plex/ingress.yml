@@ -1,18 +1,18 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: plex-ingress
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-tristan.moe-issue
+  labels:
+    app.kubernetes.io/name: plex-ingress
+    app.kubernetes.io/part-of: plex
 spec:
-  rules:
-    - host: plex.tristan.moe
-      http:
-        paths:
-          - backend:
-              serviceName: plex
-              servicePort: webui
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`plex.tristan.moe`)
+      kind: Rule
+      services:
+        - name: plex
+          port: 32400
   tls:
-    - hosts:
-        - plex.tristan.moe
-      secretName: letsencrypt-cert-plex.tristan.moe
+    secretName: letsencrypt-cert-plex.tristan.moe

@@ -1,0 +1,22 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard-ingress
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: traefik-dashboard-ingress
+    app.kubernetes.io/part-of: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`traefik.tristan.moe`)
+      kind: Rule
+      services:
+        - name: traefik-dashboard-service
+          port: 9000
+      middlewares:
+        - name: oauth-middleware
+          namespace: default
+  tls:
+    secretName: letsencrypt-cert-traefik.tristan.moe

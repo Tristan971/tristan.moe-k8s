@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: mangadex-at-home
   name: mangadex-at-home
+  labels:
+    app.kubernetes.io/name: mangadex-at-home
+    app.kubernetes.io/part-of: mangadex-at-home
 spec:
   replicas: 1
   selector:
@@ -24,8 +25,8 @@ spec:
           {
             "cache_directory": "/mangahome/fcache",
             "client_secret": "{{ .Data.data.client_secret }}",
-            "client_port": 32750,
-            "max_kilobits_per_second": 200000,
+            "client_port": 443,
+            "max_kilobits_per_second": 300000,
             "max_cache_size_in_mebibytes": 140000,
             "max_reported_size_in_mebibytes": 140000,
             "graceful_shutdown_in_seconds": 0,
@@ -42,7 +43,7 @@ spec:
           name: mangadex-at-home
           ports:
             - name: mah
-              containerPort: 32750
+              containerPort: 443
           volumeMounts:
             - name: mdah-config
               mountPath: /mangahome/config
@@ -53,7 +54,7 @@ spec:
               '-c',
               '
               cd /mangahome;
-              curl -L -o mdah https://github.com/lflare/mdathome-golang/releases/download/v1.5.3/mdathome-1.5.3-linux_amd64;
+              curl -L -o mdah https://github.com/lflare/mdathome-golang/releases/download/v1.5.4/mdathome-1.5.4-linux_amd64;
               chmod +x mdah;
               cp -v /vault/secrets/mangadex-at-home ./settings.json;
               ./mdah

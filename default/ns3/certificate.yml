@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: cert-ns3
+  labels:
+    app.kubernetes.io/name: cert-ns3
+    app.kubernetes.io/part-of: ns3
+spec:
+  commonName: ns3.tristan.moe
+  secretName: letsencrypt-cert-ns3.tristan.moe
+  dnsNames:
+    - ns3.tristan.moe
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-tristan.moe-issue
