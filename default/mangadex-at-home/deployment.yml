@@ -27,9 +27,9 @@ spec:
             "client_secret": "{{ .Data.data.client_secret }}",
             "client_port": 443,
             "max_kilobits_per_second": 300000,
-            "max_cache_size_in_mebibytes": 140000,
-            "max_reported_size_in_mebibytes": 140000,
-            "graceful_shutdown_in_seconds": 0,
+            "max_cache_size_in_mebibytes": 180000,
+            "max_reported_size_in_mebibytes": 180000,
+            "graceful_shutdown_in_seconds": 30,
             "cache_scan_interval_in_seconds": 300,
             "max_cache_scan_time_in_seconds": 120,
             "cache_refresh_age_in_seconds": 86400,
@@ -57,7 +57,7 @@ spec:
               curl -L -o mdah https://github.com/lflare/mdathome-golang/releases/download/v1.5.4/mdathome-1.5.4-linux_amd64;
               chmod +x mdah;
               cp -v /vault/secrets/mangadex-at-home ./settings.json;
-              tail -f /dev/null
+              ./mdah
               '
           ]
           resources:

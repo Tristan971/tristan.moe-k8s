@@ -28,8 +28,10 @@ spec:
           image: traefik:v2.3
           ports:
             - name: web
+              hostPort: 80
               containerPort: 8000
             - name: websecure
+              hostPort: 443
               containerPort: 8443
             - name: traefik
               containerPort: 9000
