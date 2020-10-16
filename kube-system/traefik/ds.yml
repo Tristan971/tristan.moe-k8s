@@ -78,6 +78,8 @@ spec:
             # Monitoring
             - name: TRAEFIK_METRICS_PROMETHEUS
               value: "true"
+            - name: TRAEFIK_PILOT_TOKEN
+              value: "f93c6535-3a9e-4e4c-b7a6-5d41b11f20fe"
             # Providers
             - name: TRAEFIK_PROVIDERS_KUBERNETESCRD
               value: "true"
