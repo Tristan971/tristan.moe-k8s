@@ -13,9 +13,9 @@ spec:
   ports:
     - port: 80
       name: http
-      targetPort: http
+      targetPort: web
     - port: 443
       name: https
-      targetPort: https
+      targetPort: websecure
   selector:
     app.kubernetes.io/name: traefik
