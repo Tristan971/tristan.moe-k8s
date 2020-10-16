@@ -81,7 +81,7 @@ spec:
             # Providers
             - name: TRAEFIK_PROVIDERS_KUBERNETESCRD
               value: "true"
-            - name: TRAEFIK_PROVIDERS_KUBERNETESCRD_INGRESSCLASS
-              value: "traefik-cert-manager"
             - name: TRAEFIK_PROVIDERS_KUBERNETESINGRESS
               value: "true"
+            - name: TRAEFIK_PROVIDERS_KUBERNETESINGRESS_INGRESSCLASS
+              value: "traefik-cert-manager"
