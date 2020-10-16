@@ -44,3 +44,21 @@ spec:
         - name: seed-config
           persistentVolumeClaim:
             claimName: seed-config
+      # if possible operate on the same node as S3QL, and on a different node from MDAH
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: "kubernetes.io/hostname"
+                labelSelector:
+                  matchLabels:
+                    app: s3ql-master
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: "kubernetes.io/hostname"
+                labelSelector:
+                  matchLabels:
+                    app: mangadex-at-home
