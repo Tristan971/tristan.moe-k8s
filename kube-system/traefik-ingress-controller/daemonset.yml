@@ -54,6 +54,8 @@ spec:
               value: "true"
             - name: TRAEFIK_API_DASHBOARD
               value: "true"
+            - name: TRAEFIK_API_INSECURE
+              value: "true"
             - name: TRAEFIK_PING
               value: "true"
             - name: TRAEFIK_GLOBAL_CHECKNEWVERSION
