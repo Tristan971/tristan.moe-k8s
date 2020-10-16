@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: traefik-ds
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: traefik-ds
+    app.kubernetes.io/part-of: traefik
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  template:
+    metadata:
+      name: traefik
+      labels:
+        app.kubernetes.io/name: traefik
+        app.kubernetes.io/part-of: traefik
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      containers:
+        - name: traefik
+          image: traefik:v2.3
+          ports:
+            - name: web
+              containerPort: 8000
+            - name: websecure
+              containerPort: 8443
+            - name: traefik
+              containerPort: 9000
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: traefik
+            failureThreshold: 1
+            initialDelaySeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: traefik
+            failureThreshold: 3
+            initialDelaySeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          env:
+            # Dashboard / API / Ping / Global...
+            - name: TRAEFIK_ACCESSLOG
+              value: "true"
+            - name: TRAEFIK_API
+              value: "true"
+            - name: TRAEFIK_API_DASHBOARD
+              value: "true"
+            - name: TRAEFIK_PING
+              value: "true"
+            - name: TRAEFIK_GLOBAL_CHECKNEWVERSION
+              value: "true"
+            - name: TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE
+              value: "true"
+            - name: TRAEFIK_LOG_LEVEL
+              value: "WARN"
+            # Entrypoints
+            - name: TRAEFIK_ENTRYPOINTS_TRAEFIK_ADDRESS
+              value: ":9000"
+            - name: TRAEFIK_ENTRYPOINTS_WEB_ADDRESS
+              value: ":8000"
+            - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS
+              value: ":8443"
+            - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_HTTP_TLS
+              value: "true"
+            - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_HTTP_TLS_CERTRESOLVER
+              value: "letsencrypt-tristan.moe-issue"
+            # Monitoring
+            - name: TRAEFIK_METRICS_PROMETHEUS
+              value: "true"
+            # Providers
+            - name: TRAEFIK_PROVIDERS_KUBERNETESCRD
+              value: "true"
+            - name: TRAEFIK_PROVIDERS_KUBERNETESCRD_INGRESSCLASS
+              value: "traefik-cert-manager"
+            - name: TRAEFIK_PROVIDERS_KUBERNETESINGRESS
+              value: "true"
