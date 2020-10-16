@@ -16,6 +16,11 @@ spec:
       labels:
         app.kubernetes.io/name: traefik
         app.kubernetes.io/part-of: traefik
+      annotations:
+        # enable prom scraping
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "9000"
     spec:
       serviceAccountName: traefik-ingress-controller
       containers:
