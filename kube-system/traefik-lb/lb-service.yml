@@ -4,6 +4,8 @@ metadata:
   name: lb-service
   namespace: kube-system
   labels:
+    app.kubernetes.io/name: traefik-lb-service
+    app.kubernetes.io/part-of: traefik
     k8s.scw.cloud/ingress: traefik2
 spec:
   type: LoadBalancer
@@ -11,22 +13,9 @@ spec:
   ports:
     - port: 80
       name: http
-      targetPort: 8000
+      targetPort: http
     - port: 443
       name: https
-      targetPort: 8443
-    #- name: proxied-tcp-32400
-    #  port: 32400
-    #  targetPort: 32400
-    #  protocol: TCP
-    #- name: proxied-tcp-32750
-    #  port: 32750
-    #  targetPort: 32750
-    #  protocol: TCP
-    # Waiting on Scaleway to have UDP load balancing
-    #- name: proxied-udp-51820
-    #  port: 51820
-    #  targetPort: 51820
-    #  protocol: UDP
+      targetPort: https
   selector:
     app.kubernetes.io/name: traefik
