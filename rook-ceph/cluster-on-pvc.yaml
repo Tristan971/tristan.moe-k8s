@@ -39,8 +39,7 @@ spec:
       enabled: true
   dashboard:
     enabled: true
-    # wtf is up with everyone and their mom forcing us to use their goddamn self-signed certs when we actually
-    # do have easy ingress-level termination... anyways...
+    port: 7000
     ssl: false
   crashCollector:
     disable: false
