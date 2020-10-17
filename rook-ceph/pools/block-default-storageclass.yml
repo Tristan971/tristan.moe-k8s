@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: rook-ceph-block-default
     app.kubernetes.io/part-of: ceph
 provisioner: rook-ceph.rbd.csi.ceph.com
+allowVolumeExpansion: true
 parameters:
   # clusterID is the namespace where the rook cluster is running
   clusterID: rook-ceph
