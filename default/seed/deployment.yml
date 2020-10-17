@@ -43,7 +43,7 @@ spec:
             claimName: nfs-pvc
         - name: seed-config
           persistentVolumeClaim:
-            claimName: seed-config
+            claimName: seed-config-ceph
       # if possible operate on the same node as S3QL, and on a different node from MDAH
       affinity:
         podAffinity:

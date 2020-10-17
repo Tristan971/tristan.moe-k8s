@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: seed-config-ceph
+  labels:
+    app.kubernetes.io/name: seed-config-ceph
+    app.kubernetes.io/part-of: seed
+spec:
+  accessModes: [ ReadWriteOnce ]
+  storageClassName: rook-ceph-block-default
+  resources:
+    requests:
+      storage: 2Gi
