@@ -1,4 +1,4 @@
 loki:
   persistence:
     enabled: true
-    existingClaim: loki-data
+    existingClaim: loki-pvc-ceph
