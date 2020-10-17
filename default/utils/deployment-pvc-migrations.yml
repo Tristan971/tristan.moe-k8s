@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pvc-migration
+  labels:
+    app.kubernetes.io/name: pvc-migration
+    app.kubernetes.io/part-of: utils
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pvc-migration
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: pvc-migration
+    spec:
+      containers:
+        - image: library/fedora:33
+          name: pvc-migration
+          volumeMounts:
+            - name: source-pvc
+              mountPath: /pvc-migration/source
+            - name: target-pvc
+              mountPath: /pvc-migration/target
+          command: [ 'bash', '-c', 'tail -f /dev/null' ]
+      volumes:
+        - name: source-pvc
+          persistentVolumeClaim:
+            claimName: source-fake
+        - name: target-pvc
+          persistentVolumeClaim:
+            claimName: target-fake
