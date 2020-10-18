@@ -64,4 +64,4 @@ spec:
             path: /lib/modules
         - name: data
           persistentVolumeClaim:
-            claimName: wireguard-pvc
+            claimName: wireguard-pvc-ceph

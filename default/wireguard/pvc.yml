@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: wireguard-pvc
+  name: wireguard-pvc-ceph
   labels:
-    app.kubernetes.io/name: wireguard-pvc
+    app.kubernetes.io/name: wireguard-pvc-ceph
     app.kubernetes.io/part-of: vpn
 spec:
   accessModes: [ ReadWriteOnce ]
+  storageClassName: rook-ceph-block-default
   resources:
     requests:
-      storage: 5Gi
+      storage: 2Gi
