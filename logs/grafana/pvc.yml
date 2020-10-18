@@ -2,9 +2,13 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: logs
-  name: grafana-data
+  name: grafana-pvc-ceph
+  labels:
+    app.kubernetes.io/name: grafana-pvc-ceph
+    app.kubernetes.io/part-of: logs
 spec:
   accessModes: [ ReadWriteOnce ]
+  storageClassName: rook-ceph-block-default
   resources:
     requests:
-      storage: 30Gi
+      storage: 2Gi
