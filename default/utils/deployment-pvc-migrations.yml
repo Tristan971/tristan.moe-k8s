@@ -26,10 +26,13 @@ spec:
             - name: target-pvc
               mountPath: /pvc-migration/target
           command: [ 'bash', '-c', 'tail -f /dev/null' ]
+          resources:
+            limits:
+              memory: 1Gi
       volumes:
         - name: source-pvc
           persistentVolumeClaim:
-            claimName: source-fake
+            claimName: sourceclaim
         - name: target-pvc
           persistentVolumeClaim:
-            claimName: target-fake
+            claimName: targetclaim
