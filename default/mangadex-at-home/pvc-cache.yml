@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mdah-cache-ceph
+  labels:
+    app.kubernetes.io/name: mdah-cache-ceph
+    app.kubernetes.io/part-of: mangadex-at-home
+spec:
+  accessModes: [ ReadWriteOnce ]
+  storageClassName: rook-ceph-block-mdah
+  resources:
+    requests:
+      storage: 205Gi
