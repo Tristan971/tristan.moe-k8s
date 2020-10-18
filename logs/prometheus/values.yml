@@ -1,0 +1,17 @@
+alertmanager:
+  enabled: true
+  persistentVolume:
+    enabled: true
+    existingClaim: "prometheus-alertmanager-pvc-ceph"
+
+server:
+  enabled: true
+  persistentVolume:
+    enabled: true
+    existingClaim: "prometheus-server-pvc-ceph"
+
+pushgateway:
+  enabled: true
+  persistentVolume:
+    enabled: true
+    existingClaim: "prometheus-pushgateway-pvc-ceph"
