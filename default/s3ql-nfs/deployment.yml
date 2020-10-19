@@ -1,15 +1,17 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: s3ql-master-statefulset
+  name: s3ql-master
+  labels:
+    app.kubernetes.io/name: s3ql-master
+    app.kubernetes.io/part-of: media
 spec:
   selector:
     matchLabels:
       app: s3ql-master
-  serviceName: s3ql-master
   replicas: 1
-  updateStrategy:
-    type: RollingUpdate
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -29,7 +31,7 @@ spec:
       serviceAccountName: s3ql-master
       terminationGracePeriodSeconds: 600
       containers:
-        - name: s3ql-master
+        - name: s3ql
           imagePullPolicy: Always
           image: tristandeloche/s3ql-docker:191-container-friendliness
           securityContext:
@@ -64,7 +66,7 @@ spec:
             - name: UPLOAD_THREADS
               value: "2"
             - name: KEEP_CACHE
-              value: "true"
+              value: "false"
             - name: ALLOW_OTHER
               value: "true"
             - name: NFS
@@ -72,7 +74,7 @@ spec:
           volumeMounts:
             - name: devfuse
               mountPath: /dev/fuse
-            - name: s3ql-master-cache
+            - name: s3ql-cache
               mountPath: /s3-cache
             - name: s3-data
               mountPath: /s3-data:shared
@@ -109,11 +111,13 @@ spec:
         - name: s3-data
           hostPath:
             path: /mnt/s3-data
-  volumeClaimTemplates:
-    - metadata:
-        name: s3ql-master-cache
-      spec:
-        accessModes: [ ReadWriteOnce ]
-        resources:
-          requests:
-            storage: 30Gi
+        - name: s3ql-cache
+          persistentVolumeClaim:
+            claimName: s3ql-cache-ceph
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchLabels:
+                  app: mangadex-at-home
