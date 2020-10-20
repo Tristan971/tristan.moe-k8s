@@ -15,6 +15,7 @@ server:
   persistentVolume:
     enabled: true
     existingClaim: "prometheus-server-pvc-ceph"
+  retention: 30d
 
 pushgateway:
   enabled: true
