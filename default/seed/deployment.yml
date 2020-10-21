@@ -9,6 +9,8 @@ spec:
     matchLabels:
       app: rutorrent-flood
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -32,11 +34,11 @@ spec:
               mountPath: /downloads
           resources:
             requests:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 768m
+              memory: 1Gi
             limits:
-              cpu: 1000m
-              memory: 1024Mi
+              cpu: 768m
+              memory: 1Gi
       volumes:
         - name: nfs-seed-downloads
           persistentVolumeClaim:
@@ -46,14 +48,6 @@ spec:
             claimName: seed-config-ceph
       # if possible operate on the same node as S3QL, and on a different node from MDAH
       affinity:
-        podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                topologyKey: "kubernetes.io/hostname"
-                labelSelector:
-                  matchLabels:
-                    app: s3ql-master
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - weight: 1

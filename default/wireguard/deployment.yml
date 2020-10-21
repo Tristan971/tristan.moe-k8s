@@ -58,6 +58,13 @@ spec:
               mountPath: /lib/modules
             - name: data
               mountPath: /config
+          resources:
+            requests:
+              cpu: 500m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
       volumes:
         - name: modules
           hostPath:
