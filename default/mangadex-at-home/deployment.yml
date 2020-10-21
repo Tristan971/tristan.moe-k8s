@@ -62,11 +62,11 @@ spec:
           ]
           resources:
             requests:
-              cpu: 1500m
-              memory: 1250Mi
+              cpu: 1000m
+              memory: 1Gi
             limits:
-              cpu: 1500m
-              memory: 1250Mi
+              cpu: 1000m
+              memory: 1Gi
       terminationGracePeriodSeconds: 600
       volumes:
         - name: mdah-cache

@@ -40,10 +40,10 @@ spec:
               mountPath: /data
           resources:
             requests:
-              cpu: 1000m
+              cpu: 800m
               memory: 1Gi
             limits:
-              cpu: 1000m
+              cpu: 800m
               memory: 1Gi
         - name: git-sync-hama-bundle
           image: k8s.gcr.io/git-sync:v3.1.6
@@ -66,10 +66,10 @@ spec:
               mountPath: /tmp/plex-config:shared
           resources:
             requests:
-              cpu: 150m
+              cpu: 100m
               memory: 64Mi
             limits:
-              cpu: 150m
+              cpu: 100m
               memory: 64Mi
         - name: git-sync-ass
           image: k8s.gcr.io/git-sync:v3.1.6
@@ -92,10 +92,10 @@ spec:
               mountPath: /tmp/plex-config:shared
           resources:
             requests:
-              cpu: 150m
+              cpu: 100m
               memory: 64Mi
             limits:
-              cpu: 150m
+              cpu: 100m
               memory: 64Mi
       volumes:
         - name: nfs-plex-data
