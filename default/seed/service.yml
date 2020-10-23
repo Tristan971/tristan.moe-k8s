@@ -3,10 +3,21 @@ kind: Service
 metadata:
   name: seed
 spec:
+  type: NodePort
   ports:
     - name: webui
       targetPort: webui
       port: 3000
       protocol: TCP
+    - name: bittorrent
+      targetPort: bittorrent
+      port: 31415
+      nodePort: 31415
+      protocol: UDP
+    - name: dht
+      targetPort: dht
+      port: 31481
+      nodePort: 31481
+      protocol: UDP
   selector:
     app: rutorrent-flood

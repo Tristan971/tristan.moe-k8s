@@ -21,12 +21,15 @@ spec:
         - name: seed
           image: romancin/rutorrent-flood:0.9.8
           ports:
-            - containerPort: 3000
-              name: webui
-            - containerPort: 51415
-              name: bittorrent
-            - containerPort: 6881
-              name: dht
+            - name: webui
+              containerPort: 3000
+              protocol: TCP
+            - name: bittorrent
+              containerPort: 31415
+              protocol: UDP
+            - name: dht
+              containerPort: 31481
+              protocol: UDP
           volumeMounts:
             - name: seed-config
               mountPath: /config
