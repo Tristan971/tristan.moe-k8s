@@ -10,8 +10,8 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      # https://22z9pdmfx8sja.rmhkd98sb0x3y.mangadex.network:443
-      match: HostSNI(`22z9pdmfx8sja.rmhkd98sb0x3y.mangadex.network`)
+      # https://46fv90w5333tg.rmhkd98sb0x3y.mangadex.network:443
+      match: HostSNI(`46fv90w5333tg.rmhkd98sb0x3y.mangadex.network`)
       services:
         - name: mangadex-at-home
           port: 443
