@@ -27,9 +27,9 @@ spec:
             "client_secret": "{{ .Data.data.client_secret }}",
             "client_port": 443,
             "max_kilobits_per_second": 500000,
-            "max_cache_size_in_mebibytes": 200000,
-            "max_reported_size_in_mebibytes": 200000,
-            "graceful_shutdown_in_seconds": 30,
+            "max_cache_size_in_mebibytes": 210000,
+            "max_reported_size_in_mebibytes": 210000,
+            "graceful_shutdown_in_seconds": 60,
             "cache_scan_interval_in_seconds": 300,
             "max_cache_scan_time_in_seconds": 120,
             "cache_refresh_age_in_seconds": 86400,
@@ -67,7 +67,7 @@ spec:
             limits:
               cpu: 1000m
               memory: 1Gi
-      terminationGracePeriodSeconds: 600
+      terminationGracePeriodSeconds: 120
       volumes:
         - name: mdah-cache
           persistentVolumeClaim:

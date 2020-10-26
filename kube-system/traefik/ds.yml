@@ -94,3 +94,6 @@ spec:
               value: "true"
             - name: TRAEFIK_PROVIDERS_KUBERNETESINGRESS_INGRESSCLASS
               value: "traefik-cert-manager"
+            # Support self-signed backends
+            - name: TRAEFIK_SERVERSTRANSPORT_INSECURESKIPVERIFY
+              value: "true"

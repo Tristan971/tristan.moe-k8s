@@ -10,4 +10,4 @@ spec:
   storageClassName: rook-ceph-block-mdah
   resources:
     requests:
-      storage: 215Gi
+      storage: 240Gi
