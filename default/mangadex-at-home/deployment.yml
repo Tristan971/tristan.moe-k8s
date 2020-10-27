@@ -30,8 +30,8 @@ spec:
             "max_cache_size_in_mebibytes": 210000,
             "max_reported_size_in_mebibytes": 210000,
             "graceful_shutdown_in_seconds": 60,
-            "cache_scan_interval_in_seconds": 300,
-            "max_cache_scan_time_in_seconds": 120,
+            "cache_scan_interval_in_seconds": 900,
+            "max_cache_scan_time_in_seconds": 300,
             "cache_refresh_age_in_seconds": 86400,
             "reject_invalid_tokens": false
           }
@@ -45,8 +45,6 @@ spec:
             - name: mah
               containerPort: 443
           volumeMounts:
-            - name: mdah-config
-              mountPath: /mangahome/config
             - name: mdah-cache
               mountPath: /mangahome/fcache
           command: [
@@ -72,9 +70,6 @@ spec:
         - name: mdah-cache
           persistentVolumeClaim:
             claimName: mdah-cache-ceph
-        - name: mdah-config
-          persistentVolumeClaim:
-            claimName: mdah-config-ceph
       # avoid scheduling on the same node as the S3QL master
       affinity:
         podAntiAffinity:
