@@ -16,10 +16,14 @@ spec:
         app: site
     spec:
       containers:
-        - image: nginx:stable
-          name: nginx
+        - name: nginx
+          image: nginx:alpine
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: site-workdir
+              mountPath: /usr/share/nginx
+              readOnly: true
           resources:
             requests:
               cpu: 100m
@@ -27,3 +31,33 @@ spec:
             limits:
               cpu: 100m
               memory: 128Mi
+        - name: git-sync-site
+          image: k8s.gcr.io/git-sync:v3.1.6
+          securityContext:
+            runAsGroup: 0
+            runAsUser: 0
+          env:
+            - name: 'GIT_SYNC_REPO'
+              value: 'https://github.com/Tristan971/tristan.moe.git'
+            - name: 'GIT_SYNC_ROOT'
+              value: '/tmp/site-repo'
+            - name: 'GIT_SYNC_DEST'
+              value: 'html'
+            - name: 'GIT_SYNC_WAIT'
+              value: '300' # sync every 5 minutes
+            - name: 'GIT_SYNC_PERMISSIONS'
+              value: '493' # = 755 in non-stupid notation
+          volumeMounts:
+            - name: site-workdir
+              mountPath: /tmp/site-repo
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+      volumes:
+        - name: site-workdir
+          persistentVolumeClaim:
+            claimName: site-workdir
