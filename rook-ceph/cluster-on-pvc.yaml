@@ -120,6 +120,89 @@ spec:
               volumeMode: Block
               accessModes:
                 - ReadWriteOnce
+      - name: scb5
+        # The number of OSDs to create from this device set
+        # every PVC will be replicated {{ count }} times
+        count: 4
+        # IMPORTANT: If volumes specified by the storageClassName are not portable across nodes
+        # this needs to be set to false. For example, if using the local storage provisioner
+        # this should be false.
+        portable: true
+        # Certain storage class in the Cloud are slow
+        # Rook can configure the OSD running on PVC to accommodate that by tuning some of the Ceph internal
+        # Currently, "gp2" has been identified as such
+        tuneDeviceClass: true
+        # whether to encrypt the deviceSet or not
+        encrypted: false
+        # Since the OSDs could end up on any node, an effort needs to be made to spread the OSDs
+        # across nodes as much as possible. Unfortunately the pod anti-affinity breaks down
+        # as soon as you have more than one OSD per node. The topology spread constraints will
+        # give us an even spread on K8s 1.18 or newer.
+        placement:
+          # force OSDs to run on the ceph specific pool
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: "k8s.scaleway.com/pool-name"
+                      operator: In
+                      values:
+                        - "ceph-pool"
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: ScheduleAnyway
+              labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - rook-ceph-osd
+        preparePlacement:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:
+                    matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                          - rook-ceph-osd
+                      - key: app
+                        operator: In
+                        values:
+                          - rook-ceph-osd-prepare
+                  topologyKey: kubernetes.io/hostname
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: topology.kubernetes.io/zone
+              whenUnsatisfiable: ScheduleAnyway
+              labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - rook-ceph-osd-prepare
+        # These are the OSD daemon limits. For OSD prepare limits, see the separate section below for "prepareosd" resources
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 2300Mi
+          requests:
+            cpu: 2000m
+            memory: 2300Mi
+        volumeClaimTemplates:
+          - metadata:
+              name: bssd
+            spec:
+              resources:
+                requests:
+                  storage: 100Gi
+              storageClassName: scw-bssd
+              volumeMode: Block
+              accessModes:
+                - ReadWriteOnce
   resources:
     prepareosd:
       limits:
