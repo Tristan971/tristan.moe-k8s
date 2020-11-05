@@ -30,8 +30,8 @@ spec:
             "max_cache_size_in_mebibytes": 200000,
             "max_reported_size_in_mebibytes": 200000,
             "graceful_shutdown_in_seconds": 300,
-            "cache_scan_interval_in_seconds": 2100,
-            "max_cache_scan_time_in_seconds": 1800,
+            "cache_scan_interval_in_seconds": 600,
+            "max_cache_scan_time_in_seconds": 3600,
             "cache_refresh_age_in_seconds": 604800,
             "reject_invalid_tokens": false
           }
