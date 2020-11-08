@@ -37,7 +37,7 @@ spec:
 
             worker:
               port: 8081
-              operator-uri: "http://operator:8080"
+              operator-uri: "http://kmdah-operator-service:8080"
               bandwidth-mbps: 400
               verify-referrer: true
 
@@ -56,6 +56,7 @@ spec:
       serviceAccountName: kmdah
       containers:
         - image: tristandeloche/kmdah-operator:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           name: kmdah-operator
           ports:
             - name: http
