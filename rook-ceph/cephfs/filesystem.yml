@@ -12,5 +12,21 @@ spec:
         size: 1
   preservePoolsOnDelete: true
   metadataServer:
-    activeCount: 1
+    activeCount: 3
     activeStandby: true
+    placement:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: "k8s.scaleway.com/pool-name"
+                  operator: In
+                  values:
+                    - "dev1m-pool"
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 1000m
+        memory: 1Gi

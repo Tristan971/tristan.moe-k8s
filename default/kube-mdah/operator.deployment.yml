@@ -50,7 +50,7 @@ spec:
 
             cache:
               root: "/mangahome/cache"
-              size-gib: 10
+              size-gib: 180
           {{- end }}
     spec:
       serviceAccountName: kmdah
@@ -83,14 +83,12 @@ spec:
         - name: kmdah-cache
           persistentVolumeClaim:
             claimName: kmdah-pvc-cephfs
-      # avoid scheduling on the same node as the S3QL master
       affinity:
-        podAntiAffinity:
+        nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - topologyKey: "kubernetes.io/hostname"
-              labelSelector:
-                matchExpressions:
-                  - key: app
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "k8s.scaleway.com/pool-name"
                     operator: In
                     values:
-                      - kmdah-worker
+                      - "dev1m-pool"

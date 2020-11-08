@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: kmdah-worker
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: kmdah-worker
@@ -38,7 +38,7 @@ spec:
             worker:
               port: 8081
               operator-uri: "http://kmdah-operator-service:8080"
-              bandwidth-mbps: 5
+              bandwidth-mbps: 40
               verify-referrer: true
 
             database:
@@ -50,7 +50,7 @@ spec:
 
             cache:
               root: "/mangahome/cache"
-              size-gib: 10
+              size-gib: 180
           {{- end }}
     spec:
       serviceAccountName: kmdah
@@ -68,9 +68,9 @@ spec:
             - name: KMDAH_CONFIG_DIR
               value: "/vault/secrets/"
             - name: XMS
-              value: "256M"
+              value: "512M"
             - name: XMX
-              value: "768M"
+              value: "900M"
           resources:
             requests:
               cpu: 1000m
@@ -83,15 +83,23 @@ spec:
         - name: kmdah-cache
           persistentVolumeClaim:
             claimName: kmdah-pvc-cephfs
-      # avoid scheduling on the same node as the S3QL master
+      # disallow workers to be running the same nodes, since they shouldn't share bandwidth
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - kmdah-worker
       affinity:
-        podAntiAffinity:
+        nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - topologyKey: "kubernetes.io/hostname"
-              labelSelector:
-                matchExpressions:
-                  - key: app
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "k8s.scaleway.com/pool-name"
                     operator: In
                     values:
-                      - kmdah-operator
-                      - kmdah-worker
+                      - "dev1m-pool"
