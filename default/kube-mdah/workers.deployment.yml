@@ -63,10 +63,8 @@ spec:
           env:
             - name: KMDAH_CONFIG_DIR
               value: "/vault/secrets/"
-            - name: XMS
-              value: "512M"
-            - name: XMX
-              value: "900M"
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:+UseShenandoahGC -Xms384M -Xmx768M"
           resources:
             requests:
               cpu: 1000m
