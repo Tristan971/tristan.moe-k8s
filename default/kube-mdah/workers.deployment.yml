@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kmdah-operator
+  name: kmdah-worker
   labels:
-    app.kubernetes.io/name: kmdah-operator
+    app.kubernetes.io/name: kmdah-worker
     app.kubernetes.io/part-of: kmdah
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kmdah-operator
+      app: kmdah-worker
   strategy:
-    type: Recreate
+    type: RollingUpdate
   template:
     metadata:
       labels:
-        app: kmdah-operator
+        app: kmdah-worker
       annotations:
         vault.hashicorp.com/role: 'kmdah'
         vault.hashicorp.com/agent-inject: 'true'
@@ -55,12 +55,12 @@ spec:
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah-operator:0.0.1-SNAPSHOT
+        - image: tristandeloche/kmdah-worker:0.0.1-SNAPSHOT
           imagePullPolicy: Always
-          name: kmdah-operator
+          name: kmdah-worker
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 8081
           volumeMounts:
             - name: kmdah-cache
               mountPath: /mangahome/cache
@@ -68,16 +68,16 @@ spec:
             - name: KMDAH_CONFIG_DIR
               value: "/vault/secrets/"
             - name: XMS
-              value: "128M"
+              value: "256M"
             - name: XMX
-              value: "512M"
+              value: "768M"
           resources:
             requests:
               cpu: 1000m
-              memory: 768M
+              memory: 1Gi
             limits:
               cpu: 1000m
-              memory: 768M
+              memory: 1Gi
       terminationGracePeriodSeconds: 360
       volumes:
         - name: kmdah-cache
@@ -93,4 +93,5 @@ spec:
                   - key: app
                     operator: In
                     values:
+                      - kmdah-operator
                       - kmdah-worker

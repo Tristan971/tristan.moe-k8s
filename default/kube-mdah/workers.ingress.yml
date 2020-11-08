@@ -1,18 +1,18 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: kmdah-ingress-operator
+  name: kmdah-ingress-workers
   labels:
-    app.kubernetes.io/name: kmdah-ingress-operator
+    app.kubernetes.io/name: kmdah-ingress-workers
     app.kubernetes.io/part-of: kmdah
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`*.rmhkd98sb0x3y.mangadex.network`)
+    - match: Host(`mdah.tristan.moe`)
       kind: Rule
       services:
-        - name: kmdah-operator-service
-          port: 8080
+        - name: kmdah-workers-service
+          port: 8081
   tls:
-    secretName: mangadex-at-home-tls-secret
+    secretName: letsencrypt-cert-mdah.tristan.moe

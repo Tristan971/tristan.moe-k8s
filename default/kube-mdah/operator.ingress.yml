@@ -9,7 +9,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`*.rmhkd98sb0x3y.mangadex.network`)
+    - match: Host(`z9g35wzvv6v6m.rmhkd98sb0x3y.mangadex.network`)
       kind: Rule
       services:
         - name: kmdah-operator-service
