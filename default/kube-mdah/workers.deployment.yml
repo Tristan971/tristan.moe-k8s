@@ -41,7 +41,7 @@ spec:
             worker:
               port: 8081
               operator-uri: "http://kmdah-operator-service:8080"
-              bandwidth-mbps: 100
+              bandwidth-mbps: 50
               verify-referrer: true
 
             cache:
@@ -72,13 +72,6 @@ spec:
             limits:
               cpu: 1000m
               memory: 1Gi
-          startupProbe:
-            initialDelaySeconds: 30
-            periodSeconds: 15
-            failureThreshold: 10
-            httpGet:
-              path: /__mon/health
-              port: http
       terminationGracePeriodSeconds: 360
       volumes:
         - name: kmdah-cache

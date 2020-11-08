@@ -72,13 +72,6 @@ spec:
             limits:
               cpu: 1000m
               memory: 768Mi
-          startupProbe:
-            initialDelaySeconds: 30
-            periodSeconds: 15
-            failureThreshold: 10
-            httpGet:
-              path: /__mon/health
-              port: http
       terminationGracePeriodSeconds: 350
       volumes:
         - name: kmdah-cache
