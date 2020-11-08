@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kmdah-operator
+  labels:
+    app.kubernetes.io/name: kmdah-operator
+    app.kubernetes.io/part-of: kmdah
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kmdah-operator
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: kmdah-operator
+      annotations:
+        vault.hashicorp.com/role: 'kmdah'
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-inject-secret-application-prod.yml: 'kv/mangadex/kmdah'
+        vault.hashicorp.com/agent-inject-template-application-prod.yml: |
+          {{- with secret "kv/mangadex/kmdah" -}}
+          kmdah:
+            mangadex:
+              client-secret: "{{ .Data.data.mangadex_client_secret }}"
+              graceful-shutdown-seconds: 300
+
+            operator:
+              port: 8080
+              ping-frequency-seconds: 30
+              workers-uri: "https://mdah.tristan.moe"
+              tls-secret:
+                namespace: "default"
+                name: "mangadex-at-home-tls-secret"
+
+            worker:
+              port: 8081
+              operator-uri: "http://operator:8080"
+              bandwidth-mbps: 400
+              verify-referrer: true
+
+            database:
+              host: "{{ .Data.data.database_host }}"
+              port: {{ .Data.data.database_port }}
+              user: "{{ .Data.data.database_user }}"
+              password: "{{ .Data.data.database_password }}"
+              database: "{{ .Data.data.database_database }}"
+
+            cache:
+              root: "/mangahome/cache"
+              size-gib: 10
+          {{- end }}
+    spec:
+      serviceAccountName: kmdah
+      containers:
+        - image: tristandeloche/kmdah-operator:0.0.1-SNAPSHOT
+          name: kmdah-operator
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: kmdah-cache
+              mountPath: /mangahome/cache
+          env:
+            - name: KMDAH_CONFIG_DIR
+              value: "/vault/secrets/"
+            - name: XMS
+              value: "128M"
+            - name: XMX
+              value: "512M"
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 768M
+            limits:
+              cpu: 1000m
+              memory: 768M
+      terminationGracePeriodSeconds: 360
+      volumes:
+        - name: kmdah-cache
+          persistentVolumeClaim:
+            claimName: kmdah-pvc-cephfs
+      # avoid scheduling on the same node as the S3QL master
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - mangadex-at-home
+              namespaces:
+                - default
