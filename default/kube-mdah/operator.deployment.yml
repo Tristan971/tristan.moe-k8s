@@ -17,6 +17,9 @@ spec:
       labels:
         app: kmdah-operator
       annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/__mon/prometheus"
+        prometheus.io/port: "8080"
         vault.hashicorp.com/role: 'kmdah'
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-inject-secret-application-prod.yml: 'kv/mangadex/kmdah'
@@ -40,13 +43,6 @@ spec:
               operator-uri: "http://kmdah-operator-service:8080"
               bandwidth-mbps: 5
               verify-referrer: true
-
-            database:
-              host: "{{ .Data.data.database_host }}"
-              port: {{ .Data.data.database_port }}
-              user: "{{ .Data.data.database_user }}"
-              password: "{{ .Data.data.database_password }}"
-              database: "{{ .Data.data.database_database }}"
 
             cache:
               root: "/mangahome/cache"
@@ -78,7 +74,7 @@ spec:
             limits:
               cpu: 1000m
               memory: 768M
-      terminationGracePeriodSeconds: 360
+      terminationGracePeriodSeconds: 350
       volumes:
         - name: kmdah-cache
           persistentVolumeClaim:
