@@ -12,7 +12,7 @@ spec:
         size: 1
   preservePoolsOnDelete: true
   metadataServer:
-    activeCount: 3
+    activeCount: 2
     activeStandby: true
     placement:
       nodeAffinity:
