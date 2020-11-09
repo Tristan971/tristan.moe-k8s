@@ -60,7 +60,7 @@ spec:
             - name: 'GIT_SYNC_WAIT'
               value: '86400' # 24h
             - name: 'GIT_SYNC_PERMISSIONS'
-              value: '0755'
+              value: '493' # equiv to 0755 cause impressible stupid choice of base
           volumeMounts:
             - name: plex-config
               mountPath: /tmp/plex-config:shared
@@ -86,7 +86,7 @@ spec:
             - name: 'GIT_SYNC_WAIT'
               value: '86400' # 24h
             - name: 'GIT_SYNC_PERMISSIONS'
-              value: '0755'
+              value: '493' # equiv to 0755 cause impressible stupid choice of base
           volumeMounts:
             - name: plex-config
               mountPath: /tmp/plex-config:shared
@@ -103,4 +103,4 @@ spec:
             claimName: nfs-pvc
         - name: plex-config
           persistentVolumeClaim:
-            claimName: plex-config-ceph
+            claimName: plex-config-pvc

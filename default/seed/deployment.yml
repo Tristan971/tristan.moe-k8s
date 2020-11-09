@@ -4,6 +4,8 @@ metadata:
   name: seed
   labels:
     app: seed
+    app.kubernetes.io/name: seed
+    app.kubernetes.io/part-of: media
 spec:
   selector:
     matchLabels:
@@ -17,9 +19,12 @@ spec:
         app: rutorrent-flood
     spec:
       terminationGracePeriodSeconds: 600
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
       containers:
         - name: seed
-          image: romancin/rutorrent-flood:0.9.8
+          image: romancin/rutorrent-flood:0.9.8-v4.1.0
           ports:
             - name: webui
               containerPort: 3000
@@ -48,14 +53,4 @@ spec:
             claimName: nfs-pvc
         - name: seed-config
           persistentVolumeClaim:
-            claimName: seed-config-ceph
-      # if possible operate on the same node as S3QL, and on a different node from MDAH
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                topologyKey: "kubernetes.io/hostname"
-                labelSelector:
-                  matchLabels:
-                    app: mangadex-at-home
+            claimName: seed-config

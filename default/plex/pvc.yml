@@ -1,10 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: plex-config-ceph
+  name: plex-config-pvc
+  labels:
+    app.kubernetes.io/name: plex-config-pvc
+    app.kubernetes.io/part-of: media
 spec:
   accessModes: [ ReadWriteOnce ]
-  storageClassName: rook-ceph-block-default
   resources:
     requests:
       storage: 15Gi

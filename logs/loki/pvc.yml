@@ -2,13 +2,12 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: logs
-  name: loki-pvc-ceph
+  name: loki-pvc
   labels:
-    app.kubernetes.io/name: loki-pvc-ceph
+    app.kubernetes.io/name: loki-pvc
     app.kubernetes.io/part-of: logs
 spec:
   accessModes: [ ReadWriteOnce ]
-  storageClassName: rook-ceph-block-default
   resources:
     requests:
-      storage: 15Gi
+      storage: 20Gi

@@ -2,13 +2,12 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: logs
-  name: prometheus-server-pvc-ceph
+  name: prometheus-server-pvc
   labels:
-    app.kubernetes.io/name: prometheus-server-pvc-ceph
+    app.kubernetes.io/name: prometheus-server-pvc
     app.kubernetes.io/part-of: logs
 spec:
   accessModes: [ ReadWriteOnce ]
-  storageClassName: rook-ceph-block-default
   resources:
     requests:
       storage: 20Gi

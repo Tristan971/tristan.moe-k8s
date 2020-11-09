@@ -49,4 +49,4 @@ spec:
       volumes:
         - name: unifi-data
           persistentVolumeClaim:
-            claimName: unifi-pvc-ceph
+            claimName: unifi-pvc

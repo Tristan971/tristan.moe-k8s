@@ -1,12 +1,3 @@
-alertmanager:
-  enabled: true
-  image:
-    repository: prom/alertmanager
-    tag: v0.21.0
-  persistentVolume:
-    enabled: true
-    existingClaim: "prometheus-alertmanager-pvc-ceph"
-
 server:
   enabled: true
   image:
@@ -14,20 +5,16 @@ server:
     tag: v2.22.0
   persistentVolume:
     enabled: true
-    existingClaim: "prometheus-server-pvc-ceph"
+    existingClaim: prometheus-server-pvc
   retention: 30d
-
-pushgateway:
-  enabled: true
-  image:
-    repository: prom/pushgateway
-    tag: v1.3.0
-  persistentVolume:
-    enabled: true
-    existingClaim: "prometheus-pushgateway-pvc-ceph"
 
 nodeExporter:
   enabled: true
   image:
     repository: prom/node-exporter
     tag: v1.0.1
+
+alertmanager:
+  enabled: false
+pushgateway:
+  enabled: false

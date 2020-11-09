@@ -4,7 +4,7 @@ image:
 
 persistence:
   enabled: true
-  existingClaim: grafana-pvc-ceph
+  existingClaim: grafana-pvc
 
 plugins:
   - grafana-piechart-panel

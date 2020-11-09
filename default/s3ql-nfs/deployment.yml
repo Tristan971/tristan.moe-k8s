@@ -33,7 +33,7 @@ spec:
       containers:
         - name: s3ql
           imagePullPolicy: Always
-          image: tristandeloche/s3ql-docker:191-container-friendliness
+          image: tristandeloche/s3ql:191-container-friendliness
           securityContext:
             privileged: true
             capabilities:
@@ -44,32 +44,30 @@ spec:
               cpu: 750m
               memory: 768Mi
             limits:
-              cpu: 1750m
-              memory: 1795Mi
+              cpu: 1200m
+              memory: 1500Mi
           env:
-            - name: STORAGE_URL
-              value: s3c://s3.fr-par.scw.cloud/s3ql-seed
-            - name: MOUNT_POINT
-              value: /s3-data/data
-            - name: AUTH_FILE
-              value: /vault/secrets/scaleway-credentials
-            - name: LOG_FILE
-              value: /s3ql/logs/s3ql.log
-            - name: CACHE_DIR
-              value: /s3-cache
-            - name: CACHE_SIZE
+            - name: S3QL_STORAGE_URL
+              value: "s3c://s3.fr-par.scw.cloud/s3ql-seed"
+            - name: S3QL_MOUNTPOINT
+              value: "/s3-data/data"
+            - name: S3QL_AUTHFILE
+              value: "/vault/secrets/scaleway-credentials"
+            - name: S3QL_CACHEDIR
+              value: "/s3-cache"
+            - name: S3QL_CACHESIZE
               value: "26214400"
-            - name: COMPRESS
-              value: none
-            - name: FS_NAME
-              value: s3ql-seed
-            - name: UPLOAD_THREADS
+            - name: S3QL_COMPRESS
+              value: "none"
+            - name: S3QL_FS_NAME
+              value: "s3ql-seed"
+            - name: S3QL_THREADS
               value: "2"
-            - name: KEEP_CACHE
+            - name: S3QL_KEEP_CACHE
               value: "false"
-            - name: ALLOW_OTHER
+            - name: S3QL_ALLOW_OTHER
               value: "true"
-            - name: NFS
+            - name: S3QL_NFS
               value: "true"
           volumeMounts:
             - name: devfuse
@@ -91,11 +89,11 @@ spec:
                 - SYS_ADMIN
           resources:
             requests:
-              cpu: 250m
+              cpu: 500m
               memory: 512Mi
             limits:
-              cpu: 1000m
-              memory: 1024Mi
+              cpu: 500m
+              memory: 512Mi
           ports:
             - containerPort: 2049
           volumeMounts:
@@ -113,11 +111,4 @@ spec:
             path: /mnt/s3-data
         - name: s3ql-cache
           persistentVolumeClaim:
-            claimName: s3ql-cache-ceph
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - topologyKey: "kubernetes.io/hostname"
-              labelSelector:
-                matchLabels:
-                  app: mangadex-at-home
+            claimName: s3ql-cache
