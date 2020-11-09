@@ -41,7 +41,7 @@ spec:
             worker:
               port: 8081
               operator-uri: "http://kmdah-operator-service:8080"
-              bandwidth-mbps: 50
+              bandwidth-mbps: 100
               verify-referrer: true
 
             cache:
@@ -65,6 +65,14 @@ spec:
               value: "/vault/secrets/"
             - name: JAVA_TOOL_OPTIONS
               value: "-XX:+UseShenandoahGC -Xms384M -Xmx768M"
+          readinessProbe:
+            httpGet:
+              path: /__mon/health
+              port: 8081
+            periodSeconds: 5
+            initialDelaySeconds: 5
+            successThreshold: 1
+            failureThreshold: 1
           resources:
             requests:
               cpu: 1000m
