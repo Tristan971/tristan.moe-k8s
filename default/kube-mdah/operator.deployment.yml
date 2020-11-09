@@ -77,12 +77,3 @@ spec:
         - name: kmdah-cache
           persistentVolumeClaim:
             claimName: kmdah-pvc-cephfs
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: "k8s.scaleway.com/pool-name"
-                    operator: In
-                    values:
-                      - "dev1m-pool"

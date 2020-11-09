@@ -41,7 +41,7 @@ spec:
             worker:
               port: 8081
               operator-uri: "http://kmdah-operator-service:8080"
-              bandwidth-mbps: 200
+              bandwidth-mbps: 100
               verify-referrer: true
 
             cache:
@@ -64,7 +64,7 @@ spec:
             - name: KMDAH_CONFIG_DIR
               value: "/vault/secrets/"
             - name: JAVA_TOOL_OPTIONS
-              value: "-XX:+UseShenandoahGC -Xms384M -Xmx768M"
+              value: "-XX:+UseShenandoahGC -Xms512M -Xmx768M"
           readinessProbe:
             httpGet:
               path: /__mon/health
@@ -96,12 +96,3 @@ spec:
                 operator: In
                 values:
                   - kmdah-worker
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: "k8s.scaleway.com/pool-name"
-                    operator: In
-                    values:
-                      - "dev1m-pool"
