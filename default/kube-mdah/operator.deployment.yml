@@ -41,12 +41,17 @@ spec:
             worker:
               port: 8081
               operator-uri: "http://kmdah-operator-service:8080"
-              bandwidth-mbps: 5
+              bandwidth-mbps: 100
               verify-referrer: true
 
             cache:
-              root: "/mangahome/cache"
-              size-gib: 180
+              max-size-gb: 1000
+              bucket-name: "{{ .Data.data.bucket_name }}"
+              s3-auth:
+                service-uri: "{{ .Data.data.bucket_endpoint }}"
+                signing-region: "{{ .Data.data.bucket_region }}"
+                access-key-id: "{{ .Data.data.scw_access_key_id }}"
+                secret-access-key: "{{ .Data.data.scw_secret_access_key }}"
           {{- end }}
     spec:
       serviceAccountName: kmdah
@@ -57,9 +62,6 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-          volumeMounts:
-            - name: kmdah-cache
-              mountPath: /mangahome/cache
           env:
             - name: KMDAH_CONFIG_DIR
               value: "/vault/secrets/"
@@ -73,7 +75,3 @@ spec:
               cpu: 1000m
               memory: 768Mi
       terminationGracePeriodSeconds: 350
-      volumes:
-        - name: kmdah-cache
-          persistentVolumeClaim:
-            claimName: kmdah-pvc-cephfs
