@@ -21,6 +21,13 @@ spec:
     bucket:
       disabled: false
       interval: 60s
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 1000m
+      memory: 1Gi
   placement:
     topologySpreadConstraints:
       - maxSkew: 1
