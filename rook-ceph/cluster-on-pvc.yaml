@@ -46,7 +46,7 @@ spec:
     disable: false
   storage:
     storageClassDeviceSets:
-      - name: scb8
+      - name: scb9
         # The number of OSDs to create from this device set
         # every PVC will be replicated {{ count }} times
         count: 3
