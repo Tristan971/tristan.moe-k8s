@@ -50,8 +50,8 @@ spec:
               s3-auth:
                 service-uri: "{{ .Data.data.bucket_endpoint }}"
                 signing-region: "{{ .Data.data.bucket_region }}"
-                access-key-id: "{{ .Data.data.scw_access_key_id }}"
-                secret-access-key: "{{ .Data.data.scw_secret_access_key }}"
+                access-key-id: "{{ .Data.data.aws_access_key_id }}"
+                secret-access-key: "{{ .Data.data.aws_secret_access_key }}"
           {{- end }}
     spec:
       serviceAccountName: kmdah

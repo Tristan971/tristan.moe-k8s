@@ -12,7 +12,7 @@ spec:
     failureDomain: host
     replicated:
       size: 1
-  preservePoolsOnDelete: true
+  preservePoolsOnDelete: false
   gateway:
     type: s3
     port: 80
