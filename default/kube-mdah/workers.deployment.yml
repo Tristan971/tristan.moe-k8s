@@ -41,7 +41,7 @@ spec:
             worker:
               port: 8081
               operator-uri: "http://kmdah-operator-service:8080"
-              bandwidth-mbps: 200
+              bandwidth-mbps: 150
               verify-referrer: true
 
             cache:
