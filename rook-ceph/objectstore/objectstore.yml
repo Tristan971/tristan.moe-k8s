@@ -16,8 +16,19 @@ spec:
   gateway:
     type: s3
     port: 80
-    instances: 1
+    instances: 3
   healthCheck:
     bucket:
       disabled: false
       interval: 60s
+  placement:
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - rook-ceph-rgw
