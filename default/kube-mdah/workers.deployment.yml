@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: kmdah-worker
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 3
+  replicas: 4
   selector:
     matchLabels:
       app: kmdah-worker
@@ -41,7 +41,7 @@ spec:
             worker:
               port: 8081
               operator-uri: "http://kmdah-operator-service:8080"
-              bandwidth-mbps: 100
+              bandwidth-mbps: 200
               verify-referrer: true
 
             cache:
