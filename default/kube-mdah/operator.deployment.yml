@@ -32,26 +32,21 @@ spec:
 
             operator:
               port: 8080
-              ping-frequency-seconds: 30
-              workers-uri: "https://mdah.tristan.moe"
-              tls-secret:
-                namespace: "default"
-                name: "mangadex-at-home-tls-secret"
+              redirect-uri: "https://mdah.tristan.moe"
 
-            worker:
-              port: 8081
-              operator-uri: "http://kmdah-operator-service:8080"
-              bandwidth-mbps: 100
-              verify-referrer: true
+            tls-secret:
+              namespace: "default"
+              name: "mangadex-at-home-tls-secret"
 
             cache:
-              max-size-gb: 1000
+              max-size-gb: 150
+
+            s3:
+              service-uri: "{{ .Data.data.bucket_endpoint }}"
+              signing-region: "{{ .Data.data.bucket_region }}"
+              access-key-id: "{{ .Data.data.aws_access_key_id }}"
+              secret-access-key: "{{ .Data.data.aws_secret_access_key }}"
               bucket-name: "{{ .Data.data.bucket_name }}"
-              s3-auth:
-                service-uri: "{{ .Data.data.bucket_endpoint }}"
-                signing-region: "{{ .Data.data.bucket_region }}"
-                access-key-id: "{{ .Data.data.aws_access_key_id }}"
-                secret-access-key: "{{ .Data.data.aws_secret_access_key }}"
           {{- end }}
     spec:
       serviceAccountName: kmdah
