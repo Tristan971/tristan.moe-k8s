@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: kmdah-worker
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 4
+  replicas: 3
   selector:
     matchLabels:
       app: kmdah-worker
@@ -26,32 +26,17 @@ spec:
         vault.hashicorp.com/agent-inject-template-application-prod.yml: |
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
-            mangadex:
-              client-secret: "{{ .Data.data.mangadex_client_secret }}"
-              graceful-shutdown-seconds: 300
-
-            operator:
-              port: 8080
-              ping-frequency-seconds: 30
-              workers-uri: "https://mdah.tristan.moe"
-              tls-secret:
-                namespace: "default"
-                name: "mangadex-at-home-tls-secret"
-
             worker:
               port: 8081
               operator-uri: "http://kmdah-operator-service:8080"
               bandwidth-mbps: 1
-              verify-referrer: true
 
-            cache:
-              max-size-gb: 1000
+            s3:
+              service-uri: "{{ .Data.data.bucket_endpoint }}"
+              signing-region: "{{ .Data.data.bucket_region }}"
+              access-key-id: "{{ .Data.data.aws_access_key_id }}"
+              secret-access-key: "{{ .Data.data.aws_secret_access_key }}"
               bucket-name: "{{ .Data.data.bucket_name }}"
-              s3-auth:
-                service-uri: "{{ .Data.data.bucket_endpoint }}"
-                signing-region: "{{ .Data.data.bucket_region }}"
-                access-key-id: "{{ .Data.data.aws_access_key_id }}"
-                secret-access-key: "{{ .Data.data.aws_secret_access_key }}"
           {{- end }}
     spec:
       serviceAccountName: kmdah
