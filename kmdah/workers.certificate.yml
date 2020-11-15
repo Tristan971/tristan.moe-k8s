@@ -2,6 +2,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: cert-mdah
+  namespace: kmdah
   labels:
     app.kubernetes.io/name: cert-mdah
     app.kubernetes.io/part-of: kmdah

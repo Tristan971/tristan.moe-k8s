@@ -2,11 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kmdah-operator
+  namespace: kmdah
   labels:
     app.kubernetes.io/name: kmdah-operator
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: kmdah-operator
@@ -35,7 +36,7 @@ spec:
               redirect-uri: "https://mdah.tristan.moe"
 
             tls-secret:
-              namespace: "default"
+              namespace: "kmdah"
               name: "mangadex-at-home-tls-secret"
 
             cache:

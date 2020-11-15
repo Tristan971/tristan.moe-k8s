@@ -2,11 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kmdah-worker
+  namespace: kmdah
   labels:
     app.kubernetes.io/name: kmdah-worker
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     matchLabels:
       app: kmdah-worker

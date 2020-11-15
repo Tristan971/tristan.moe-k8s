@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kmdah-operator-service
+  namespace: kmdah
   labels:
     app.kubernetes.io/name: kmdah-operator-service
     app.kubernetes.io/part-of: kmdah
