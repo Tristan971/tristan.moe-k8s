@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  namespace: kmdah
+  name: kmdah-mongod-configsvr
+  labels:
+    app.kubernetes.io/name: kmdah-mongod-configsvr
+    app.kubernetes.io/part-of: kmdah
+
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kmdah-mongod-configsvr
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kmdah-mongod-configsvr
+    spec:
+      containers:
+        - name: mongodb
+          image: library/mongo:4.4
+          args:
+            - --config
+            - /config/configsvr-mongod.yml
+          ports:
+            - containerPort: 27019
+              name: configsvr
+              hostPort: 27019
+          volumeMounts:
+            - name: mongod-configsvr-config
+              mountPath: /config
+            - name: mongod-configsvr-data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 512m
+              memory: 512Mi
+            limits:
+              cpu: 512m
+              memory: 512Mi
+      volumes:
+        - name: mongod-configsvr-config
+          configMap:
+            name: kmdah-mongod-config
+            items:
+              - key: configsvr-mongod.yml
+                path: configsvr-mongod.yml
+        - name: mongod-configsvr-data
+          persistentVolumeClaim:
+            claimName: kmdah-mongod-configsvr-pvc
