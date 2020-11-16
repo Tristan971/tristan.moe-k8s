@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kmdah
+  name: kmdah-mongos-config
+data:
+  mongos.yml: |
+    systemLog:
+      timeStampFormat: iso8601-utc
+
+    net:
+      bindIpAll: true
+      tls:
+        mode: disabled
+
+    sharding:
+      configDB: "kmdah/kmdah-mongod-configsvr-0:27019,kmdah-mongod-configsvr-1:27019,kmdah-mongod-configsvr-2:27019"

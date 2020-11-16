@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 
 metadata:
   namespace: kmdah
@@ -12,7 +12,8 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: kmdah-mongod-configsvr
-  replicas: 1
+  serviceName: kmdah-mongod-configsvr
+  replicas: 3
   template:
     metadata:
       labels:
@@ -35,10 +36,10 @@ spec:
               mountPath: /data
           resources:
             requests:
-              cpu: 512m
+              cpu: 500m
               memory: 512Mi
             limits:
-              cpu: 512m
+              cpu: 500m
               memory: 512Mi
       volumes:
         - name: mongod-configsvr-config
@@ -47,6 +48,11 @@ spec:
             items:
               - key: configsvr-mongod.yml
                 path: configsvr-mongod.yml
-        - name: mongod-configsvr-data
-          persistentVolumeClaim:
-            claimName: kmdah-mongod-configsvr-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: mongod-configsvr-data
+      spec:
+        accessModes: [ ReadWriteOnce ]
+        resources:
+          requests:
+            storage: 10Gi

@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kmdah
+  name: kmdah-mongod-configsvr-0
+  labels:
+    app.kubernetes.io/part-of: kmdah
+spec:
+  ports:
+    - port: 27019
+      name: configsvr
+      targetPort: 27019
+  selector:
+    statefulset.kubernetes.io/pod-name: kmdah-mongod-configsvr-0
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kmdah
+  name: kmdah-mongod-configsvr-1
+  labels:
+    app.kubernetes.io/part-of: kmdah
+spec:
+  ports:
+    - port: 27019
+      name: configsvr
+      targetPort: 27019
+  selector:
+    statefulset.kubernetes.io/pod-name: kmdah-mongod-configsvr-1
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kmdah
+  name: kmdah-mongod-configsvr-2
+  labels:
+    app.kubernetes.io/part-of: kmdah
+spec:
+  ports:
+    - port: 27019
+      name: configsvr
+      targetPort: 27019
+  selector:
+    statefulset.kubernetes.io/pod-name: kmdah-mongod-configsvr-2
