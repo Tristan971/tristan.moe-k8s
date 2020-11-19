@@ -1,0 +1,13 @@
+# Forward authentication to example.com
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  namespace: kube-system
+  name: http-to-https-middleware
+  labels:
+    app.kubernetes.io/name: traefik-http-to-https-middleware
+    app.kubernetes.io/part-of: traefik
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

@@ -7,6 +7,7 @@ metadata:
     app.kubernetes.io/part-of: site
 spec:
   entryPoints:
+    - web
     - websecure
   routes:
     - match: Host(`tristan.moe`) || Host(`trde9.com`)
@@ -14,5 +15,8 @@ spec:
       services:
         - name: site
           port: 80
+      middlewares:
+        - name: http-to-https-middleware
+          namespace: kube-system
   tls:
     secretName: letsencrypt-cert-site.tristan.moe
