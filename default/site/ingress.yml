@@ -9,7 +9,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`tristan.moe`)
+    - match: Host(`tristan.moe`) || Host(`trde9.com`)
       kind: Rule
       services:
         - name: site

@@ -10,6 +10,7 @@ spec:
   secretName: letsencrypt-cert-site.tristan.moe
   dnsNames:
     - tristan.moe
+    - trde9.com
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt-tristan.moe-issue
