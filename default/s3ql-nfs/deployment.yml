@@ -41,11 +41,11 @@ spec:
                 - SYS_ADMIN
           resources:
             requests:
-              cpu: 750m
-              memory: 768Mi
+              cpu: 1200m
+              memory: 1800Mi
             limits:
               cpu: 1200m
-              memory: 1500Mi
+              memory: 1800Mi
           env:
             - name: S3QL_STORAGE_URL
               value: "s3c://s3.fr-par.scw.cloud/s3ql-seed"
