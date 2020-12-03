@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: kmdah
+  name: kmdah-mongodb-data
+  labels:
+    app.kubernetes.io/name: kmdah-mongodb-data
+    app.kubernetes.io/part-of: kmdah
+spec:
+  accessModes: [ ReadWriteOnce ]
+  resources:
+    requests:
+      storage: 200Gi

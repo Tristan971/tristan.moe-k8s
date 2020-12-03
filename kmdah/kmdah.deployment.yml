@@ -1,62 +1,70 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kmdah-worker
+  name: kmdah
   namespace: kmdah
   labels:
-    app.kubernetes.io/name: kmdah-worker
+    app.kubernetes.io/name: kmdah
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
-      app: kmdah-worker
+      app: kmdah
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: kmdah-worker
+        app: kmdah
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/path: "/__mon/prometheus"
-        prometheus.io/port: "8081"
+        prometheus.io/port: "8080"
         vault.hashicorp.com/role: 'kmdah'
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-inject-secret-application-prod.yml: 'kv/mangadex/kmdah'
         vault.hashicorp.com/agent-inject-template-application-prod.yml: |
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
-            worker:
-              port: 8081
-              operator-uri: "http://kmdah-operator-service:8080"
-              bandwidth-mbps: 1
+            cache:
+              max-size-gb: 150
+              mongodb:
+                host: kmdah-mongodb-service
+                port: 27017
 
-            s3:
-              service-uri: "{{ .Data.data.bucket_endpoint }}"
-              signing-region: "{{ .Data.data.bucket_region }}"
-              access-key-id: "{{ .Data.data.aws_access_key_id }}"
-              secret-access-key: "{{ .Data.data.aws_secret_access_key }}"
-              bucket-name: "{{ .Data.data.bucket_name }}"
+            gossip:
+              id-generation-strategy: hostname
+              redis:
+                host: kmdah-redis-service
+                port: 6379
+
+            k8s:
+              tls-secret:
+                namespace: kmdah
+                name: mangadex-at-home-tls-secret
+
+            mangadex:
+              client-secret: "{{ .Data.data.mangadex_client_secret_test }}"
           {{- end }}
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah-worker:0.0.1-SNAPSHOT
+        - image: tristandeloche/kmdah:0.1.0
           imagePullPolicy: Always
-          name: kmdah-worker
+          name: kmdah
           ports:
             - name: http
-              containerPort: 8081
+              containerPort: 8080
           env:
-            - name: KMDAH_CONFIG_DIR
-              value: "/vault/secrets/"
+            - name: KMDAH_CONFIGURATION
+              value: "/vault/secrets/application-prod.yml"
             - name: JAVA_TOOL_OPTIONS
-              value: "-XX:+UseShenandoahGC -Xms512M -Xmx768M"
+              value: "-Xmx512M"
           readinessProbe:
             httpGet:
               path: /__mon/health
-              port: 8081
+              port: 8080
             periodSeconds: 5
             initialDelaySeconds: 5
             successThreshold: 1
@@ -64,10 +72,10 @@ spec:
           resources:
             requests:
               cpu: 1000m
-              memory: 1Gi
+              memory: 768Mi
             limits:
               cpu: 1000m
-              memory: 1Gi
+              memory: 768Mi
       terminationGracePeriodSeconds: 360
       # disallow workers to be running the same nodes, since they would be sharing bandwidth
       topologySpreadConstraints:
@@ -79,4 +87,4 @@ spec:
               - key: app
                 operator: In
                 values:
-                  - kmdah-worker
+                  - kmdah

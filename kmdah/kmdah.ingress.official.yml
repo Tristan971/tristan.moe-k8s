@@ -13,7 +13,7 @@ spec:
     - match: HostRegexp(`{subdomain:.*.rmhkd98sb0x3y}.mangadex.network`)
       kind: Rule
       services:
-        - name: kmdah-operator-service
+        - name: kmdah-service
           port: 8080
   tls:
     secretName: mangadex-at-home-tls-secret

@@ -24,7 +24,7 @@ spec:
           image: ssheehy/mongodb-exporter:0.11.0
           env:
             - name: MONGODB_URI
-              value: "mongodb://kmdah-mongos:27017"
+              value: "mongodb://kmdah-mongodb-service:27017"
           ports:
             - containerPort: 9216
               name: metrics
