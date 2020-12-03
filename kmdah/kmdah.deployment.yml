@@ -60,7 +60,7 @@ spec:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xmx512M"
+              value: "-Xms512M -Xmx768M"
           readinessProbe:
             httpGet:
               path: /__mon/health
@@ -71,11 +71,11 @@ spec:
             failureThreshold: 1
           resources:
             requests:
-              cpu: 1000m
-              memory: 768Mi
+              cpu: 1200m
+              memory: 1Gi
             limits:
-              cpu: 1000m
-              memory: 768Mi
+              cpu: 1200m
+              memory: 1Gi
       terminationGracePeriodSeconds: 360
       # disallow workers to be running the same nodes, since they would be sharing bandwidth
       topologySpreadConstraints:
