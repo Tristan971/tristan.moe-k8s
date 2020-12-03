@@ -60,7 +60,7 @@ spec:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xms512M -Xmx768M"
+              value: "-XX:+UseZGC -verbose:gc -Xmx512M"
           readinessProbe:
             httpGet:
               path: /__mon/health
