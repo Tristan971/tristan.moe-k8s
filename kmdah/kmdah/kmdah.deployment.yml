@@ -45,7 +45,10 @@ spec:
                 name: mangadex-at-home-tls-secret
 
             mangadex:
-              client-secret: "{{ .Data.data.mangadex_client_secret_test }}"
+              client-secret: "{{ .Data.data.mangadex_client_secret }}"
+
+            worker:
+              bandwidth-mbps: 1
           {{- end }}
     spec:
       serviceAccountName: kmdah
