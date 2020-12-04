@@ -1,7 +1,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: kmdah-ingress-operator
+  name: kmdah-ingress-official
   namespace: kmdah
   labels:
     app.kubernetes.io/name: kmdah-ingress-operator

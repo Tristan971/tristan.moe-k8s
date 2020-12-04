@@ -50,7 +50,7 @@ spec:
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.1.0
+        - image: tristandeloche/kmdah:0.1.1-SNAPSHOT
           imagePullPolicy: Always
           name: kmdah
           ports:
@@ -60,7 +60,7 @@ spec:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
             - name: JAVA_TOOL_OPTIONS
-              value: "-XX:+UseZGC -verbose:gc -Xmx512M"
+              value: "-Xmx768M"
           readinessProbe:
             httpGet:
               path: /__mon/health
@@ -71,10 +71,9 @@ spec:
             failureThreshold: 1
           resources:
             requests:
-              cpu: 1200m
+              cpu: 1000m
               memory: 1Gi
             limits:
-              cpu: 1200m
               memory: 1Gi
       terminationGracePeriodSeconds: 360
       # disallow workers to be running the same nodes, since they would be sharing bandwidth
