@@ -1,6 +1,6 @@
 image:
   repository: grafana/grafana
-  tag: 7.2.1
+  tag: 7.3.4
 
 persistence:
   enabled: true
