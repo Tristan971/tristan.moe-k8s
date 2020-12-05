@@ -48,7 +48,7 @@ spec:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
 
             worker:
-              bandwidth-mbps: 40
+              bandwidth-mbps: 50
           {{- end }}
     spec:
       serviceAccountName: kmdah
