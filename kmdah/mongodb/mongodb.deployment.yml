@@ -33,7 +33,7 @@ spec:
               name: mongodb
           volumeMounts:
             - name: data
-              mountPath: /data
+              mountPath: /data/db
           resources:
             requests:
               cpu: 1000m

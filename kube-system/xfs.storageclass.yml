@@ -5,6 +5,6 @@ metadata:
   name: scw-bssd-xfs
 provisioner: csi.scaleway.com
 parameters:
-  fstype: xfs
+  csi.storage.k8s.io/fstype: xfs
 reclaimPolicy: Delete
 allowVolumeExpansion: true
