@@ -28,7 +28,7 @@ spec:
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
             cache:
-              max-size-gb: 150
+              max-size-gb: 200
               mongodb:
                 host: kmdah-mongodb-service
                 port: 27017
@@ -48,7 +48,7 @@ spec:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
 
             worker:
-              bandwidth-mbps: 50
+              bandwidth-mbps: 75
           {{- end }}
     spec:
       serviceAccountName: kmdah
