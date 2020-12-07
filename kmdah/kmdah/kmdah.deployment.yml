@@ -28,9 +28,9 @@ spec:
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
             cache:
-              max-size-gb: 200
+              max-size-gb: 220
               mongodb:
-                host: kmdah-mongodb-service
+                host: kmdah-mongos
                 port: 27017
 
             gossip:
@@ -45,7 +45,7 @@ spec:
                 name: mangadex-at-home-tls-secret
 
             mangadex:
-              client-secret: "{{ .Data.data.mangadex_client_secret }}"
+              client-secret: "{{ .Data.data.mangadex_client_secret_test }}"
 
             worker:
               bandwidth-mbps: 100
@@ -74,7 +74,7 @@ spec:
             failureThreshold: 1
           resources:
             requests:
-              cpu: 1000m
+              cpu: 500m
               memory: 1Gi
             limits:
               memory: 1Gi

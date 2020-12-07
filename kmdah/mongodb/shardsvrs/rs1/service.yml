@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kmdah
+  name: kmdah-mongod-shardsvr-rs1-service
+  labels:
+    app.kubernetes.io/part-of: kmdah
+spec:
+  ports:
+    - port: 27018
+      name: shardsvr
+      targetPort: 27018
+  selector:
+    app.kubernetes.io/name: kmdah-mongod-shardsvr-rs1
