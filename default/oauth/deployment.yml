@@ -30,7 +30,8 @@ spec:
           client_id = "{{ .Data.data.GH_APP_CLIENT_ID }}"
           client_secret = "{{ .Data.data.GH_APP_CLIENT_SECRET }}"
           github_users = [
-            "Tristan971"
+            "Tristan971",
+            "jonparkinson1688"
           ]
 
           email_domains = [
