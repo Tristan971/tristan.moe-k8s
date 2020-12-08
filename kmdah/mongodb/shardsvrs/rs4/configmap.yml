@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kmdah
+  name: kmdah-mongod-shardsvr-rs4-config
+data:
+  shardsvr-mongod.yml: |
+    systemLog:
+      timeStampFormat: iso8601-utc
+
+    net:
+      bindIpAll: true
+      tls:
+        mode: disabled
+
+    security:
+      authorization: disabled
+
+    storage:
+      dbPath: /data/db
+
+    replication:
+      replSetName: kmdah-rs4
+      enableMajorityReadConcern: false
+
+    sharding:
+      clusterRole: shardsvr
