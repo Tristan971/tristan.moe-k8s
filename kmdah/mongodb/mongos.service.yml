@@ -12,3 +12,4 @@ spec:
       targetPort: 27017
   selector:
     app.kubernetes.io/name: kmdah-mongos
+  publishNotReadyAddresses: true

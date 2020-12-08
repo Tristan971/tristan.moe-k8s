@@ -12,3 +12,4 @@ spec:
       targetPort: 27018
   selector:
     app.kubernetes.io/name: kmdah-mongod-shardsvr-rs1
+  publishNotReadyAddresses: true

@@ -12,3 +12,4 @@ spec:
       targetPort: 27019
   selector:
     app.kubernetes.io/name: kmdah-mongod-configsvr
+  publishNotReadyAddresses: true

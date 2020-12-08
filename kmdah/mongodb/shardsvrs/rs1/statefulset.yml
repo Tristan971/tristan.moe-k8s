@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: kmdah-mongod-shardsvr-rs1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "metrics"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: mongodb
@@ -35,6 +39,27 @@ spec:
               memory: 2Gi
             limits:
               memory: 2Gi
+        - name: mongodb-exporter
+          image: ssheehy/mongodb-exporter:0.11.0
+          env:
+            - name: MONGODB_URI
+              value: "mongodb://kmdah:kmdah@localhost:27018"
+          ports:
+            - containerPort: 9216
+              name: metrics
+              hostPort: 9216
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: metrics
+            initialDelaySeconds: 10
       volumes:
         - name: mongod-shardsvr-config
           configMap:
