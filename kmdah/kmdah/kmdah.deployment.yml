@@ -46,14 +46,15 @@ spec:
 
             mangadex:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
+              load-balancer-ip: "195.154.69.74"
 
             worker:
-              bandwidth-mbps: 150
+              bandwidth-mbps: 200
           {{- end }}
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.1.1-SNAPSHOT
+        - image: tristandeloche/kmdah:0.1.2-SNAPSHOT
           imagePullPolicy: Always
           name: kmdah
           ports:

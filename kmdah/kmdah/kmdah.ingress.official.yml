@@ -15,8 +15,5 @@ spec:
       services:
         - name: kmdah-service
           port: 8080
-      middlewares:
-        - namespace: kmdah
-          name: kmdah-ingress-official-redirect-middleware
   tls:
     secretName: mangadex-at-home-tls-secret
