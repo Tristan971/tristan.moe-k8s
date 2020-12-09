@@ -28,7 +28,7 @@ spec:
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
             cache:
-              max-size-gb: 220
+              max-size-gb: 480
               mongodb:
                 host: kmdah-mongos
                 port: 27017
