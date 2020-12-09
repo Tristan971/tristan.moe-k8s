@@ -49,12 +49,12 @@ spec:
               load-balancer-ip: "195.154.69.74"
 
             worker:
-              bandwidth-mbps: 200
+              bandwidth-mbps: 250
           {{- end }}
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.1.3-SNAPSHOT
+        - image: tristandeloche/kmdah:0.1.4-SNAPSHOT
           imagePullPolicy: Always
           name: kmdah
           ports:
