@@ -28,7 +28,7 @@ spec:
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
             cache:
-              max-size-gb: 480
+              max-size-gb: 560
               mongodb:
                 host: kmdah-mongos
                 port: 27017
@@ -82,7 +82,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: [ "sleep", "10" ] # give 10s to traefik to remove the pod from the service pool
+                command: [ "sleep", "10" ] # give 10s to traefik to remove the pod from all nodes' Endpoints
       terminationGracePeriodSeconds: 360
       # disallow workers to be running the same nodes, since they would be sharing bandwidth
       topologySpreadConstraints:
