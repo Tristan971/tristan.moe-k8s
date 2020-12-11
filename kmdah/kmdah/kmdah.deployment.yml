@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: kmdah
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: kmdah
@@ -28,7 +28,7 @@ spec:
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
             cache:
-              max-size-gb: 560
+              max-size-gb: 170
               mongodb:
                 host: kmdah-mongos
                 port: 27017
@@ -45,16 +45,16 @@ spec:
                 name: mangadex-at-home-tls-secret
 
             mangadex:
-              client-secret: "{{ .Data.data.mangadex_client_secret }}"
-              load-balancer-ip: "195.154.69.74"
+              client-secret: "{{ .Data.data.mangadex_client_secret_test }}"
+              load-balancer-ip: "167.98.87.78"
 
             worker:
-              bandwidth-mbps: 350
+              bandwidth-mbps: 100
           {{- end }}
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.1.4-SNAPSHOT
+        - image: tristandeloche/kmdah:0.1.5-SNAPSHOT
           imagePullPolicy: Always
           name: kmdah
           ports:
