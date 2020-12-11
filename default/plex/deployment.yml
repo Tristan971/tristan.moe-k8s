@@ -35,16 +35,17 @@ spec:
               value: '0'
           volumeMounts:
             - name: plex-config
-              mountPath: /config:shared
+              mountPath: /config
+              mountPropagation: HostToContainer
             - name: nfs-plex-data
               mountPath: /data
           resources:
             requests:
               cpu: 1000m
-              memory: 1200Mi
+              memory: 1500Mi
             limits:
               cpu: 1000m
-              memory: 1200Mi
+              memory: 1500Mi
         - name: git-sync-hama-bundle
           image: k8s.gcr.io/git-sync:v3.1.6
           securityContext:
@@ -63,7 +64,8 @@ spec:
               value: '493' # equiv to 0755 cause impressible stupid choice of base
           volumeMounts:
             - name: plex-config
-              mountPath: /tmp/plex-config:shared
+              mountPath: /tmp/plex-config
+              mountPropagation: HostToContainer
           resources:
             requests:
               cpu: 100m
@@ -89,7 +91,8 @@ spec:
               value: '493' # equiv to 0755 cause impressible stupid choice of base
           volumeMounts:
             - name: plex-config
-              mountPath: /tmp/plex-config:shared
+              mountPath: /tmp/plex-config
+              mountPropagation: HostToContainer
           resources:
             requests:
               cpu: 100m

@@ -33,7 +33,7 @@ spec:
       containers:
         - name: s3ql
           imagePullPolicy: Always
-          image: tristandeloche/s3ql:191-container-friendliness
+          image: rg.fr-par.scw.cloud/tristandeloche/s3ql:131-container-friendliness-3
           securityContext:
             privileged: true
             capabilities:
@@ -75,7 +75,8 @@ spec:
             - name: s3ql-cache
               mountPath: /s3-cache
             - name: s3-data
-              mountPath: /s3-data:shared
+              mountPath: /s3-data
+              mountPropagation: Bidirectional
         - name: nfs-server
           imagePullPolicy: Always
           image: tristandeloche/nfs-ganesha:master
@@ -97,9 +98,9 @@ spec:
           ports:
             - containerPort: 2049
           volumeMounts:
-            # /path/to/share:/nfs
-            - mountPath: /nfs:shared
+            - mountPath: /nfs
               name: s3-data
+              mountPropagation: HostToContainer
       volumes:
         # fuse device to use for mounting the s3ql filesystem
         - name: devfuse
@@ -107,8 +108,7 @@ spec:
             path: /dev/fuse
         # shared volume to which the NFS server writes (due to other nodes using the NFS server)
         - name: s3-data
-          hostPath:
-            path: /mnt/s3-data
+          emptyDir: { }
         - name: s3ql-cache
           persistentVolumeClaim:
             claimName: s3ql-cache

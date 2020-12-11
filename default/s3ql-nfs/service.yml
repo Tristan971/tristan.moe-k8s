@@ -6,6 +6,6 @@ spec:
   ports:
     - name: nfs
       port: 2049
-  clusterIP: None
+  clusterIP: 10.32.69.1
   selector:
     app: s3ql-master

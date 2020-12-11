@@ -5,9 +5,9 @@ metadata:
   namespace: default
 spec:
   capacity:
-    storage: 1Ti
+    storage: 2Ti
   accessModes:
     - ReadWriteMany
   nfs:
-    server: s3ql-master-nfs.default.svc.cluster.local
+    server: 10.32.69.1
     path: "/"
