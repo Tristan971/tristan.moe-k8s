@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: kmdah
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: kmdah
@@ -28,7 +28,7 @@ spec:
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
             cache:
-              max-size-gb: 170
+              max-size-gb: 550
               mongodb:
                 host: kmdah-mongos
                 port: 27017
@@ -45,8 +45,8 @@ spec:
                 name: mangadex-at-home-tls-secret
 
             mangadex:
-              client-secret: "{{ .Data.data.mangadex_client_secret_test }}"
-              load-balancer-ip: "167.98.87.78"
+              client-secret: "{{ .Data.data.mangadex_client_secret }}"
+              load-balancer-ip: "195.154.69.74"
 
             worker:
               bandwidth-mbps: 100
@@ -64,7 +64,7 @@ spec:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xmx768M"
+              value: "-Xmx512M"
           readinessProbe:
             httpGet:
               path: /__mon/health
@@ -76,9 +76,9 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 1Gi
+              memory: 768Mi
             limits:
-              memory: 1Gi
+              memory: 768Mi
           lifecycle:
             preStop:
               exec:
