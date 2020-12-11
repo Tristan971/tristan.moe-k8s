@@ -64,7 +64,7 @@ spec:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xmx512M"
+              value: "-Xmx768M"
           readinessProbe:
             httpGet:
               path: /__mon/health
@@ -76,9 +76,9 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 768Mi
+              memory: 1Gi
             limits:
-              memory: 768Mi
+              memory: 1Gi
           lifecycle:
             preStop:
               exec:
