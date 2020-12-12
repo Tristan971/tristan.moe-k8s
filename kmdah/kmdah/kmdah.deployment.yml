@@ -13,6 +13,8 @@ spec:
       app: kmdah
   strategy:
     type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -54,7 +56,7 @@ spec:
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.1.5-SNAPSHOT
+        - image: tristandeloche/kmdah:0.1.5.1-SNAPSHOT
           imagePullPolicy: Always
           name: kmdah
           ports:
