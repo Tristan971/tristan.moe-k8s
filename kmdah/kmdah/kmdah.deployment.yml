@@ -30,7 +30,7 @@ spec:
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
             cache:
-              max-size-gb: 550
+              max-size-gb: 400
               mongodb:
                 host: kmdah-mongos
                 port: 27017
@@ -51,7 +51,7 @@ spec:
               load-balancer-ip: "195.154.69.74"
 
             worker:
-              bandwidth-mbps: 300
+              bandwidth-mbps: 350
           {{- end }}
     spec:
       serviceAccountName: kmdah
