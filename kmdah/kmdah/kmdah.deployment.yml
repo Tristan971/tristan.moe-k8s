@@ -51,7 +51,7 @@ spec:
               load-balancer-ip: "195.154.69.74"
 
             worker:
-              bandwidth-mbps: 200
+              bandwidth-mbps: 300
           {{- end }}
     spec:
       serviceAccountName: kmdah
