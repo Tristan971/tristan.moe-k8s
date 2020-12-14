@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: kmdah
+  name: kmdah-mongodb-pvc
+  labels:
+    app.kubernetes.io/name: kmdah-mongodb-pvc
+    app.kubernetes.io/part-of: kmdah
+spec:
+  accessModes: [ ReadWriteOnce ]
+  storageClassName: scw-bssd-xfs
+  resources:
+    requests:
+      storage: 500Gi
