@@ -12,3 +12,4 @@ spec:
       targetPort: redis
   selector:
     app.kubernetes.io/name: kmdah-redis
+  publishNotReadyAddresses: true

@@ -32,13 +32,13 @@ spec:
             cache:
               max-size-gb: 420
               mongodb:
-                host: kmdah-mongodb
+                host: kmdah-mongodb.kmdah.svc.cluster.local
                 port: 27017
 
             gossip:
               id-generation-strategy: hostname
               redis:
-                host: kmdah-redis-service
+                host: kmdah-redis-service.kmdah.svc.cluster.local
                 port: 6379
 
             k8s:
@@ -51,7 +51,7 @@ spec:
               load-balancer-ip: "195.154.69.74"
 
             worker:
-              bandwidth-mbps: 150
+              bandwidth-mbps: 200
           {{- end }}
     spec:
       serviceAccountName: kmdah
