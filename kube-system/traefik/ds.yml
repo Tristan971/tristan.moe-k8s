@@ -25,7 +25,7 @@ spec:
       serviceAccountName: traefik-ingress-controller
       containers:
         - name: traefik
-          image: traefik:v2.3.2
+          image: traefik:v2.3.5
           ports:
             - name: web
               hostPort: 80
@@ -76,12 +76,16 @@ spec:
               value: ":9000"
             - name: TRAEFIK_ENTRYPOINTS_WEB_ADDRESS
               value: ":8000"
+            - name: TRAEFIK_ENTRYPOINTS_WEB_FORWARDEDHEADERS_INSECURE
+              value: "true"
             - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS
               value: ":8443"
             - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_HTTP_TLS
               value: "true"
             - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_HTTP_TLS_CERTRESOLVER
               value: "letsencrypt-tristan.moe-issue"
+            - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_FORWARDEDHEADERS_INSECURE
+              value: "true"
             # Monitoring
             - name: TRAEFIK_METRICS_PROMETHEUS
               value: "true"
