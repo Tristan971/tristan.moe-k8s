@@ -7,6 +7,9 @@ metadata:
     app.kubernetes.io/name: traefik-lb-service
     app.kubernetes.io/part-of: traefik
     k8s.scw.cloud/ingress: traefik2
+  annotations:
+    service.beta.kubernetes.io/scw-loadbalancer-type: "lb-gp-m"
+    service.beta.kubernetes.io/scw-loadbalancer-proxy-protocol-v2: "true"
 spec:
   type: LoadBalancer
   loadBalancerIP: 195.154.69.74

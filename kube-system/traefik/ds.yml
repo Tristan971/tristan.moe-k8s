@@ -78,6 +78,10 @@ spec:
               value: ":8000"
             - name: TRAEFIK_ENTRYPOINTS_WEB_FORWARDEDHEADERS_INSECURE
               value: "true"
+            - name: TRAEFIK_ENTRYPOINTS_WEB_PROXYPROTOCOL
+              value: "true"
+            - name: TRAEFIK_ENTRYPOINTS_WEB_PROXYPROTOCOL_INSECURE
+              value: "true"
             - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS
               value: ":8443"
             - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_HTTP_TLS
@@ -85,6 +89,10 @@ spec:
             - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_HTTP_TLS_CERTRESOLVER
               value: "letsencrypt-tristan.moe-issue"
             - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_FORWARDEDHEADERS_INSECURE
+              value: "true"
+            - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_PROXYPROTOCOL
+              value: "true"
+            - name: TRAEFIK_ENTRYPOINTS_WEBSECURE_PROXYPROTOCOL_INSECURE
               value: "true"
             # Monitoring
             - name: TRAEFIK_METRICS_PROMETHEUS
