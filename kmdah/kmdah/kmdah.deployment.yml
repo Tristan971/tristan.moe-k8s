@@ -37,7 +37,6 @@ spec:
 
             geoip:
               enabled: true
-              ip-header: "X-Forwarded-For"
               license-key: "{{ .Data.data.maxmind_license_key }}"
 
             gossip:
@@ -61,7 +60,7 @@ spec:
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.1.6-SNAPSHOT
+        - image: tristandeloche/kmdah:0.1.7-SNAPSHOT
           imagePullPolicy: Always
           name: kmdah
           ports:
