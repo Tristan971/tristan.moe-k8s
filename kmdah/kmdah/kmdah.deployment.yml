@@ -30,7 +30,7 @@ spec:
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
             cache:
-              max-size-gb: 500
+              max-size-gb: 550
               mongodb:
                 host: kmdah-mongodb.kmdah.svc.cluster.local
                 port: 27017
