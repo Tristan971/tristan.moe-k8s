@@ -35,6 +35,11 @@ spec:
                 host: kmdah-mongodb.kmdah.svc.cluster.local
                 port: 27017
 
+            geoip:
+              enabled: true
+              ip-header: "X-Forwarded-For"
+              license-key: "{{ .Data.data.maxmind_license_key }}"
+
             gossip:
               id-generation-strategy: hostname
               redis:
@@ -56,7 +61,7 @@ spec:
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.1.5.1-SNAPSHOT
+        - image: tristandeloche/kmdah:0.1.6-SNAPSHOT
           imagePullPolicy: Always
           name: kmdah
           ports:
