@@ -7,7 +7,7 @@ metadata:
     addonmanager.kubernetes.io/mode: Reconcile
 data:
   Corefile: |
-    __PILLAR__DNS__DOMAIN__:53 {
+    cluster.local:53 {
         errors
         cache {
                 success 9984 30
@@ -15,19 +15,19 @@ data:
         }
         reload
         loop
-        bind __PILLAR__LOCAL__DNS__ __PILLAR__DNS__SERVER__
+        bind 169.254.20.69 10.32.0.10
         forward . __PILLAR__CLUSTER__DNS__ {
                 force_tcp
         }
         prometheus :9253
-        health __PILLAR__LOCAL__DNS__:8080
+        health 169.254.20.69:8080
         }
     in-addr.arpa:53 {
         errors
         cache 30
         reload
         loop
-        bind __PILLAR__LOCAL__DNS__ __PILLAR__DNS__SERVER__
+        bind 169.254.20.69 10.32.0.10
         forward . __PILLAR__CLUSTER__DNS__ {
                 force_tcp
         }
@@ -38,7 +38,7 @@ data:
         cache 30
         reload
         loop
-        bind __PILLAR__LOCAL__DNS__ __PILLAR__DNS__SERVER__
+        bind 169.254.20.69 10.32.0.10
         forward . __PILLAR__CLUSTER__DNS__ {
                 force_tcp
         }
@@ -49,8 +49,7 @@ data:
         cache 30
         reload
         loop
-        bind __PILLAR__LOCAL__DNS__ __PILLAR__DNS__SERVER__
+        bind 169.254.20.69 10.32.0.10
         forward . __PILLAR__UPSTREAM__SERVERS__
         prometheus :9253
         }
----
