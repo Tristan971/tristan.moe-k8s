@@ -59,6 +59,17 @@ spec:
               bandwidth-mbps: 400
           {{- end }}
     spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 169.254.20.69
+        searches:
+          - kmdah.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+        options:
+          - name: "ndots"
+            value: "5"
       serviceAccountName: kmdah
       containers:
         - image: tristandeloche/kmdah:0.1.8.1-SNAPSHOT
