@@ -30,7 +30,7 @@ spec:
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
             cache:
-              max-size-gb: 550
+              max-size-gb: 420
               mongodb:
                 host: kmdah-mongodb.kmdah.svc.cluster.local
                 port: 27017
@@ -47,6 +47,7 @@ spec:
 
             k8s:
               tls-secret:
+                auto-update: true
                 namespace: kmdah
                 name: mangadex-at-home-tls-secret
 
@@ -60,7 +61,7 @@ spec:
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.1.7-SNAPSHOT
+        - image: tristandeloche/kmdah:0.1.8.1-SNAPSHOT
           imagePullPolicy: Always
           name: kmdah
           ports:
