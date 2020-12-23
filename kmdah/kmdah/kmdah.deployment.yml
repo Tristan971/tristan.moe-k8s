@@ -63,6 +63,7 @@ spec:
       dnsConfig:
         nameservers:
           - 169.254.20.69
+          - 10.32.0.10
         searches:
           - kmdah.svc.cluster.local
           - svc.cluster.local
