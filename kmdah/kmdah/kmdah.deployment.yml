@@ -105,15 +105,23 @@ spec:
         - image: library/varnish:6
           imagePullPolicy: IfNotPresent
           name: varnish
+          command:
+            - varnishd
+            - -F
+            - -f
+            - "/etc/varnish/default.vcl"
+            - -a
+            - "http=:80,HTTP"
+            - -s
+            - "file,/tmp/varnish/data,3G"
           ports:
             - name: http-varnish
               containerPort: 80
-          env:
-            - name: "VARNISH_SIZE"
-              value: "100M"
           volumeMounts:
             - name: varnish-config
               mountPath: /etc/varnish
+            - name: varnish-cache
+              mountPath: /tmp/varnish
           # varnish is healthy iff kmdah is healthy and reachable through it
           readinessProbe:
             httpGet:
@@ -138,6 +146,9 @@ spec:
           configMap:
             name: varnish-config
             optional: false
+        - name: varnish-cache
+          emptyDir:
+            sizeLimit: 5Gi
       terminationGracePeriodSeconds: 360
       # disallow workers to be running the same nodes, since they would be sharing bandwidth
       topologySpreadConstraints:

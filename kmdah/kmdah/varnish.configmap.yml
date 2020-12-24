@@ -19,9 +19,6 @@ data:
         // we never care about cookies
         unset req.http.cookie;
 
-        // proxy client ip to backend for geoip when needed
-        set req.http.X-Forwarded-For = client.ip;
-
         // don't cache __ paths, which are for healthchecks, prometheus and debugging
         if (req.url ~ "^/__") {
             return(pass);
