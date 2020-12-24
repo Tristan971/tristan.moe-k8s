@@ -1,10 +1,10 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: kmdah-ingress-redirect
+  name: kmdah-ingress-mdah
   namespace: kmdah
   labels:
-    app.kubernetes.io/name: kmdah-ingress-redirect
+    app.kubernetes.io/name: kmdah-ingress-mdah
     app.kubernetes.io/part-of: kmdah
 spec:
   entryPoints:
@@ -13,7 +13,7 @@ spec:
     - match: Host(`mdah.tristan.moe`)
       kind: Rule
       services:
-        - name: kmdah-service
-          port: 8080
+        - name: kmdah-varnish-service
+          port: 80
   tls:
     secretName: letsencrypt-cert-mdah.tristan.moe
