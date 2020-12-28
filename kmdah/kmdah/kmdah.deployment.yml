@@ -102,53 +102,6 @@ spec:
             preStop:
               exec:
                 command: [ "sleep", "10" ] # give 10s to traefik to remove the pod from all nodes' Endpoints
-        - image: library/varnish:6
-          imagePullPolicy: IfNotPresent
-          name: varnish
-          command:
-            - varnishd
-            - -F
-            - -f
-            - "/etc/varnish/default.vcl"
-            - -a
-            - "http=:80,HTTP"
-            - -s
-            - "file,/tmp/varnish/data,3G"
-          ports:
-            - name: http-varnish
-              containerPort: 80
-          volumeMounts:
-            - name: varnish-config
-              mountPath: /etc/varnish
-            - name: varnish-cache
-              mountPath: /tmp/varnish
-          # varnish is healthy iff kmdah is healthy and reachable through it
-          readinessProbe:
-            httpGet:
-              path: /__mon/health
-              port: http-varnish
-            periodSeconds: 5
-            initialDelaySeconds: 5
-            successThreshold: 1
-            failureThreshold: 1
-          resources:
-            requests:
-              cpu: 100m
-              memory: 200Mi
-            limits:
-              memory: 200Mi
-          lifecycle:
-            preStop:
-              exec:
-                command: [ "sleep", "10" ]
-      volumes:
-        - name: varnish-config
-          configMap:
-            name: varnish-config
-            optional: false
-        - name: varnish-cache
-          emptyDir:
-            sizeLimit: 5Gi
       terminationGracePeriodSeconds: 360
       # disallow workers to be running the same nodes, since they would be sharing bandwidth
       topologySpreadConstraints:
