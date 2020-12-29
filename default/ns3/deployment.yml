@@ -28,8 +28,8 @@ spec:
               mountPath: "/share"
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 0m
+              memory: 70Mi
             limits:
               cpu: 100m
               memory: 128Mi

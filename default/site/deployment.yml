@@ -9,14 +9,13 @@ spec:
   selector:
     matchLabels:
       app: site
-  strategy: { }
   template:
     metadata:
       labels:
         app: site
     spec:
       containers:
-        - name: nginx
+        - name: nginx-site
           image: nginx:alpine
           ports:
             - containerPort: 80
@@ -26,8 +25,8 @@ spec:
               readOnly: true
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 10m
+              memory: 10Mi
             limits:
               cpu: 100m
               memory: 128Mi
@@ -52,8 +51,8 @@ spec:
               mountPath: /tmp/site-repo
           resources:
             requests:
-              cpu: 100m
-              memory: 64Mi
+              cpu: 10m
+              memory: 35Mi
             limits:
               cpu: 100m
               memory: 64Mi

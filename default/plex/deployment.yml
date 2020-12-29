@@ -41,11 +41,11 @@ spec:
               mountPath: /data
           resources:
             requests:
-              cpu: 1000m
-              memory: 1500Mi
+              cpu: 250m
+              memory: 1570Mi
             limits:
               cpu: 1000m
-              memory: 1500Mi
+              memory: 1570Mi
         - name: git-sync-hama-bundle
           image: k8s.gcr.io/git-sync:v3.1.6
           securityContext:
@@ -68,8 +68,8 @@ spec:
               mountPropagation: HostToContainer
           resources:
             requests:
-              cpu: 100m
-              memory: 64Mi
+              cpu: 5m
+              memory: 30Mi
             limits:
               cpu: 100m
               memory: 64Mi
@@ -95,8 +95,8 @@ spec:
               mountPropagation: HostToContainer
           resources:
             requests:
-              cpu: 100m
-              memory: 64Mi
+              cpu: 5m
+              memory: 30Mi
             limits:
               cpu: 100m
               memory: 64Mi
