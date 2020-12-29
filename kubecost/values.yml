@@ -1,0 +1,10 @@
+kubecostToken: "dGRlQGhleS5jb20=xm343yadf98"
+
+persistentVolume:
+  size: 2Gi
+  dbSize: 15Gi
+  enabled: true
+
+prometheus:
+  nodeExporter:
+    enabled: true
