@@ -86,7 +86,7 @@ spec:
               value: "-Xmx512M"
           readinessProbe:
             httpGet:
-              path: /__mon/health
+              path: /data/a61fa9f7f1313194787116d1357a7784/N9.jpg
               port: http
             periodSeconds: 5
             initialDelaySeconds: 5
