@@ -73,7 +73,7 @@ spec:
             value: "5"
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.1.10-SNAPSHOT
+        - image: tristandeloche/kmdah:0.1.11-SNAPSHOT
           imagePullPolicy: Always
           name: kmdah
           ports:
