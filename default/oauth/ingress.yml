@@ -1,18 +1,21 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
-  name: oauth-ingress
+  name: auth-ingress
   labels:
-    app.kubernetes.io/name: oauth-ingress
-    app.kubernetes.io/part-of: oauth
+    app.kubernetes.io/name: auth-ingress
+    app.kubernetes.io/part-of: auth
+  annotations:
+    kubernetes.io/ingress.class: haproxy
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`auth.tristan.moe`)
-      kind: Rule
-      services:
-        - name: oauth
-          port: 4180
+  rules:
+    - host: "auth.tristan.moe"
+      http:
+        paths:
+          - backend:
+              serviceName: oauth
+              servicePort: 4180
   tls:
-    secretName: letsencrypt-cert-oauth.tristan.moe
+    - hosts:
+        - "auth.tristan.moe"
+      secretName: letsencrypt-cert-oauth.tristan.moe

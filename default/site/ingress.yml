@@ -1,22 +1,23 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
   name: site-ingress
+  namespace: default
   labels:
     app.kubernetes.io/name: site-ingress
     app.kubernetes.io/part-of: site
+  annotations:
+    kubernetes.io/ingress.class: haproxy
 spec:
-  entryPoints:
-    - web
-    - websecure
-  routes:
-    - match: Host(`tristan.moe`) || Host(`trde9.com`)
-      kind: Rule
-      services:
-        - name: site
-          port: 80
-      middlewares:
-        - name: http-to-https-middleware
-          namespace: kube-system
+  rules:
+    - host: "tristan.moe"
+      http:
+        paths:
+          - backend:
+              serviceName: site
+              servicePort: 80
   tls:
-    secretName: letsencrypt-cert-site.tristan.moe
+    - hosts:
+        - "tristan.moe"
+        - "trde9.com"
+      secretName: letsencrypt-cert-site.tristan.moe

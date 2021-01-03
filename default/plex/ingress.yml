@@ -1,18 +1,21 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
   name: plex-ingress
   labels:
     app.kubernetes.io/name: plex-ingress
     app.kubernetes.io/part-of: plex
+  annotations:
+    kubernetes.io/ingress.class: haproxy
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`plex.tristan.moe`)
-      kind: Rule
-      services:
-        - name: plex
-          port: 32400
+  rules:
+    - host: "plex.tristan.moe"
+      http:
+        paths:
+          - backend:
+              serviceName: plex
+              servicePort: 32400
   tls:
-    secretName: letsencrypt-cert-plex.tristan.moe
+    - hosts:
+        - "plex.tristan.moe"
+      secretName: letsencrypt-cert-plex.tristan.moe

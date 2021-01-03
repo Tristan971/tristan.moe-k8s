@@ -1,0 +1,27 @@
+controller:
+  kind: "DaemonSet"
+
+  daemonset:
+    useHostPort: "false"
+
+  config:
+    use-proxy-protocol: "true"
+    forwardfor: "update"
+
+  stats:
+    enabled: "true"
+  metrics:
+    enabled: "true"
+    port: "9101"
+
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9101"
+
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 195.154.69.74
+    annotations:
+      service.beta.kubernetes.io/scw-loadbalancer-type: "lb-gp-m"
+      service.beta.kubernetes.io/scw-loadbalancer-proxy-protocol-v2: "true"
+      service.beta.kubernetes.io/scw-loadbalancer-use-hostname: "true"

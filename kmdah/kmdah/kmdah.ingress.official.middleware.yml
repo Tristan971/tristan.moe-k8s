@@ -1,9 +1,0 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  namespace: kmdah
-  name: kmdah-ingress-official-redirect-middleware
-spec:
-  redirectRegex:
-    regex: ^https://.*\.mangadex\.network/(.*)
-    replacement: https://mdah.tristan.moe/${1}

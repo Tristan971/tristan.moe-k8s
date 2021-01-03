@@ -1,21 +1,21 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
   name: ns3-ingress
   labels:
     app.kubernetes.io/name: ns3-ingress
     app.kubernetes.io/part-of: ns3
+  annotations:
+    kubernetes.io/ingress.class: haproxy
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`ns3.tristan.moe`)
-      kind: Rule
-      services:
-        - name: ns3
-          port: 80
-      middlewares:
-        - name: oauth-middleware
-          namespace: default
+  rules:
+    - host: "ns3.tristan.moe"
+      http:
+        paths:
+          - backend:
+              serviceName: ns3
+              servicePort: 32400
   tls:
-    secretName: letsencrypt-cert-ns3.tristan.moe
+    - hosts:
+        - "ns3.tristan.moe"
+      secretName: letsencrypt-cert-ns3.tristan.moe

@@ -1,19 +1,22 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
   name: vault-ingress
   namespace: kube-system
   labels:
     app.kubernetes.io/name: vault-ingress
     app.kubernetes.io/part-of: vault
+  annotations:
+    kubernetes.io/ingress.class: haproxy
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`vault.tristan.moe`)
-      kind: Rule
-      services:
-        - name: vault
-          port: 8200
+  rules:
+    - host: "vault.tristan.moe"
+      http:
+        paths:
+          - backend:
+              serviceName: vault
+              servicePort: 8200
   tls:
-    secretName: letsencrypt-cert-vault.tristan.moe
+    - hosts:
+        - "vault.tristan.moe"
+      secretName: letsencrypt-cert-vault.tristan.moe

@@ -1,19 +1,22 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
   name: grafana-ingress
   namespace: logs
   labels:
     app.kubernetes.io/name: grafana-ingress
     app.kubernetes.io/part-of: grafana
+  annotations:
+    kubernetes.io/ingress.class: haproxy
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`grafana.tristan.moe`)
-      kind: Rule
-      services:
-        - name: grafana
-          port: 80
+  rules:
+    - host: "grafana.tristan.moe"
+      http:
+        paths:
+          - backend:
+              serviceName: grafana
+              servicePort: 80
   tls:
-    secretName: letsencrypt-cert-grafana.tristan.moe
+    - hosts:
+        - "grafana.tristan.moe"
+      secretName: letsencrypt-cert-grafana.tristan.moe

@@ -1,22 +1,22 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
   name: kubecost-ingress
   namespace: kubecost
   labels:
     app.kubernetes.io/name: kubecost-ingress
     app.kubernetes.io/part-of: kubecost
+  annotations:
+    kubernetes.io/ingress.class: haproxy
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`kubecost.tristan.moe`)
-      kind: Rule
-      services:
-        - name: kubecost-cost-analyzer
-          port: 9090
-      middlewares:
-        - name: oauth-middleware
-          namespace: default
+  rules:
+    - host: "kubecost.tristan.moe"
+      http:
+        paths:
+          - backend:
+              serviceName: kubecost-cost-analyzer
+              servicePort: 9090
   tls:
-    secretName: letsencrypt-cert-kubecost.tristan.moe
+    - hosts:
+        - "kubecost.tristan.moe"
+      secretName: letsencrypt-cert-kubecost.tristan.moe
