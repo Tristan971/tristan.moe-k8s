@@ -30,6 +30,7 @@ spec:
           {{- with secret "kv/mangadex/kmdah" -}}
           kmdah:
             cache:
+              backend: mongodb
               max-size-gb: 420
               mongodb:
                 host: kmdah-mongodb.kmdah.svc.cluster.local
@@ -73,7 +74,7 @@ spec:
             value: "5"
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.1.11-SNAPSHOT
+        - image: tristandeloche/kmdah:0.2.1-SNAPSHOT
           imagePullPolicy: Always
           name: kmdah
           ports:
