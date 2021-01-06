@@ -7,14 +7,20 @@ metadata:
     app.kubernetes.io/part-of: ns3
   annotations:
     kubernetes.io/ingress.class: haproxy
+    ingress.kubernetes.io/oauth: oauth2_proxy
 spec:
   rules:
     - host: "ns3.tristan.moe"
       http:
         paths:
-          - backend:
+          - path: /
+            backend:
               serviceName: ns3
               servicePort: 32400
+          - path: /oauth2
+            backend:
+              serviceName: oauth2-proxy
+              servicePort: 4180
   tls:
     - hosts:
         - "ns3.tristan.moe"

@@ -5,7 +5,7 @@ metadata:
     app: oauth
   name: oauth
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: oauth
@@ -25,6 +25,8 @@ spec:
           ## Are we running behind a reverse proxy? Will not accept headers like X-Real-Ip unless this is set.
           reverse_proxy = true
 
+          upstreams = "file:///dev/null"
+
           ## OAuth provider setup
           provider = "github"
           client_id = "{{ .Data.data.GH_APP_CLIENT_ID }}"
@@ -33,6 +35,8 @@ spec:
             "Tristan971",
             "jonparkinson1688"
           ]
+
+          set_xauthrequest = true
 
           email_domains = [
             "*"
@@ -44,7 +48,9 @@ spec:
           ## Cookie Settings
           ## Secret   - the seed string for secure cookies; should be 16, 24, or 32 bytes
           cookie_secret = "{{ .Data.data.COOKIE_SECRET }}"
-          cookie_domains = ".tristan.moe"
+          cookie_domains = [
+            "ns3.tristan.moe"
+          ]
           {{- end }}
     spec:
       serviceAccountName: oauth
