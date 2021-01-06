@@ -43,13 +43,13 @@ spec:
           ]
 
           ## Pass OAuth Access token to upstream via "X-Forwarded-Access-Token"
-          pass_access_token = false
+          pass_access_token = true
 
           ## Cookie Settings
           ## Secret   - the seed string for secure cookies; should be 16, 24, or 32 bytes
           cookie_secret = "{{ .Data.data.COOKIE_SECRET }}"
           cookie_domains = [
-            "ns3.tristan.moe"
+            "tristan.moe"
           ]
           {{- end }}
     spec:

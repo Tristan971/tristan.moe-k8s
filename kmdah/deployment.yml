@@ -33,8 +33,10 @@ spec:
               backend: mongodb
               max-size-gb: 420
               mongodb:
-                host: kmdah-mongodb.kmdah.svc.cluster.local
-                port: 27017
+                host: {{ .Data.data.mongodb_host }}
+                port: {{ .Data.data.mongodb_port }}
+                username: {{ .Data.data.mongodb_username }}
+                password: {{ .Data.data.mongodb_password }}
 
             geoip:
               enabled: true
@@ -43,8 +45,8 @@ spec:
             gossip:
               id-generation-strategy: hostname
               redis:
-                host: kmdah-redis-service.kmdah.svc.cluster.local
-                port: 6379
+                host: {{ .Data.data.redis_host }}
+                port: {{ .Data.data.redis_port }}
 
             k8s:
               tls-secret:
@@ -57,7 +59,7 @@ spec:
               load-balancer-ip: "195.154.69.74"
 
             worker:
-              bandwidth-mbps: 3
+              bandwidth-mbps: 80
           {{- end }}
     spec:
       dnsPolicy: None

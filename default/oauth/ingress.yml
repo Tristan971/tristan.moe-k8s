@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: oauth-ingress
+  labels:
+    app.kubernetes.io/name: oauth-ingress
+    app.kubernetes.io/part-of: oauth
+  annotations:
+    kubernetes.io/ingress.class: haproxy
+spec:
+  rules:
+    - host: "auth.tristan.moe"
+      http:
+        paths:
+          - backend:
+              serviceName: oauth2-proxy
+              servicePort: 4180
+            path: /oauth2
+  tls:
+    - hosts:
+        - "auth.tristan.moe"
+      secretName: letsencrypt-cert-oauth.tristan.moe

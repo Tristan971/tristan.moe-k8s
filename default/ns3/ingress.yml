@@ -13,14 +13,10 @@ spec:
     - host: "ns3.tristan.moe"
       http:
         paths:
-          - path: /
-            backend:
+          - backend:
               serviceName: ns3
-              servicePort: 32400
-          - path: /oauth2
-            backend:
-              serviceName: oauth2-proxy
-              servicePort: 4180
+              servicePort: 8080
+            path: /
   tls:
     - hosts:
         - "ns3.tristan.moe"
