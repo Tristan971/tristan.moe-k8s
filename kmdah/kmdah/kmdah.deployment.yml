@@ -57,7 +57,7 @@ spec:
               load-balancer-ip: "195.154.69.74"
 
             worker:
-              bandwidth-mbps: 700
+              bandwidth-mbps: 100
           {{- end }}
     spec:
       dnsPolicy: None
