@@ -16,7 +16,10 @@ spec:
           - backend:
               serviceName: ns3
               servicePort: 8080
-            path: /
+          - path: /oauth2
+            backend:
+              serviceName: oauth2-proxy
+              servicePort: 4180
   tls:
     - hosts:
         - "ns3.tristan.moe"

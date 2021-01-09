@@ -33,7 +33,8 @@ spec:
           client_secret = "{{ .Data.data.GH_APP_CLIENT_SECRET }}"
           github_users = [
             "Tristan971",
-            "jonparkinson1688"
+            "jonparkinson1688",
+            "lflare"
           ]
 
           set_xauthrequest = true
@@ -49,7 +50,7 @@ spec:
           ## Secret   - the seed string for secure cookies; should be 16, 24, or 32 bytes
           cookie_secret = "{{ .Data.data.COOKIE_SECRET }}"
           cookie_domains = [
-            "tristan.moe"
+            "ns3.tristan.moe"
           ]
           {{- end }}
     spec:

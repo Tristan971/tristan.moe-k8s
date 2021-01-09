@@ -7,5 +7,6 @@ spec:
     - port: 8080
       protocol: TCP
       name: http
+      targetPort: 80
   selector:
     app: ns3
