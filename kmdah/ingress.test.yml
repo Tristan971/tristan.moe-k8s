@@ -14,8 +14,8 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: kmdah-service
-              servicePort: 8080
+              serviceName: kmdah-varnish-service
+              servicePort: 8081
   tls:
     - hosts:
         - "mdah.tristan.moe"
