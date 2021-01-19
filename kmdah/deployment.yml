@@ -31,7 +31,7 @@ spec:
           kmdah:
             cache:
               backend: mongodb
-              max-size-gb: 420
+              max-size-gb: 780
               mongodb:
                 host: {{ .Data.data.mongodb_host }}
                 port: {{ .Data.data.mongodb_port }}

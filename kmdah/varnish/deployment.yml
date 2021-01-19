@@ -44,7 +44,7 @@ spec:
             - -a
             - "http=:80,HTTP"
             - -s
-            - "file,/tmp/varnish-data,5G,256K,sequential"
+            - "file,/tmp/varnish-data,25G,256K,sequential"
           ports:
             - name: http-varnish
               containerPort: 80
@@ -98,8 +98,14 @@ spec:
           emptyDir:
             sizeLimit: 2Gi
         - name: varnish-data
-          emptyDir:
-            sizeLimit: 10Gi
+          ephemeral:
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 30Gi
       terminationGracePeriodSeconds: 30
       topologySpreadConstraints:
         - maxSkew: 1
