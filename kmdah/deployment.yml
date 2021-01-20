@@ -28,6 +28,12 @@ spec:
         vault.hashicorp.com/agent-inject-secret-application-prod.yml: 'kv/mangadex/kmdah'
         vault.hashicorp.com/agent-inject-template-application-prod.yml: |
           {{- with secret "kv/mangadex/kmdah" -}}
+          # avoid creating and destroying threads all the time
+          # and use a constant pool
+          server.jetty.threads:
+            min: 200
+            max: 200
+
           kmdah:
             cache:
               backend: mongodb
@@ -86,7 +92,7 @@ spec:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xmx512M"
+              value: "-Xms512M -Xmx512M -Xss512K -XX:+UseG1GC"
           readinessProbe:
             httpGet:
               path: /__mon/health
@@ -98,9 +104,9 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 768Mi
+              memory: 1Gi
             limits:
-              memory: 768Mi
+              memory: 1Gi
           lifecycle:
             preStop:
               exec:
