@@ -27,8 +27,7 @@ spec:
           # avoid creating and destroying threads all the time
           # and use a constant pool
           server.jetty.threads:
-            min: 200
-            max: 200
+            min: 100
 
           kmdah:
             cache:
@@ -78,7 +77,7 @@ spec:
             value: "5"
       serviceAccountName: kmdah
       containers:
-        - image: tristandeloche/kmdah:0.3.19-SNAPSHOT
+        - image: tristandeloche/kmdah:0.3.20
           imagePullPolicy: Always
           name: kmdah
           ports:
@@ -88,7 +87,7 @@ spec:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xms512M -Xmx512M -Xss512K -XX:+UseG1GC"
+              value: "-Xms1G -Xmx1G -Xss512K -XX:+UseShenandoahGC"
           readinessProbe:
             httpGet:
               path: /__mon/health
@@ -100,9 +99,9 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 1Gi
+              memory: 1500Mi
             limits:
-              memory: 1Gi
+              memory: 1500Mi
           lifecycle:
             preStop:
               exec:
