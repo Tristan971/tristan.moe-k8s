@@ -1,6 +1,6 @@
 image:
   repository: grafana/grafana
-  tag: 7.3.4
+  tag: 7.3.7
 
 persistence:
   enabled: true
@@ -9,5 +9,3 @@ persistence:
 plugins:
   - grafana-piechart-panel
   - grafana-worldmap-panel
-  - natel-plotly-panel
-  - vonage-status-panel
