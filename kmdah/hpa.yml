@@ -13,6 +13,8 @@ spec:
   behavior:
     scaleUp:
       stabilizationWindowSeconds: 120 # give it 2 minutes for jit to apply before scaling up more
+    scaleDown:
+      stabilizationWindowSeconds: 360 # give 5 minutes before scaling down, to avoid ridiculous flip-flops
   metrics:
     - type: Resource
       resource:
