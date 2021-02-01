@@ -2,13 +2,13 @@ apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   namespace: kmdah
-  name: kmdah-autoscaler
+  name: varnish-autoscaler
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: kmdah
-  minReplicas: 4
+    name: varnish
+  minReplicas: 5
   maxReplicas: 8
   behavior:
     scaleUp:
