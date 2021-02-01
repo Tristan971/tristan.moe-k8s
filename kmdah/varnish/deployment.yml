@@ -89,6 +89,12 @@ spec:
             - name: varnish-tmpfs
               mountPath: /var/lib/varnish
               readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 64Mi
       volumes:
         - name: varnish-config
           configMap:
@@ -117,3 +123,4 @@ spec:
                 operator: In
                 values:
                   - varnish
+                  - kmdah

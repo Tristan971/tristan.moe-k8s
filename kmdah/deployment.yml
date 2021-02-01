@@ -118,3 +118,4 @@ spec:
                 operator: In
                 values:
                   - kmdah
+                  - varnish
