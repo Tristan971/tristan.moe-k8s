@@ -59,7 +59,7 @@ spec:
             mangadex:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
               load-balancer-ip: "124.6.36.229"
-              bandwidth-mbps: 750
+              bandwidth-mbps: 1250
           {{- end }}
     spec:
       dnsPolicy: None
