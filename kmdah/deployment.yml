@@ -78,7 +78,7 @@ spec:
             value: "5"
       serviceAccountName: kmdah
       containers:
-        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.3.22
+        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.3.23
           imagePullPolicy: Always
           name: kmdah
           ports:
