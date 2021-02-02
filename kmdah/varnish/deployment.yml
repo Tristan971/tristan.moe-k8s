@@ -44,7 +44,7 @@ spec:
             - -a
             - "http=:80,HTTP"
             - -s
-            - "file,/tmp/varnish-data,35G,256K,sequential"
+            - "file,/tmp/varnish-data,36G,256K,sequential"
           ports:
             - name: http-varnish
               containerPort: 80

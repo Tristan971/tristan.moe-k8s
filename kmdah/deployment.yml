@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: kmdah
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 4
+  replicas: 2
   selector:
     matchLabels:
       app: kmdah
@@ -59,9 +59,7 @@ spec:
             mangadex:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
               load-balancer-ip: "124.6.36.229"
-
-            worker:
-              bandwidth-mbps: 1250
+              bandwidth-mbps: 300
           {{- end }}
     spec:
       dnsPolicy: None
@@ -78,7 +76,7 @@ spec:
             value: "5"
       serviceAccountName: kmdah
       containers:
-        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.3.23
+        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.3.25
           imagePullPolicy: Always
           name: kmdah
           ports:
