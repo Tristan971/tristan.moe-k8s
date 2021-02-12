@@ -14,8 +14,8 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: kmdah-varnish-service
-              servicePort: 8081
+              serviceName: kmdah-service
+              servicePort: 8080
   tls:
     - hosts:
         - "*.rmhkd98sb0x3y.mangadex.network"
