@@ -2,17 +2,11 @@ server:
   enabled: true
   image:
     repository: prom/prometheus
-    tag: v2.22.1
+    tag: v2.22.0
   persistentVolume:
     enabled: true
     existingClaim: prometheus-server-pvc
   retention: 30d
-  resources:
-    requests:
-      cpu: 1
-      memory: 1500Mi
-    limits:
-      memory: 1500Mi
 
 nodeExporter:
   enabled: true
