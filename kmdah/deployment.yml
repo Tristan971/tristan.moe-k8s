@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: kmdah
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 7
+  replicas: 6
   selector:
     matchLabels:
       app: kmdah
@@ -50,11 +50,13 @@ spec:
                 host: {{ .Data.data.redis_host }}
                 port: {{ .Data.data.redis_port }}
 
-            k8s:
-              tls-secret:
-                auto-update: true
-                namespace: kmdah
-                name: mangadex-at-home-tls-secret
+            tls:
+              backend: k8s
+              k8s:
+                secret:
+                  auto-update: true
+                  namespace: kmdah
+                  name: mangadex-at-home-tls-secret
 
             mangadex:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
@@ -76,7 +78,7 @@ spec:
             value: "5"
       serviceAccountName: kmdah
       containers:
-        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.3.26
+        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.3.28
           imagePullPolicy: Always
           name: kmdah
           ports:
@@ -86,7 +88,7 @@ spec:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xms1G -Xmx1G -Xss512K -XX:+UseShenandoahGC"
+              value: "-Xms512M -Xmx512M -Xss512K -XX:+UseShenandoahGC"
           readinessProbe:
             httpGet:
               path: /__mon/health
@@ -98,9 +100,9 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 1500Mi
+              memory: 1000Mi
             limits:
-              memory: 1500Mi
+              memory: 1000Mi
           lifecycle:
             preStop:
               exec:
@@ -116,4 +118,3 @@ spec:
                 operator: In
                 values:
                   - kmdah
-                  - varnish
