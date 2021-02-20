@@ -1,4 +1,4 @@
-logLevel: 1
+logLevel: 5
 
 csiConfig:
   - clusterID: 5964421f-7917-4564-93e7-78947d2439a8
