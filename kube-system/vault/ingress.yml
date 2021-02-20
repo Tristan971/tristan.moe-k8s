@@ -3,11 +3,9 @@ kind: Ingress
 metadata:
   name: vault-ingress
   namespace: kube-system
-  labels:
-    app.kubernetes.io/name: vault-ingress
-    app.kubernetes.io/part-of: vault
   annotations:
     kubernetes.io/ingress.class: haproxy
+    cert-manager.io/cluster-issuer: le-clusterissuer
 spec:
   rules:
     - host: "vault.tristan.moe"
@@ -19,4 +17,4 @@ spec:
   tls:
     - hosts:
         - "vault.tristan.moe"
-      secretName: letsencrypt-cert-vault.tristan.moe
+      secretName: le-cert-vault

@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: grafana
   annotations:
     kubernetes.io/ingress.class: haproxy
+    cert-manager.io/cluster-issuer: le-clusterissuer
 spec:
   rules:
     - host: "grafana.tristan.moe"
@@ -19,4 +20,4 @@ spec:
   tls:
     - hosts:
         - "grafana.tristan.moe"
-      secretName: letsencrypt-cert-grafana.tristan.moe
+      secretName: le-cert-grafana

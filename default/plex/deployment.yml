@@ -88,7 +88,7 @@ spec:
             - name: 'GIT_SYNC_WAIT'
               value: '86400' # 24h
             - name: 'GIT_SYNC_PERMISSIONS'
-              value: '493' # equiv to 0755 cause impressible stupid choice of base
+              value: '493' # equiv to 0755 cause impressively stupid choice of base
           volumeMounts:
             - name: plex-config
               mountPath: /tmp/plex-config

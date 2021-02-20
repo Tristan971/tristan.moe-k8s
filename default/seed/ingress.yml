@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: seed
   annotations:
     kubernetes.io/ingress.class: haproxy
+    cert-manager.io/cluster-issuer: le-clusterissuer
 spec:
   rules:
     - host: "seed.tristan.moe"
@@ -19,4 +20,4 @@ spec:
   tls:
     - hosts:
         - "seed.tristan.moe"
-      secretName: letsencrypt-cert-seed.tristan.moe
+      secretName: le-cert-seed

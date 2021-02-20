@@ -1,13 +1,14 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-tristan.moe-issue
   namespace: cert-manager
+  name: le-clusterissuer
 spec:
   acme:
+    email: "tde@hey.com"
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-tristan.moe-key
+      name: le-privkey
     solvers:
       - http01:
           ingress:

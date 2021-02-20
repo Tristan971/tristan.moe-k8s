@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: prometheus
   annotations:
     kubernetes.io/ingress.class: haproxy
+    cert-manager.io/cluster-issuer: le-clusterissuer
 spec:
   rules:
     - host: "prom.tristan.moe"
@@ -19,4 +20,4 @@ spec:
   tls:
     - hosts:
         - "prom.tristan.moe"
-      secretName: letsencrypt-cert-prometheus.tristan.moe
+      secretName: le-cert-prometheus

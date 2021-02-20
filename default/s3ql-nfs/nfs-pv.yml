@@ -9,5 +9,12 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: 10.32.69.1
+    server: 10.233.0.100
     path: "/"
+  mountOptions:
+    - noacl
+    - nocto
+    - noatime
+    - nodiratime
+    - rsize=32768
+    - wsize=32768

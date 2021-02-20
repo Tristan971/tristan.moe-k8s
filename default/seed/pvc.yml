@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/name: seed-config
     app.kubernetes.io/part-of: seed
 spec:
+  storageClassName: csi-rbd-sc
   accessModes: [ ReadWriteOnce ]
   resources:
     requests:
-      storage: 2Gi
+      storage: 4Gi

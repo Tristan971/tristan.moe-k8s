@@ -3,11 +3,9 @@ kind: Ingress
 metadata:
   name: site-ingress
   namespace: default
-  labels:
-    app.kubernetes.io/name: site-ingress
-    app.kubernetes.io/part-of: site
   annotations:
     kubernetes.io/ingress.class: haproxy
+    cert-manager.io/cluster-issuer: le-clusterissuer
 spec:
   rules:
     - host: "tristan.moe"
@@ -19,5 +17,4 @@ spec:
   tls:
     - hosts:
         - "tristan.moe"
-        - "trde9.com"
-      secretName: letsencrypt-cert-site.tristan.moe
+      secretName: le-cert-www

@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/name: plex-config-pvc
     app.kubernetes.io/part-of: media
 spec:
+  storageClassName: csi-rbd-sc
   accessModes: [ ReadWriteOnce ]
   resources:
     requests:
-      storage: 15Gi
+      storage: 20Gi

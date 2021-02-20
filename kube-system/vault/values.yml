@@ -1,0 +1,3 @@
+server:
+  dataStorage:
+    storageClass: csi-rbd-sc
