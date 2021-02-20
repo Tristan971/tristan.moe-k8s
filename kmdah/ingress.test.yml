@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: kmdah
   annotations:
     kubernetes.io/ingress.class: haproxy
+    cert-manager.io/cluster-issuer: le-clusterissuer
 spec:
   rules:
     - host: "mdah.tristan.moe"
@@ -19,4 +20,4 @@ spec:
   tls:
     - hosts:
         - "mdah.tristan.moe"
-      secretName: letsencrypt-cert-mdah.tristan.moe
+      secretName: le-cert-mdah

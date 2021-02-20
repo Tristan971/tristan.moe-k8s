@@ -3,9 +3,6 @@ kind: ClusterRole
 metadata:
   name: kmdah-role
   namespace: kmdah
-  labels:
-    app.kubernetes.io/name: kmdah-role
-    app.kubernetes.io/part-of: kmdah
 
 rules:
   - apiGroups:
@@ -24,9 +21,6 @@ kind: ClusterRoleBinding
 metadata:
   name: kmdah-rolebinding
   namespace: kmdah
-  labels:
-    app.kubernetes.io/name: kmdah-rolebinding
-    app.kubernetes.io/part-of: kmdah
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io

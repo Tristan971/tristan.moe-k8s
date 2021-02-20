@@ -2,7 +2,7 @@ controller:
   kind: "DaemonSet"
 
   daemonset:
-    useHostPort: "false"
+    useHostPort: "true"
 
   config:
     use-proxy-protocol: "true"
@@ -19,4 +19,4 @@ controller:
     prometheus.io/port: "9101"
 
   service:
-    type: ClusterIP
+    type: NodePort

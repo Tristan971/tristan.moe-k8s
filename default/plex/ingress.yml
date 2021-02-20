@@ -7,6 +7,7 @@ metadata:
     app.kubernetes.io/part-of: plex
   annotations:
     kubernetes.io/ingress.class: haproxy
+    cert-manager.io/cluster-issuer: le-clusterissuer
 spec:
   rules:
     - host: "plex.tristan.moe"
@@ -18,4 +19,4 @@ spec:
   tls:
     - hosts:
         - "plex.tristan.moe"
-      secretName: letsencrypt-cert-plex.tristan.moe
+      secretName: le-cert-plex

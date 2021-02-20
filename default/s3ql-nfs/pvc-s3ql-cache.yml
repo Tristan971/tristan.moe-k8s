@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: s3ql-cache
     app.kubernetes.io/part-of: media
 spec:
+  storageClassName: csi-rbd-sc
   accessModes: [ ReadWriteOnce ]
   resources:
     requests:

@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: kmdah
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 6
+  replicas: 3
   selector:
     matchLabels:
       app: kmdah
@@ -64,18 +64,6 @@ spec:
               bandwidth-mbps: 8000
           {{- end }}
     spec:
-      dnsPolicy: None
-      dnsConfig:
-        nameservers:
-          - 169.254.20.69
-          - 10.32.0.10
-        searches:
-          - kmdah.svc.cluster.local
-          - svc.cluster.local
-          - cluster.local
-        options:
-          - name: "ndots"
-            value: "5"
       serviceAccountName: kmdah
       containers:
         - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.3.28
