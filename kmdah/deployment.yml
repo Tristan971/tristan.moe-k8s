@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: kmdah
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 4
+  replicas: 5
   selector:
     matchLabels:
       app: kmdah
@@ -32,13 +32,10 @@ spec:
 
           kmdah:
             cache:
-              backend: mongodb
+              backend: filesystem
               max-size-gb: 1500
-              mongodb:
-                host: {{ .Data.data.mongodb_host }}
-                port: {{ .Data.data.mongodb_port }}
-                username: {{ .Data.data.mongodb_username }}
-                password: {{ .Data.data.mongodb_password }}
+              filesystem:
+                root-dir: "/cache"
 
             geoip:
               enabled: true
@@ -61,17 +58,20 @@ spec:
             mangadex:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
               load-balancer-ip: "124.6.36.229"
-              bandwidth-mbps: 3000
+              bandwidth-mbps: 500
           {{- end }}
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.3.28
+        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.3.34
           imagePullPolicy: Always
           name: kmdah
           ports:
             - name: http
               containerPort: 8080
+          volumeMounts:
+            - name: cephfs-kmdah
+              mountPath: "/cache"
           env:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
@@ -82,6 +82,7 @@ spec:
               path: /__mon/health
               port: http
             periodSeconds: 5
+            timeoutSeconds: 10
             initialDelaySeconds: 5
             successThreshold: 1
             failureThreshold: 1
@@ -95,6 +96,17 @@ spec:
             preStop:
               exec:
                 command: [ "sleep", "10" ] # give 10s to traefik to remove the pod from all nodes' Endpoints
+      volumes:
+        - name: cephfs-kmdah
+          cephfs:
+            user: cephfs-kmdah
+            path: /
+            secretRef:
+              name: cephfs-secret
+            monitors:
+              - 10.97.75.113
+              - 10.97.71.113
+              - 10.99.103.143
       terminationGracePeriodSeconds: 360
       topologySpreadConstraints:
         - maxSkew: 1

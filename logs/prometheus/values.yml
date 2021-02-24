@@ -8,6 +8,13 @@ server:
     existingClaim: prometheus-server-pvc
   retention: 30d
 
+  resources:
+    requests:
+      cpu: 1500m
+      memory: 2Gi
+    limits:
+      memory: 2Gi
+
 nodeExporter:
   enabled: true
   image:
