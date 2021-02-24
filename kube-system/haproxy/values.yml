@@ -7,6 +7,15 @@ controller:
   config:
     use-proxy-protocol: "true"
     forwardfor: "update"
+    timeout-client: 10s
+    timeout-client-fin: 3s
+    timeout-connect: 5s
+    timeout-http-request: 30s
+    timeout-http-keep-alive: 10s
+    timeout-queue: 5s
+    timeout-server: 30s
+    timeout-server-fin: 10s
+    timeout-stop: 5s
 
   stats:
     enabled: "true"

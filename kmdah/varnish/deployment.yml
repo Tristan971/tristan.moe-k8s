@@ -4,7 +4,7 @@ metadata:
   namespace: kmdah
   name: varnish
 spec:
-  replicas: 3
+  replicas: 4
   strategy:
     rollingUpdate:
       maxUnavailable: 1
