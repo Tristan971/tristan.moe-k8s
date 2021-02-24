@@ -9,3 +9,4 @@ persistence:
 plugins:
   - grafana-piechart-panel
   - grafana-worldmap-panel
+  - grafana-polystat-panel
