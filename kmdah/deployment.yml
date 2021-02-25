@@ -30,12 +30,20 @@ spec:
             min: 100
             max: 500
 
+          spring.data.mongodb:
+            database: kmdah
+            gridfs:
+              database: kmdah
+
           kmdah:
             cache:
-              backend: filesystem
+              backend: mongodb
               max-size-gb: 1500
-              filesystem:
-                root-dir: "/cache"
+              mongodb:
+                host: kmdah-mongodb
+                port: 27017
+                username: {{ .Data.data.mongodb_username }}
+                password: {{ .Data.data.mongodb_password }}
 
             geoip:
               enabled: true
@@ -44,8 +52,8 @@ spec:
             gossip:
               id-generation-strategy: hostname
               redis:
-                host: {{ .Data.data.redis_host }}
-                port: {{ .Data.data.redis_port }}
+                host: kmdah-redis-service
+                port: 6379
 
             tls:
               backend: k8s
@@ -58,7 +66,7 @@ spec:
             mangadex:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
               load-balancer-ip: "124.6.36.229"
-              bandwidth-mbps: 500
+              bandwidth-mbps: 1000
           {{- end }}
     spec:
       serviceAccountName: kmdah
@@ -69,9 +77,6 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-          volumeMounts:
-            - name: cephfs-kmdah
-              mountPath: "/cache"
           env:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
@@ -89,24 +94,13 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 1000Mi
+              memory: 2000Mi
             limits:
-              memory: 1000Mi
+              memory: 2000Mi
           lifecycle:
             preStop:
               exec:
                 command: [ "sleep", "10" ] # give 10s to traefik to remove the pod from all nodes' Endpoints
-      volumes:
-        - name: cephfs-kmdah
-          cephfs:
-            user: cephfs-kmdah
-            path: /
-            secretRef:
-              name: cephfs-secret
-            monitors:
-              - 10.97.75.113
-              - 10.97.71.113
-              - 10.99.103.143
       terminationGracePeriodSeconds: 360
       topologySpreadConstraints:
         - maxSkew: 1
