@@ -7,17 +7,8 @@ controller:
   config:
     use-proxy-protocol: "true"
     forwardfor: "update"
-    limit-rps: "20"
-    limit-connections: "20"
-    timeout-client: 30s
-    timeout-client-fin: 10s
-    timeout-connect: 10s
-    timeout-http-request: 35s
-    timeout-http-keep-alive: 10s
-    timeout-queue: 10s
-    timeout-server: 35s
-    timeout-server-fin: 10s
-    timeout-stop: 10s
+    limit-rps: "30"
+    limit-connections: "30"
 
   stats:
     enabled: "true"
