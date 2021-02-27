@@ -25,3 +25,49 @@ alertmanager:
   enabled: false
 pushgateway:
   enabled: false
+
+extraScrapeConfigs: |
+  - job_name: 'node_exporter-mongodb'
+    metrics_path: /metrics
+    params:
+      module: [ http_2xx ]
+    static_configs:
+      - targets:
+          - 146.59.151.249:9100
+        labels:
+          node: mongo-configsvr-1
+          type: configsvr
+      - targets:
+          - 146.59.151.69:9100
+        labels:
+          node: mongo-configsvr-2
+          type: configsvr
+      - targets:
+          - 146.59.151.87:9100
+        labels:
+          node: mongo-configsvr-3
+          type: configsvr
+      - targets:
+          - 51.210.156.5:9100
+        labels:
+          node: mongo-shardsvr-1
+          type: shardsvr
+      - targets:
+          - 146.59.253.159:9100
+        labels:
+          node: mongo-shardsvr-2
+          type: shardsvr
+      - targets:
+          - 135.125.7.15:9100
+        labels:
+          node: mongo-shardsvr-3
+          type: shardsvr
+  - job_name: 'loadbalancer'
+    metrics_path: /metrics
+    params:
+      module: [ http_2xx ]
+    static_configs:
+      - targets:
+          - 124.6.36.229:9100
+        labels:
+          node: loadbalancer
