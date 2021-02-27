@@ -38,7 +38,7 @@ spec:
           kmdah:
             cache:
               backend: mongodb
-              max-size-gb: 2000
+              max-size-gb: 4000
               mongodb:
                 host: kmdah-mongodb
                 port: 27017
@@ -66,7 +66,7 @@ spec:
             mangadex:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
               load-balancer-ip: "124.6.36.229"
-              bandwidth-mbps: 4000
+              bandwidth-mbps: 6000
           {{- end }}
     spec:
       serviceAccountName: kmdah

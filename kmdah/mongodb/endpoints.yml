@@ -12,3 +12,7 @@ subsets:
       - ip: 146.59.253.159 # mongo 2
     ports:
       - port: 27017
+  - addresses:
+      - ip: 135.125.7.15 # mongo 3
+    ports:
+      - port: 27017
