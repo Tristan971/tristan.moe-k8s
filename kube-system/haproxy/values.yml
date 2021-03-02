@@ -7,8 +7,6 @@ controller:
   config:
     use-proxy-protocol: "true"
     forwardfor: "update"
-    limit-rps: "15"
-    limit-connections: "15"
 
   stats:
     enabled: "true"

@@ -7,8 +7,10 @@ metadata:
     app.kubernetes.io/name: kmdah-test-ingress
     app.kubernetes.io/part-of: kmdah
   annotations:
-    kubernetes.io/ingress.class: haproxy
     cert-manager.io/cluster-issuer: le-clusterissuer
+    kubernetes.io/ingress.class: haproxy
+    ingress.kubernetes.io/limit-rps: "15"
+    ingress.kubernetes.io/limit-connections: "15"
 spec:
   rules:
     - host: "mdah.tristan.moe"

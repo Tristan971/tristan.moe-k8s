@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/part-of: kmdah
   annotations:
     kubernetes.io/ingress.class: haproxy
+    ingress.kubernetes.io/limit-rps: "15"
+    ingress.kubernetes.io/limit-connections: "15"
 spec:
   rules:
     - host: "*.rmhkd98sb0x3y.mangadex.network"
