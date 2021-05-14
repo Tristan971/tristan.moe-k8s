@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: default
+  name: cryptpad
+  annotations:
+    kubernetes.io/ingress.class: haproxy
+    cert-manager.io/cluster-issuer: le-clusterissuer
+spec:
+  rules:
+    - host: "cryptpad.tristan.moe"
+      http:
+        paths:
+          - backend:
+              serviceName: cryptpad
+              servicePort: 80
+    - host: "main.cryptpad.tristan.moe"
+      http:
+        paths:
+          - backend:
+              serviceName: cryptpad
+              servicePort: 80
+  tls:
+    - hosts:
+        - "cryptpad.tristan.moe"
+      secretName: le-cert-cpad-main
+    - hosts:
+        - "main.cryptpad.tristan.moe"
+      secretName: le-cert-cpad-mainsecure

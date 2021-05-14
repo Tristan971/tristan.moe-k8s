@@ -3,19 +3,20 @@ controller:
 
   daemonset:
     useHostPort: "true"
+    hostPorts:
+      http: "80"
+      https: "443"
 
   config:
     use-proxy-protocol: "true"
     forwardfor: "update"
+    ssl-redirect: "false"
 
   stats:
     enabled: "true"
   metrics:
     enabled: "true"
     port: "9101"
-
-  logs:
-    enabled: false
 
   podAnnotations:
     prometheus.io/scrape: "true"

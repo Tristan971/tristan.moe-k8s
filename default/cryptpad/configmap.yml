@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: default
+  name: cryptpad
+data:
+  config.js: |
+    /* globals module */
+
+    module.exports = {
+        httpUnsafeOrigin: 'http://cryptpad.tristan.moe',
+        httpSafeOrigin: "https://cryptpad.tristan.moe",
+        httpAddress: '::',
+
+        /* =====================
+         *         Admin
+         * ===================== */
+        adminKeys: [
+            "[tde9@cryptpad.tristan.moe/ujxPRBwEN9dKchIpg47mTtD51XQVtjPCviyVh44pEAs=]",
+        ],
+        adminEmail: 'tde@hey.com',
+
+        /* =====================
+         *        STORAGE
+         * ===================== */
+
+        inactiveTime: false,
+        disableIntegratedEviction: true,
+        maxUploadSize: 200 * 1024 * 1024,
+        logPath: false,
+        logToStdout: true,
+        logLevel: 'info'
+    };

@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: cryptpad
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: cryptpad
+  template:
+    metadata:
+      labels:
+        app: cryptpad
+    spec:
+      containers:
+        - name: cryptpad
+          image: rg.fr-par.scw.cloud/mdcloud/cryptpad:nginx
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          env:
+            - name: CPAD_MAIN_DOMAIN
+              value: main.cryptpad.tristan.moe
+            - name: CPAD_SANDBOX_DOMAIN
+              value: cryptpad.tristan.moe
+            - name: CPAD_TRUSTED_PROXY
+              value: 0.0.0.0/0
+            - name: CPAD_REALIP_HEADER
+              value: X-Forwarded-For
+            - name: CPAD_HTTP2_DISABLE
+              value: "true"
+          volumeMounts:
+            - name: config
+              mountPath: /cryptpad/config
+            - name: blob
+              mountPath: /cryptpad/blob
+            - name: block
+              mountPath: /cryptpad/block
+            - name: customize
+              mountPath: /cryptpad/customize
+            - name: data
+              mountPath: /cryptpad/data
+            - name: files
+              mountPath: /cryptpad/datastore
+      volumes:
+        - name: blob
+          persistentVolumeClaim:
+            claimName: cryptpad-blob
+        - name: block
+          persistentVolumeClaim:
+            claimName: cryptpad-block
+        - name: customize
+          persistentVolumeClaim:
+            claimName: cryptpad-customize
+        - name: data
+          persistentVolumeClaim:
+            claimName: cryptpad-data
+        - name: files
+          persistentVolumeClaim:
+            claimName: cryptpad-files
+        - name: config
+          configMap:
+            name: cryptpad

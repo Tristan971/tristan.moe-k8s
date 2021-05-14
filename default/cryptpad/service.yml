@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: cryptpad
+spec:
+  ports:
+    - port: 80
+      name: http
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: cryptpad
