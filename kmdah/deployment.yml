@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: kmdah
     app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 6
+  replicas: 0
   selector:
     matchLabels:
       app: kmdah
@@ -38,7 +38,7 @@ spec:
           kmdah:
             cache:
               backend: mongodb
-              max-size-gb: 4000
+              max-size-gb: 4350
               mongodb:
                 host: kmdah-mongodb
                 port: 27017
@@ -66,7 +66,8 @@ spec:
             mangadex:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
               load-balancer-ip: "124.6.36.229"
-              bandwidth-mbps: 5000
+              bandwidth-mbps: 4000
+              enforce-tokens: true
           {{- end }}
     spec:
       serviceAccountName: kmdah
