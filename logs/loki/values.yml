@@ -1,4 +1,0 @@
-loki:
-  persistence:
-    enabled: true
-    existingClaim: loki-pvc

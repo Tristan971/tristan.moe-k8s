@@ -1,0 +1,36 @@
+image:
+  repository: grafana/grafana
+  tag: 7.5.7
+
+persistence:
+  enabled: true
+  existingClaim: grafana
+
+plugins:
+  - grafana-piechart-panel
+  - grafana-worldmap-panel
+  - grafana-image-renderer
+  - grafana-polystat-panel
+
+deploymentStrategy:
+  type: Recreate
+
+imageRenderer:
+  enabled: true
+
+grafana.ini:
+  server:
+    root_url: "https://grafana.tristan.moe/"
+
+  "auth.anonymous":
+    hide_version: true
+
+  analytics:
+    reporting_enabled: false
+    check_for_updates: false
+
+  security:
+    disable_gravatar: true
+
+  metrics:
+    enabled: true

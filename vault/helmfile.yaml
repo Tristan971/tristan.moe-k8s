@@ -1,0 +1,10 @@
+repositories:
+  - name: hashicorp
+    url: https://helm.releases.hashicorp.com
+
+releases:
+  - namespace: vault
+    name: vault
+    chart: hashicorp/vault
+    values:
+      - "./values.yml"

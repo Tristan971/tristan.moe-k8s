@@ -1,0 +1,19 @@
+logLevel: 5
+
+csiConfig:
+  - clusterID: a686267d-b96d-4d88-be2a-dcfe6e475bab
+    monitors:
+      - "192.168.0.1"
+      - "192.168.0.2"
+      - "192.168.0.3"
+
+httpMetrics:
+  service:
+    annotations:
+      "prometheus.io/scrape": "true"
+      "prometheus.io/port": "8080"
+
+topology:
+  enabled: true
+  domainLabels:
+    - phys_host

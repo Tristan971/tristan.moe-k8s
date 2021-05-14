@@ -1,0 +1,8 @@
+repositories:
+  - name: emberstack
+    url: https://emberstack.github.io/helm-charts
+
+releases:
+  - namespace: kube-system
+    name: kube-reflector
+    chart: emberstack/reflector

@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  namespace: cert-manager
+  name: cert-tristan-moe
+  annotations:
+    reflector.v1.k8s.emberstack.com/secret-reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/secret-reflection-auto-enabled: "true"
+spec:
+  dnsNames:
+    - '*.tristan.moe'
+  issuerRef:
+    kind: ClusterIssuer
+    name: le-clusterissuer
+  secretName: wildcard-tristan-moe

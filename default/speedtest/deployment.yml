@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: speedtest
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: speedtest
+  template:
+    metadata:
+      labels:
+        app: speedtest
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: openspeedtest
+          image: openspeedtest/latest
+          ports:
+            - containerPort: 8080
+              name: http

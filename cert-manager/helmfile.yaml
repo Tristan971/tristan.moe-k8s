@@ -1,6 +1,8 @@
 repositories:
   - name: jetstack
     url: https://charts.jetstack.io
+  - name: scaleway-webhook
+    url: git+https://github.com/scaleway/cert-manager-webhook-scaleway@deploy/scaleway-webhook?ref=main
 
 releases:
   - namespace: cert-manager
@@ -8,3 +10,6 @@ releases:
     chart: jetstack/cert-manager
     values:
       - "./values.yml"
+  - namespace: cert-manager
+    name: scaleway-webhook
+    chart: scaleway-webhook/scaleway-webhook

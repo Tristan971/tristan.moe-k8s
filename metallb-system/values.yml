@@ -1,0 +1,11 @@
+prometheus:
+  scrapeAnnotations: true
+
+speaker:
+  tolerateMaster: false
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+
+existingConfigMap: "metallb"

@@ -1,23 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: site-ingress
-  namespace: default
-  annotations:
-    cert-manager.io/cluster-issuer: le-clusterissuer
+  name: grafana
+  namespace: monitoring
 spec:
   rules:
-    - host: "tristan.moe"
+    - host: "grafana.tristan.moe"
       http:
         paths:
           - pathType: Prefix
             path: /
             backend:
               service:
-                name: site
+                name: grafana
                 port:
                   number: 80
   tls:
     - hosts:
-        - "tristan.moe"
-      secretName: le-cert-tristan-moe
+        - "grafana.tristan.moe"
+      secretName: wildcard-tristan-moe

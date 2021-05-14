@@ -1,0 +1,33 @@
+controller:
+  kind: "DaemonSet"
+
+  daemonset:
+    useHostPort: "true"
+    hostPorts:
+      http: "80"
+      https: "443"
+
+  extraArgs:
+    watch-ingress-without-class: "true"
+
+  config:
+    forwardfor: "add"
+    ssl-redirect: "false"
+
+  logs:
+    enabled: true
+
+  stats:
+    enabled: "true"
+  metrics:
+    enabled: "true"
+    port: "9101"
+
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9101"
+
+  service:
+    type: LoadBalancer
+    annotations:
+      "metallb.universe.tf/address-pool": "ip-144"

@@ -1,0 +1,10 @@
+repositories:
+  - name: ceph-csi
+    url: https://ceph.github.io/csi-charts
+
+releases:
+  - namespace: ceph-csi-rbd
+    name: ceph-csi-rbd
+    chart: ceph-csi/ceph-csi-rbd
+    values:
+      - "./values.yaml"

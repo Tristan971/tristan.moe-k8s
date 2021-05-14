@@ -1,0 +1,16 @@
+volumePermissions:
+  enabled: true
+
+replication:
+  enabled: false
+
+postgresqlUsername: codimd
+postgresqlPassword: codimd
+postgresqlDatabase: codimd
+
+persistence:
+  enabled: true
+  existingClaim: codimd-pgsql
+
+metrics:
+  enabled: true

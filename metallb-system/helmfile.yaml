@@ -1,0 +1,10 @@
+repositories:
+  - name: metallb
+    url: git+https://github.com/metallb/metallb.git@charts/metallb?ref=main
+
+releases:
+  - namespace: metallb-system
+    name: metallb
+    chart: metallb/metallb
+    values:
+      - "./values.yml"

@@ -1,0 +1,17 @@
+repositories:
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: codimd
+    url: https://helm.codimd.dev
+
+releases:
+  - namespace: default
+    name: codimd-pgsql
+    chart: bitnami/postgresql
+    values:
+      - "./postgresql.yml"
+  - namespace: default
+    name: codimd
+    chart: codimd/codimd
+    values:
+      - "./codimd.yml"

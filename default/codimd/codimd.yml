@@ -1,0 +1,33 @@
+global:
+  storageClass: csi-rbd-sc
+
+image:
+  tag: 2.4.1
+
+# use separately deployed DB
+postgresql:
+  enabled: false
+mariadb:
+  enabled: false
+
+service:
+  type: ClusterIP
+
+codimd:
+  connection:
+    domain: codimd.tristan.moe
+    protocolUseSSL: true
+  security:
+    allowGravatar: 'false'
+    useCDN: 'false'
+    hstsEnabled: 'false'
+    sessionSecret: '<redacted>'
+  imageStorePersistentVolume:
+    storageClass: csi-rbd-sc
+  database:
+    type: postgres
+    host: codimd-pgsql-postgresql
+    port: 5432
+    username: codimd
+    password: codimd
+    databaseName: codimd

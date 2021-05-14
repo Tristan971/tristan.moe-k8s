@@ -1,0 +1,38 @@
+injector:
+  enabled: true
+  replicas: 2
+
+  metrics:
+    enabled: true
+  annotations:
+    prometheus.io/scrape: "true"
+
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 256Mi
+
+server:
+  resources:
+    requests:
+      memory: 768Mi
+      cpu: 768m
+    limits:
+      memory: 768Mi
+
+  dataStorage:
+    enabled: true
+    size: 10Gi
+
+  ha:
+    enabled: true
+    replicas: 3
+
+    raft:
+      enabled: true
+
+ui:
+  enabled: true
+  serviceType: "ClusterIP"
