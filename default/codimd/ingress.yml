@@ -1,20 +1,21 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: default
   name: codimd
-  annotations:
-    kubernetes.io/ingress.class: haproxy
-    cert-manager.io/cluster-issuer: le-clusterissuer
 spec:
   rules:
     - host: "codimd.tristan.moe"
       http:
         paths:
-          - backend:
-              serviceName: codimd
-              servicePort: 80
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: codimd
+                port:
+                  number: 80
   tls:
     - hosts:
         - "codimd.tristan.moe"
-      secretName: le-cert-codimd
+      secretName: wildcard-tristan-moe

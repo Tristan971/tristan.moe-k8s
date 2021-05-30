@@ -2,6 +2,8 @@ global:
   storageClass: csi-rbd-sc
 
 image:
+  registry: rg.fr-par.scw.cloud
+  repository: tristandeloche/hackmd
   tag: 2.4.1
 
 # use separately deployed DB

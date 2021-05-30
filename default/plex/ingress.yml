@@ -1,22 +1,20 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: plex-ingress
-  labels:
-    app.kubernetes.io/name: plex-ingress
-    app.kubernetes.io/part-of: plex
-  annotations:
-    kubernetes.io/ingress.class: haproxy
-    cert-manager.io/cluster-issuer: le-clusterissuer
+  name: plex
 spec:
   rules:
     - host: "plex.tristan.moe"
       http:
         paths:
-          - backend:
-              serviceName: plex
-              servicePort: 32400
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: plex
+                port:
+                  number: 32400
   tls:
     - hosts:
         - "plex.tristan.moe"
-      secretName: le-cert-plex
+      secretName: wildcard-tristan-moe

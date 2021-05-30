@@ -1,9 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: default
   name: plex
-  labels:
-    app: plex
 spec:
   selector:
     matchLabels:
@@ -29,26 +28,27 @@ spec:
             # be updated within its config files from
             # another container
             - name: 'PLEX_UID'
-              value: '0'
+              value: '911'
             - name: 'PLEX_GID'
-              value: '0'
+              value: '911'
           volumeMounts:
             - name: plex-config
               mountPath: /config
               mountPropagation: HostToContainer
-            - name: nfs-plex-data
+            - name: s3-data
               mountPath: /data
+              readOnly: true
           resources:
             requests:
               cpu: 1000m
-              memory: 1570Mi
+              memory: 2048Mi
             limits:
-              memory: 1570Mi
+              memory: 2048Mi
         - name: git-sync-hama-bundle
           image: k8s.gcr.io/git-sync:v3.1.6
           securityContext:
-            runAsGroup: 0
-            runAsUser: 0
+            runAsGroup: 911
+            runAsUser: 911
           env:
             - name: 'GIT_SYNC_REPO'
               value: 'https://github.com/ZeroQI/Hama.bundle.git'
@@ -74,8 +74,8 @@ spec:
         - name: git-sync-ass
           image: k8s.gcr.io/git-sync:v3.1.6
           securityContext:
-            runAsGroup: 0
-            runAsUser: 0
+            runAsGroup: 911
+            runAsUser: 911
           env:
             - name: 'GIT_SYNC_REPO'
               value: 'https://github.com/ZeroQI/Absolute-Series-Scanner.git'
@@ -99,9 +99,9 @@ spec:
               cpu: 200m
               memory: 64Mi
       volumes:
-        - name: nfs-plex-data
+        - name: s3-data
           persistentVolumeClaim:
             claimName: nfs-pvc
         - name: plex-config
           persistentVolumeClaim:
-            claimName: plex-config-pvc
+            claimName: plex-config

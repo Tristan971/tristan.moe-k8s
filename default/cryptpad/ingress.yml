@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: default
@@ -11,15 +11,23 @@ spec:
     - host: "cryptpad.tristan.moe"
       http:
         paths:
-          - backend:
-              serviceName: cryptpad
-              servicePort: 80
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: cryptpad
+                port:
+                  number: 80
     - host: "main.cryptpad.tristan.moe"
       http:
         paths:
-          - backend:
-              serviceName: cryptpad
-              servicePort: 80
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: cryptpad
+                port:
+                  number: 80
   tls:
     - hosts:
         - "cryptpad.tristan.moe"
