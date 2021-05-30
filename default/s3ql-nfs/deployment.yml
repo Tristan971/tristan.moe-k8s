@@ -44,7 +44,6 @@ spec:
               cpu: 1500m
               memory: 2000Mi
             limits:
-              cpu: 1500m
               memory: 2000Mi
           env:
             - name: S3QL_STORAGE_URL
@@ -93,7 +92,6 @@ spec:
               cpu: 500m
               memory: 512Mi
             limits:
-              cpu: 500m
               memory: 512Mi
           ports:
             - containerPort: 2049

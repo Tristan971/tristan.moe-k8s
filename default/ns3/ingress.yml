@@ -1,22 +1,21 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ns3-ingress
-  labels:
-    app.kubernetes.io/name: ns3-ingress
-    app.kubernetes.io/part-of: ns3
-  annotations:
-    kubernetes.io/ingress.class: haproxy
-    cert-manager.io/cluster-issuer: le-clusterissuer
+  namespace: default
+  name: ns3
 spec:
   rules:
     - host: "ns3.tristan.moe"
       http:
         paths:
-          - backend:
-              serviceName: ns3
-              servicePort: 8080
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: ns3
+                port:
+                  number: 8080
   tls:
     - hosts:
         - "ns3.tristan.moe"
-      secretName: le-cert-ns3
+      secretName: wildcard-tristan-moe

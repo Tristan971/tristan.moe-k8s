@@ -1,11 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: ns3
+  namespace: default
   name: ns3
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: ns3
@@ -24,17 +23,22 @@ spec:
             - containerPort: 80
               name: http
           volumeMounts:
-            # name must match the volume name below
             - name: nfs
               mountPath: "/share"
           resources:
             requests:
-              cpu: 0m
-              memory: 70Mi
-            limits:
               cpu: 100m
+              memory: 128Mi
+            limits:
               memory: 128Mi
       volumes:
         - name: nfs
           persistentVolumeClaim:
             claimName: nfs-pvc
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: phys_host
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: ns3
