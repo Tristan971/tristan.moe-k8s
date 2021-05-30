@@ -1,23 +1,21 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: seed-ingress
+  name: seed
   namespace: default
-  labels:
-    app.kubernetes.io/name: seed-ingress
-    app.kubernetes.io/part-of: seed
-  annotations:
-    kubernetes.io/ingress.class: haproxy
-    cert-manager.io/cluster-issuer: le-clusterissuer
 spec:
   rules:
     - host: "seed.tristan.moe"
       http:
         paths:
-          - backend:
-              serviceName: seed
-              servicePort: 3000
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: seed-rtorrent-flood
+                port:
+                  number: 3000
   tls:
     - hosts:
         - "seed.tristan.moe"
-      secretName: le-cert-seed
+      secretName: wildcard-tristan-moe

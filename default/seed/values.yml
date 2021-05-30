@@ -1,0 +1,111 @@
+#
+# IMPORTANT NOTE
+#
+# This chart inherits from our common library chart. You can check the default values/options here:
+# https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/values.yaml
+#
+
+image:
+  repository: jesec/rtorrent-flood
+  pullPolicy: IfNotPresent
+  tag: latest@sha256:5ff0125ea0e2befbc2ba2f2143e130819db645cb5ef68b44a0712b8162a16f47
+
+strategy:
+  type: Recreate
+
+podSecurityContext:
+  runAsGroup: 911
+  runAsUser: 911
+
+# Environment configuration - for more options see:
+# https://github.com/jesec/flood#configuration
+env:
+  # TZ:
+  HOME: "/config"
+  FLOOD_OPTION_HOST: "0.0.0.0"
+  FLOOD_OPTION_PORT: "3000"
+  FLOOD_OPTION_RTORRENT: "true"
+  FLOOD_OPTION_ALLOWEDPATH: "/downloads"
+
+service:
+  port:
+    port: 3000
+  additionalServices:
+    - enabled: true
+      nameSuffix: bittorrent
+      type: NodePort
+      port:
+        port: 31881
+        name: bittorrent
+        protocol: TCP
+        nodePort: 31881
+        targetPort: 31881
+
+ingress:
+  enabled: false
+
+persistence:
+  config:
+    enabled: true
+    skipuninstall: true
+    existingClaim: seed-config
+
+  downloads:
+    enabled: true
+    skipuninstall: true
+    existingClaim: nfs-pvc
+
+resources:
+  requests:
+    cpu: 1000m
+    memory: 2Gi
+  limits:
+    memory: 2Gi
+
+# -- Minimal configuration provided from https://github.com/jesec/rtorrent/blob/master/doc/rtorrent.rc
+# @default -- string
+config: |
+  session.use_lock.set = no
+  method.insert = cfg.basedir,  private|const|string, (cat,(fs.homedir),"/.local/share/rtorrent/")
+  method.insert = cfg.download, private|const|string, (cat,"/downloads/","download/")
+  method.insert = cfg.logs,     private|const|string, (cat,(cfg.download),"log/")
+  method.insert = cfg.logfile,  private|const|string, (cat,(cfg.logs),"rtorrent-",(system.time),".log")
+  method.insert = cfg.session,  private|const|string, (cat,(cfg.basedir),".session/")
+  method.insert = cfg.watch,    private|const|string, (cat,(cfg.download),"watch/")
+  fs.mkdir.recursive = (cat,(cfg.basedir))
+  fs.mkdir = (cat,(cfg.download))
+  fs.mkdir = (cat,(cfg.logs))
+  fs.mkdir = (cat,(cfg.session))
+  fs.mkdir = (cat,(cfg.watch))
+  fs.mkdir = (cat,(cfg.watch),"/load")
+  fs.mkdir = (cat,(cfg.watch),"/start")
+  schedule2 = watch_load, 11, 10, ((load.verbose, (cat, (cfg.watch), "load/*.torrent")))
+  schedule2 = watch_start, 10, 10, ((load.start_verbose, (cat, (cfg.watch), "start/*.torrent")))
+  dht.mode.set = disable
+  protocol.pex.set = no
+  trackers.use_udp.set = no
+  throttle.max_uploads.set = 100
+  throttle.max_uploads.global.set = 250
+  throttle.min_peers.normal.set = 20
+  throttle.max_peers.normal.set = 60
+  throttle.min_peers.seed.set = 30
+  throttle.max_peers.seed.set = 80
+  trackers.numwant.set = 80
+  network.port_range.set = 31881-31881
+  network.port_random.set = no
+  network.max_open_files.set = 600
+  network.max_open_sockets.set = 300
+  pieces.memory.max.set = 1800M
+  session.path.set = (cat, (cfg.session))
+  directory.default.set = (cat, (cfg.download))
+  log.execute = (cat, (cfg.logs), "execute.log")
+  encoding.add = utf8
+  system.daemon.set = true
+  system.umask.set = 0002
+  system.cwd.set = (directory.default)
+  network.http.max_open.set = 50
+  network.http.dns_cache_timeout.set = 25
+  network.scgi.open_local = (cat,(cfg.basedir),rtorrent.sock)
+  print = (cat, "Logging to ", (cfg.logfile))
+  log.open_file = "log", (cfg.logfile)
+  log.add_output = "info", "log"

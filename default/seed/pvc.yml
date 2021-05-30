@@ -1,12 +1,9 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: default
   name: seed-config
-  labels:
-    app.kubernetes.io/name: seed-config
-    app.kubernetes.io/part-of: seed
 spec:
-  storageClassName: csi-rbd-sc
   accessModes: [ ReadWriteOnce ]
   resources:
     requests:

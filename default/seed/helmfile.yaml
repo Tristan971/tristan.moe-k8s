@@ -1,0 +1,10 @@
+repositories:
+  - name: k8s-at-home
+    url: https://k8s-at-home.com/charts
+
+releases:
+  - namespace: default
+    name: seed
+    chart: k8s-at-home/rtorrent-flood
+    values:
+      - "./values.yml"
