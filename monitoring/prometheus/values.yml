@@ -20,6 +20,9 @@ nodeExporter:
   image:
     repository: prom/node-exporter
     tag: v1.1.2
+  service:
+    listenOnAllInterfaces: false
+  hostNetwork: false
 
 alertmanager:
   enabled: false
