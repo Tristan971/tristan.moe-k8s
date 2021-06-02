@@ -1,0 +1,46 @@
+architecture: replication
+
+auth:
+  enabled: false
+  sentinel: false
+  persistence:
+    enabled: false
+
+master:
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 512m
+      memory: 256Mi
+
+  spreadConstraints:
+    - maxSkew: 1
+      topologyKey: phys_host
+      whenUnsatisfiable: DoNotSchedule
+
+replica:
+  replicaCount: 2
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 512m
+      memory: 256Mi
+
+  spreadConstraints:
+    - maxSkew: 1
+      topologyKey: phys_host
+      whenUnsatisfiable: DoNotSchedule
+
+rbac:
+  create: true
+
+metrics:
+  enabled: true

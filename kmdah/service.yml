@@ -3,9 +3,6 @@ kind: Service
 metadata:
   name: kmdah-service
   namespace: kmdah
-  labels:
-    app.kubernetes.io/name: kmdah-service
-    app.kubernetes.io/part-of: kmdah
 spec:
   ports:
     - port: 8080

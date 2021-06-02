@@ -1,10 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: default
   name: s3ql-master
-  labels:
-    app.kubernetes.io/name: s3ql-master
-    app.kubernetes.io/part-of: media
 spec:
   selector:
     matchLabels:

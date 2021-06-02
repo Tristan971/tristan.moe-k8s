@@ -1,13 +1,9 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: kmdah-ingress-production
   namespace: kmdah
-  labels:
-    app.kubernetes.io/name: kmdah-ingress-production
-    app.kubernetes.io/part-of: kmdah
   annotations:
-    kubernetes.io/ingress.class: haproxy
     ingress.kubernetes.io/limit-rps: "15"
     ingress.kubernetes.io/limit-connections: "15"
 spec:
@@ -15,9 +11,13 @@ spec:
     - host: "*.rmhkd98sb0x3y.mangadex.network"
       http:
         paths:
-          - backend:
-              serviceName: kmdah-service
-              servicePort: http
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: kmdah-service
+                port:
+                  name: http
   tls:
     - hosts:
         - "*.rmhkd98sb0x3y.mangadex.network"

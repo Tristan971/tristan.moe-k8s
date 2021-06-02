@@ -3,11 +3,8 @@ kind: Deployment
 metadata:
   name: kmdah
   namespace: kmdah
-  labels:
-    app.kubernetes.io/name: kmdah
-    app.kubernetes.io/part-of: kmdah
 spec:
-  replicas: 0
+  replicas: 3
   selector:
     matchLabels:
       app: kmdah
@@ -17,7 +14,7 @@ spec:
         app: kmdah
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/path: "/metrics"
+        prometheus.io/path: "/__mon/prometheus"
         prometheus.io/port: "8080"
         vault.hashicorp.com/role: 'kmdah'
         vault.hashicorp.com/agent-inject: 'true'
@@ -28,22 +25,14 @@ spec:
           # and use a constant pool
           server.jetty.threads:
             min: 100
-            max: 500
-
-          spring.data.mongodb:
-            database: kmdah
-            gridfs:
-              database: kmdah
+            max: 200
 
           kmdah:
             cache:
-              backend: mongodb
-              max-size-gb: 4350
-              mongodb:
-                host: kmdah-mongodb
-                port: 27017
-                username: {{ .Data.data.mongodb_username }}
-                password: {{ .Data.data.mongodb_password }}
+              backend: filesystem
+              max-size-gb: 1500
+              filesystem:
+                root-dir: "/cache"
 
             geoip:
               enabled: true
@@ -52,7 +41,7 @@ spec:
             gossip:
               id-generation-strategy: hostname
               redis:
-                host: kmdah-redis-service
+                host: redis-master
                 port: 6379
 
             tls:
@@ -65,14 +54,14 @@ spec:
 
             mangadex:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
-              load-balancer-ip: "124.6.36.229"
+              load-balancer-ip: "124.6.37.144"
               bandwidth-mbps: 4000
-              enforce-tokens: true
+              enforce-tokens: false
           {{- end }}
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.3.36
+        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.5.1
           imagePullPolicy: Always
           name: kmdah
           ports:
@@ -82,7 +71,10 @@ spec:
             - name: KMDAH_CONFIGURATION
               value: "/vault/secrets/application-prod.yml"
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xms512M -Xmx512M -Xss512K -XX:+UseShenandoahGC"
+              value: "-Xms1G -Xmx1G -Xss512K -XX:+UseShenandoahGC"
+          volumeMounts:
+            - name: cephfs
+              mountPath: /cache
           readinessProbe:
             httpGet:
               path: /__mon/health
@@ -95,15 +87,26 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 2000Mi
+              memory: 2Gi
             limits:
-              memory: 2000Mi
+              memory: 2Gi
           lifecycle:
             preStop:
               exec:
                 command: [ "sleep", "10" ] # give 10s to traefik to remove the pod from all nodes' Endpoints
       terminationGracePeriodSeconds: 360
       topologySpreadConstraints:
+        # try to not group on the same physical hosts
+        - maxSkew: 1
+          topologyKey: phys_host
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - kmdah
+        # ensure not grouping on the same virtual host
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
           whenUnsatisfiable: DoNotSchedule
@@ -113,3 +116,15 @@ spec:
                 operator: In
                 values:
                   - kmdah
+      volumes:
+        - name: cephfs
+          cephfs:
+            user: admin
+            secretRef:
+              name: ceph-secret
+            monitors:
+              - 192.168.0.1:6789
+              - 192.168.0.2:6789
+              - 192.168.0.3:6789
+            path: /volumes/kmdah
+            readOnly: false

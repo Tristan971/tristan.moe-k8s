@@ -1,0 +1,10 @@
+repositories:
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+
+releases:
+  - namespace: kmdah
+    name: redis
+    chart: bitnami/redis
+    values:
+      - "./values.yml"
