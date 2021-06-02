@@ -6,6 +6,8 @@ metadata:
   annotations:
     ingress.kubernetes.io/limit-rps: "15"
     ingress.kubernetes.io/limit-connections: "15"
+    ingress.kubernetes.io/config-backend: |
+      http-request deny if { path -i -m beg /__ }
 spec:
   rules:
     - host: "*.rmhkd98sb0x3y.mangadex.network"
