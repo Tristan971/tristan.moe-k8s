@@ -30,7 +30,7 @@ spec:
           kmdah:
             cache:
               backend: filesystem
-              max-size-gb: 1500
+              max-size-gb: 3000
               filesystem:
                 root-dir: "/cache"
 
@@ -56,12 +56,12 @@ spec:
               client-secret: "{{ .Data.data.mangadex_client_secret }}"
               load-balancer-ip: "124.6.37.144"
               bandwidth-mbps: 4000
-              enforce-tokens: false
+              enforce-tokens: true
           {{- end }}
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.5.1
+        - image: rg.fr-par.scw.cloud/tristandeloche/kmdah:0.5.2
           imagePullPolicy: Always
           name: kmdah
           ports:

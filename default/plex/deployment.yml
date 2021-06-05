@@ -37,7 +37,6 @@ spec:
               mountPropagation: HostToContainer
             - name: s3-data
               mountPath: /data
-              readOnly: true
           resources:
             requests:
               cpu: 1000m
@@ -59,7 +58,7 @@ spec:
             - name: 'GIT_SYNC_WAIT'
               value: '86400' # 24h
             - name: 'GIT_SYNC_PERMISSIONS'
-              value: '493' # equiv to 0755 cause impressible stupid choice of base
+              value: '511' # equiv to 0777 cause impressible stupid choice of base
           volumeMounts:
             - name: plex-config
               mountPath: /tmp/plex-config
@@ -67,9 +66,8 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 30Mi
+              memory: 64Mi
             limits:
-              cpu: 200m
               memory: 64Mi
         - name: git-sync-ass
           image: k8s.gcr.io/git-sync:v3.1.6
@@ -86,7 +84,7 @@ spec:
             - name: 'GIT_SYNC_WAIT'
               value: '86400' # 24h
             - name: 'GIT_SYNC_PERMISSIONS'
-              value: '493' # equiv to 0755 cause impressively stupid choice of base
+              value: '511' # equiv to 0777 cause impressively stupid choice of base
           volumeMounts:
             - name: plex-config
               mountPath: /tmp/plex-config
@@ -94,9 +92,8 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 30Mi
+              memory: 64Mi
             limits:
-              cpu: 200m
               memory: 64Mi
       volumes:
         - name: s3-data
