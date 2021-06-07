@@ -20,4 +20,4 @@ spec:
   tls:
     - hosts:
         - "tristan.moe"
-      secretName: wildcard-tristan-moe
+      secretName: le-cert-tristan-moe

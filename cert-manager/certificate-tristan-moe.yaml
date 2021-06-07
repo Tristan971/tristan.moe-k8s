@@ -8,7 +8,6 @@ metadata:
     reflector.v1.k8s.emberstack.com/secret-reflection-auto-enabled: "true"
 spec:
   dnsNames:
-    - 'tristan.moe'
     - '*.tristan.moe'
   issuerRef:
     kind: ClusterIssuer

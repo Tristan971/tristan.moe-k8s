@@ -4,8 +4,8 @@ metadata:
   name: kmdah-ingress-production
   namespace: kmdah
   annotations:
-    ingress.kubernetes.io/limit-rps: "15"
-    ingress.kubernetes.io/limit-connections: "15"
+    ingress.kubernetes.io/limit-rps: "150"
+    ingress.kubernetes.io/limit-connections: "150"
     ingress.kubernetes.io/config-backend: |
       http-request deny if { path -i -m beg /__ }
 spec:
