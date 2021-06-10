@@ -15,7 +15,20 @@ spec:
                 name: nexus-docker
                 port:
                   name: docker
+    - host: "docker.mdcloud.moe"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nexus-docker
+                port:
+                  name: docker
   tls:
     - hosts:
         - "docker.tristan.moe"
       secretName: wildcard-tristan-moe
+    - hosts:
+        - "docker.mdcloud.moe"
+      secretName: wildcard-mdcloud-moe
