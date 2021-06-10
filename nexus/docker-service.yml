@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: nexus
+  name: nexus-docker
+spec:
+  selector:
+    app.kubernetes.io/instance: nexus-repository-manager
+    app.kubernetes.io/name: nexus-repository-manager
+  ports:
+    - name: docker
+      port: 5000
+      protocol: TCP
+      targetPort: 5000

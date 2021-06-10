@@ -1,0 +1,19 @@
+deploymentStrategy: Recreate
+
+nexus:
+  docker:
+    enabled: true
+    registries:
+      - host: docker.nexus.tristan.moe
+        port: 5000
+        secretName: docker-nexus-tristan-moe
+  resources:
+    requests:
+      cpu: 250m
+      memory: 5Gi
+    limits:
+      memory: 5Gi
+
+persistence:
+  enabled: true
+  storageSize: 32Gi

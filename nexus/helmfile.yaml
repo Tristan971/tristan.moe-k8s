@@ -1,0 +1,10 @@
+repositories:
+  - name: sonatype
+    url: https://sonatype.github.io/helm3-charts
+
+releases:
+  - namespace: nexus
+    name: nexus-repository-manager
+    chart: sonatype/nexus-repository-manager
+    values:
+      - "./values.yml"

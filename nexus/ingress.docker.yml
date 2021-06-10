@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: nexus
+  name: nexus-docker
+spec:
+  rules:
+    - host: "docker.nexus.tristan.moe"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nexus-docker
+                port:
+                  name: docker
+  tls:
+    - hosts:
+        - "docker.nexus.tristan.moe"
+      secretName: docker-nexus-tristan-moe

@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: nexus
+  name: nexus-web
+  annotations:
+    ingress.kubernetes.io/oauth: oauth2_proxy
+spec:
+  rules:
+    - host: "nexus.tristan.moe"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /oauth2
+            backend:
+              service:
+                name: oauth2
+                port:
+                  name: http
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nexus-repository-manager
+                port:
+                  name: nexus-ui
+  tls:
+    - hosts:
+        - "nexus.tristan.moe"
+      secretName: wildcard-tristan-moe

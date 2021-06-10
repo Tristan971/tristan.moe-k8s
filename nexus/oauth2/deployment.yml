@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: nexus
+  name: oauth2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: oauth2
+  template:
+    metadata:
+      labels:
+        app: oauth2
+      annotations:
+        vault.hashicorp.com/role: 'oauth-nexus'
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-inject-secret-oauth2: 'kv/oauth/nexus'
+        vault.hashicorp.com/agent-inject-template-oauth2: |
+          {{- with secret "kv/oauth/nexus" -}}
+          http_address = "0.0.0.0:4180"
+          reverse_proxy = true
+          upstreams = "file:///dev/null"
+
+          provider = "github"
+          client_id = "{{ .Data.data.CLIENT }}"
+          client_secret = "{{ .Data.data.SECRET }}"
+          github_users = [
+            "Tristan971"
+          ]
+
+          set_xauthrequest = true
+
+          email_domains = [
+            "*"
+          ]
+
+          pass_access_token = true
+
+          cookie_name = "oauth-nexus"
+          cookie_secret = "{{ .Data.data.COOKIE }}"
+          cookie_domains = [
+            "nexus.tristan.moe"
+          ]
+          {{- end }}
+    spec:
+      serviceAccountName: nexus-oauth
+      containers:
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:latest-amd64
+          command:
+            - /bin/oauth2-proxy
+            - --config=/vault/secrets/oauth2
+          ports:
+            - containerPort: 4180
+              name: http
+          resources:
+            requests:
+              cpu: 20m
+              memory: 64Mi
+            limits:
+              memory: 64Mi
