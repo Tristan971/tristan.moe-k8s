@@ -5,7 +5,7 @@ metadata:
   name: nexus-docker
 spec:
   rules:
-    - host: "docker.nexus.tristan.moe"
+    - host: "docker.tristan.moe"
       http:
         paths:
           - pathType: Prefix
@@ -17,5 +17,5 @@ spec:
                   name: docker
   tls:
     - hosts:
-        - "docker.nexus.tristan.moe"
-      secretName: docker-nexus-tristan-moe
+        - "docker.tristan.moe"
+      secretName: wildcard-tristan-moe
