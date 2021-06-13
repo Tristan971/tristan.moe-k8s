@@ -1,4 +1,17 @@
 loki:
+  enabled: true
+
+  image:
+    repository: docker.tristan.moe/grafana/loki
+    tag: 2.2.1
+
   persistence:
     enabled: true
     existingClaim: loki
+
+promtail:
+  enabled: true
+
+  image:
+    repository: docker.tristan.moe/grafana/promtail
+    tag: 2.2.1

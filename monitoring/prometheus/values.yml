@@ -1,8 +1,13 @@
 server:
   enabled: true
+
   image:
-    repository: prom/prometheus
+    repository: docker.tristan.moe/prom/prometheus
     tag: v2.27.1
+
+  strategy:
+    type: Recreate
+
   persistentVolume:
     enabled: true
     existingClaim: prometheus
@@ -18,7 +23,7 @@ server:
 nodeExporter:
   enabled: true
   image:
-    repository: prom/node-exporter
+    repository: docker.tristan.moe/prom/node-exporter
     tag: v1.1.2
   service:
     listenOnAllInterfaces: false

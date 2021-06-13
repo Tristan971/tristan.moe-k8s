@@ -1,6 +1,6 @@
 image:
-  repository: grafana/grafana
-  tag: 7.5.7
+  repository: docker.tristan.moe/grafana/grafana
+  tag: 8.0.1
 
 persistence:
   enabled: true
