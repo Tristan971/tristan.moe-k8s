@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: nexus
+  name: nexus-pub
+spec:
+  rules:
+    - host: "nexus.tristan.moe"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/repository/"
+            backend:
+              service:
+                name: nexus-repository-manager
+                port:
+                  name: nexus-ui
+          - pathType: Prefix
+            path: "/static"
+            backend:
+              service:
+                name: nexus-repository-manager
+                port:
+                  name: nexus-ui
+  tls:
+    - hosts:
+        - "nexus.tristan.moe"
+      secretName: wildcard-tristan-moe
