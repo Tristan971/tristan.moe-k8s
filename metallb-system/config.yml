@@ -6,7 +6,14 @@ metadata:
 data:
   config: |
     peers:
-    - peer-address: 172.17.38.1
+    - peer-address: 172.17.38.13
+      peer-asn: 24482
+      my-asn: 65000
+      hold-time: 120s
+      node-selectors:
+      - match-labels:
+          node_role: worker
+    - peer-address: 172.17.38.14
       peer-asn: 24482
       my-asn: 65000
       hold-time: 120s
