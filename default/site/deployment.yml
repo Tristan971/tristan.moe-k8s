@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: nginx-site
-          image: nginx:alpine
+          image: docker.tristan.moe/library/nginx:alpine
           ports:
             - containerPort: 80
           volumeMounts:
