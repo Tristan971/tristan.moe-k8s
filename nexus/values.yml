@@ -1,5 +1,8 @@
 deploymentStrategy: Recreate
 
+image:
+  tag: 3.31.1
+
 nexus:
   docker:
     enabled: true
