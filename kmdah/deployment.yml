@@ -61,7 +61,7 @@ spec:
     spec:
       serviceAccountName: kmdah
       containers:
-        - image: docker.tristan.moe/tristandeloche/kmdah:0.5.3
+        - image: docker.tristan.moe/tristandeloche/kmdah:0.5.4
           imagePullPolicy: Always
           name: kmdah
           ports:
