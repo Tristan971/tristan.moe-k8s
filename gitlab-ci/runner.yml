@@ -1,0 +1,66 @@
+image: docker.tristan.moe/gitlab/gitlab-runner:alpine-v14.0.0
+
+gitlabUrl: "https://gitlab.com/"
+
+replicas: 2
+concurrent: 15
+locked: false
+tags: "tristan"
+
+terminationGracePeriodSeconds: 600
+
+logLevel: info
+
+checkInterval: 5
+
+metrics:
+  enabled: true
+
+rbac:
+  create: true
+  rules:
+    - resources: [ "*" ]
+      verbs: [ "*" ]
+  clusterWideAccess: false
+  podSecurityPolicy:
+    enabled: false
+
+runners:
+  config: |
+    [[runners]]
+      [runners.kubernetes]
+        image = "docker.tristan.moe/library/ubuntu:20.04"
+        pull_policy = "always"
+        environment = [ "FF_GITLAB_REGISTRY_HELPER_IMAGE=1" ]
+        locked = false
+        privileged = true
+
+        cpu_request = "500m"
+        cpu_request_overwrite_max_allowed = "4000m"
+        memory_limit = "2Gi"
+        memory_limit_overwrite_max_allowed = "4Gi"
+
+        service_cpu_request = "500m"
+        service_cpu_request_overwrite_max_allowed = "2000m"
+        service_memory_request = "2Gi"
+        service_memory_limit = "2Gi"
+        service_memory_request_overwrite_max_allowed = "4Gi"
+        service_memory_limit_overwrite_max_allowed = "4Gi"
+
+        helper_cpu_request = "128m"
+        helper_memory_request = "256Mi"
+        helper_memory_limit = "256Mi"
+      [runners.cache]
+        Type = "s3"
+        Path = "glci"
+        Shared = true
+        [runners.cache.s3]
+          ServerAddress = "tristan-moe-glci.s3.fr-par.scw.cloud"
+          BucketName = "tristan-moe-glci"
+          BucketLocation = "fr-par"
+      [runners.feature_flags]
+        FF_GITLAB_REGISTRY_HELPER_IMAGE = true
+
+  secret: gitlab-runner-secret
+  cache:
+    secretName: s3access
