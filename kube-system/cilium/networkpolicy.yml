@@ -6,6 +6,8 @@ spec:
   endpointSelector: { }
   ingress:
     - fromEntities:
+        - cluster
+    - fromEntities:
         - world
       toPorts:
         - ports:
@@ -14,5 +16,5 @@ spec:
             - port: "80"
         - ports:
             - port: "32400"
-    - fromEntities:
-        - cluster
+        - ports:
+            - port: "22"
